@@ -42,10 +42,15 @@ const setRealTimeWind = async () => {
 }
 
 exports.generateData = async () => {
-    lastDay = (await db.query(`SELECT DATE(day) AS day FROM daily_wind ORDER BY id DESC LIMIT 1;`))[0].day
-    currentDay = new Date().toISOString().slice(0, 10)
-    if(lastDay != currentDay) {
+    lastDay = await db.query(`SELECT DATE(day) AS day FROM daily_wind ORDER BY id DESC LIMIT 1;`)
+    if(!lastDay.length) {
         await setDailyWind()
+    } else {
+        lastDay = lastDay[0].day
+        currentDay = new Date().toISOString().slice(0, 10)
+        if(lastDay != currentDay) {
+            await setDailyWind()
+        }
     }
 
     while (new Date().getSeconds() % 10) {}

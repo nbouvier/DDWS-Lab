@@ -13,7 +13,7 @@ const setProsumerConsumption = async () => {
     date = new Date()
     currentPeriod = (date.getHours() * 3600 + date.getMinutes() * 60 + date.getSeconds()) / REFRESH_FREQUENCY
 
-    skew = ((30*PERIODS/70 < currentPeriod && currentPeriod < 40*PERIODS/70) ? PERIODS/10 : Math.abs(currentPeriod - PERIODS/2)) / (PERIODS/15)
+    skew = ((10*PERIODS/24 < currentPeriod && currentPeriod < 14*PERIODS/24) ? PERIODS/10 : Math.abs(currentPeriod - PERIODS/2)) / (PERIODS/15)
 
     // Use House Services getAll()
     houses = await db.query(`SELECT id FROM house;`)
