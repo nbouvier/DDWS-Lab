@@ -18,6 +18,8 @@ To run this project, install it locally using npm:
 $ npm install
 ```
 
+Set up the database using the sql.sql file and configure environment variables by copying .env.example into .env and modifying necessary variables.
+
 Then start the server:
 
 ```

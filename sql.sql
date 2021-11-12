@@ -17,23 +17,8 @@ DROP DATABASE IF EXISTS `ddws`;
 CREATE DATABASE IF NOT EXISTS `ddws` /*!40100 DEFAULT CHARACTER SET latin1 */;
 USE `ddws`;
 
--- Listage de la structure de la table ddws. daily_wind
-DROP TABLE IF EXISTS `daily_wind`;
-CREATE TABLE IF NOT EXISTS `daily_wind` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `speed` float NOT NULL,
-  `day` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
--- Listage des données de la table ddws.daily_wind : ~0 rows (environ)
-DELETE FROM `daily_wind`;
-/*!40000 ALTER TABLE `daily_wind` DISABLE KEYS */;
-/*!40000 ALTER TABLE `daily_wind` ENABLE KEYS */;
-
--- Listage de la structure de la table ddws. electricity_consumption
-DROP TABLE IF EXISTS `electricity_consumption`;
-CREATE TABLE IF NOT EXISTS `electricity_consumption` (
+-- Listage de la structure de la table ddws. consumption
+CREATE TABLE IF NOT EXISTS `consumption` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `house_id` int(11) NOT NULL,
   `consumption` float NOT NULL,
@@ -41,15 +26,31 @@ CREATE TABLE IF NOT EXISTS `electricity_consumption` (
   PRIMARY KEY (`id`),
   KEY `FK_ELECTRICITY_CONSUMPTION_HOUSE` (`house_id`),
   CONSTRAINT `FK_ELECTRICITY_CONSUMPTION_HOUSE` FOREIGN KEY (`house_id`) REFERENCES `house` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
 
--- Listage des données de la table ddws.electricity_consumption : ~0 rows (environ)
-DELETE FROM `electricity_consumption`;
-/*!40000 ALTER TABLE `electricity_consumption` DISABLE KEYS */;
-/*!40000 ALTER TABLE `electricity_consumption` ENABLE KEYS */;
+-- Listage des données de la table ddws.consumption : ~0 rows (environ)
+DELETE FROM `consumption`;
+/*!40000 ALTER TABLE `consumption` DISABLE KEYS */;
+INSERT INTO `consumption` (`id`, `house_id`, `consumption`, `timestamps`) VALUES
+	(1, 1, 0.395991, '2021-11-09 15:20:40');
+/*!40000 ALTER TABLE `consumption` ENABLE KEYS */;
+
+-- Listage de la structure de la table ddws. daily_wind
+CREATE TABLE IF NOT EXISTS `daily_wind` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `speed` float NOT NULL,
+  `day` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+
+-- Listage des données de la table ddws.daily_wind : ~0 rows (environ)
+DELETE FROM `daily_wind`;
+/*!40000 ALTER TABLE `daily_wind` DISABLE KEYS */;
+INSERT INTO `daily_wind` (`id`, `speed`, `day`) VALUES
+	(1, 47.3101, '2021-11-09 15:20:30');
+/*!40000 ALTER TABLE `daily_wind` ENABLE KEYS */;
 
 -- Listage de la structure de la table ddws. house
-DROP TABLE IF EXISTS `house`;
 CREATE TABLE IF NOT EXISTS `house` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `prosumer_id` int(11) NOT NULL,
@@ -58,21 +59,36 @@ CREATE TABLE IF NOT EXISTS `house` (
   CONSTRAINT `FK_HOUSE_PROSUMER` FOREIGN KEY (`prosumer_id`) REFERENCES `prosumer` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
 
--- Listage des données de la table ddws.house : ~1 rows (environ)
+-- Listage des données de la table ddws.house : ~0 rows (environ)
 DELETE FROM `house`;
 /*!40000 ALTER TABLE `house` DISABLE KEYS */;
 INSERT INTO `house` (`id`, `prosumer_id`) VALUES
 	(1, 1);
 /*!40000 ALTER TABLE `house` ENABLE KEYS */;
 
+-- Listage de la structure de la table ddws. house_consumption
+CREATE TABLE IF NOT EXISTS `house_consumption` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `house_id` int(11) NOT NULL,
+  `average_consumption` float NOT NULL,
+  `average_second` float NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `FK_HOUSE_CONSUMPTION_HOUSE` (`house_id`),
+  CONSTRAINT `FK_HOUSE_CONSUMPTION_HOUSE` FOREIGN KEY (`house_id`) REFERENCES `house` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- Listage des données de la table ddws.house_consumption : ~0 rows (environ)
+DELETE FROM `house_consumption`;
+/*!40000 ALTER TABLE `house_consumption` DISABLE KEYS */;
+/*!40000 ALTER TABLE `house_consumption` ENABLE KEYS */;
+
 -- Listage de la structure de la table ddws. prosumer
-DROP TABLE IF EXISTS `prosumer`;
 CREATE TABLE IF NOT EXISTS `prosumer` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
 
--- Listage des données de la table ddws.prosumer : ~1 rows (environ)
+-- Listage des données de la table ddws.prosumer : ~0 rows (environ)
 DELETE FROM `prosumer`;
 /*!40000 ALTER TABLE `prosumer` DISABLE KEYS */;
 INSERT INTO `prosumer` (`id`) VALUES
@@ -80,17 +96,18 @@ INSERT INTO `prosumer` (`id`) VALUES
 /*!40000 ALTER TABLE `prosumer` ENABLE KEYS */;
 
 -- Listage de la structure de la table ddws. realtime_wind
-DROP TABLE IF EXISTS `realtime_wind`;
 CREATE TABLE IF NOT EXISTS `realtime_wind` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `speed` float NOT NULL,
   `timestamps` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
 
 -- Listage des données de la table ddws.realtime_wind : ~0 rows (environ)
 DELETE FROM `realtime_wind`;
 /*!40000 ALTER TABLE `realtime_wind` DISABLE KEYS */;
+INSERT INTO `realtime_wind` (`id`, `speed`, `timestamps`) VALUES
+	(1, 51.4626, '2021-11-09 15:20:40');
 /*!40000 ALTER TABLE `realtime_wind` ENABLE KEYS */;
 
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;

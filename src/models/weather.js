@@ -20,12 +20,7 @@ const setDailyWind = async () => {
 }
 
 const setRealTimeWind = async () => {
-    date = new Date()
-    if(!date.getHours() && !date.getMinutes() && date.getSeconds() < 10) {
-        await setDailyWind()
-    }
-
-    day = date.toISOString().slice(0, 10)
+    day = new Date().toISOString().slice(0, 10)
     dailySpeed = (await db.query(`SELECT speed FROM daily_wind WHERE DATE(day) = '${day}';`))[0].speed
     previousSpeed = (await db.query(`SELECT speed FROM realtime_wind WHERE timestamps > '${day}' ORDER BY id DESC LIMIT 1;`))
     previousSpeed = previousSpeed.length ? previousSpeed[0].speed : dailySpeed
@@ -53,9 +48,13 @@ exports.generateData = async () => {
         }
     }
 
-    while (new Date().getSeconds() % 10) {}
+    while(new Date().getSeconds() % 10) {}
 
-    setInterval(() => {
+    setInterval(async () => {
+        date = new Date()
+        if(!date.getHours() && !date.getMinutes() && date.getSeconds() < 10) {
+            await setDailyWind()
+        }
         setRealTimeWind()
     }, 10000)
 }
