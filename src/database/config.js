@@ -1,4 +1,4 @@
-exports.config = {
+const config = {
     host: process.env.DB_HOST || 'localhost',
     database: process.env.DB_NAME || 'ddws',
     user: process.env.DB_USER || 'root',
@@ -6,3 +6,5 @@ exports.config = {
     port: process.env.DB_PORT || '',
     dateStrings: true
 }
+
+export default config

@@ -1,7 +1,9 @@
-require('dotenv').config()
+import dotenv from 'dotenv'
+import http from 'http'
+import app from './app.js'
 
-const http = require('http')
-const app = require('./app')
+dotenv.config()
+
 const port = process.env.PORT || 3000
 const server = http.createServer(app)
 
@@ -12,8 +14,8 @@ server.listen(port)
 
 // Code below simulates data gathering
 
-const weather = require('./src/models/weather')
-const consumption = require('./src/models/consumption')
+import generateWeather from './src/models/weather.js'
+import generateConsumption from './src/models/consumption.js'
 
-weather.generateData()
-consumption.generateData()
+generateWeather()
+generateConsumption()

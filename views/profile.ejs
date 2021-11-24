@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+
+<%- include('../partials/head'); %>
+
+<body>
+    <%- include('../partials/sideBar'); %>
+
+    <div id="content">
+        <%- include('../partials/header'); %>
+
+        <div id="user-id" class="d-none"><%= user_id %></div>
+
+        <h2>Profile</h2>
+
+        <form id="profileForm" method="post" action="profile">
+            <div class="form-container">
+                <div><input type="text" placeholder="First Name" name="first_name" required></div>
+                <div><input type="text" placeholder="Last Name" name="last_name" required></div>
+            </div>
+            <div class="form-container">
+                <div><input type="text" placeholder="Address" name="address"></div>
+                <div><input type="text" placeholder="Additional address" name="additinal_address" ></div>
+                <div><input type="text" placeholder="City" name="city" ></div>
+                <div><input type="text" placeholder="ZIP Code" name="zip_code" ></div>
+            </div>
+            <button type="reset">Undo</button>
+            <button type="submit">Save</button>
+        </form>
+
+        <h2>Security</h2>
+
+        <form method="post" action="security">
+            <div class="form-container">
+                <div><input type="text" placeholder="Email" name="email" required></div>
+                <div><button>Change password</button></div>
+            </div>
+            <button type="reset">Undo</button>
+            <button type="submit">Save</button>
+        </form>
+
+        <%- include('../partials/footer'); %>
+    </div>
+
+    <%- include('../partials/scripts', { view: 'profile' }); %>
+</body>
+
+</html>

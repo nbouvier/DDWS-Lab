@@ -1,12 +1,11 @@
-const weather = require('../src/models/weather')
+import express from 'express'
 
-const express = require('express')
 const router = express.Router()
 
 router.get('/', async (req, res, next) => {
-       res.status(200).json({
-           wind_speed: await weather.getWind()
-       })
+    res.status(200).json({
+        wind_speed: ''
+    })
 })
 
-module.exports = router
+export default router

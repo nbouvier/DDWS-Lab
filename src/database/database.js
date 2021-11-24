@@ -1,16 +1,10 @@
-const mysql = require('mysql')
-const config = require('./config')
+import mysql from 'mysql'
+import config from './config.js'
 
-const types = {
-    STRING: "string",
-    NUMBER: "number",
-    DATE: "date"
-}
-
-const connection = mysql.createConnection(config.config)
+const connection = mysql.createConnection(config)
 
 // Query the database
-function query(sql, params = []) {
+export function query(sql, params = []) {
     return new Promise((resolve, reject) => {
         connection.query(sql, params, (err, results, fields) => {
             return err ? reject(err) : resolve(results)
@@ -24,16 +18,13 @@ async function nextID(table) {
 }
 
 // Create $obj in the database and gives it an ID
-async function create(cls, obj) {
-    fields = cls.fields.map(field => field.name).join(", ")
-    values = []
-    cls.fields.forEach((field, i) => {
-        values[i] = obj[field.name]
-    });
-    valuesMarks = values.map(v => '?').join(", ")
+export async function create(cls, obj) {
+    let fields = cls.fields.join(', ')
+    let valuesMarks = cls.fields.map(v => '?').join(', ')
+    let values = cls.fields.map(k => obj[k])
 
     // Need error handling to prevent concurrency
-    id = await nextID(cls.table)
+    let id = await nextID(cls.table)
     await query(`INSERT INTO ${cls.table} (id, ${fields}) VALUES (${id}, ${valuesMarks});`, values)
     obj.id = id
 
@@ -41,71 +32,76 @@ async function create(cls, obj) {
 }
 
 // Update $obj in the database
-function update(cls, obj) {
-    fieldsName = []
-    values = []
-    cls.fields.forEach((field, i) => {
-        fieldsName[i] = `${field.name} = ?`
-        values[i] = obj[field.name]
-    });
-    fieldsName = fieldsName.join(", ")
+export function update(cls, obj) {
+    let fieldsName = cls.fields.map(v => `${v} = ?`).join(', ')
+    let values = cls.fields.map(k => obj[k])
 
     return query(`UPDATE ${cls.table} SET ${fieldsName} WHERE id = ${obj.id};`, values)
 }
 
 // Load a $cls object from the database given its ID
-async function load(cls, id) {
-    fields = cls.fields.map(field => field.name).join(", ")
-    dbObj = (await query(`SELECT ${fields} FROM ${cls.table} WHERE id = ?;`, [id]))[0]
+export async function loadOne(cls, id) {
+    let fields = cls.fields.join(', ')
+    let dbObj = await query(`SELECT ${fields} FROM ${cls.table} WHERE id = ?;`, [id])
 
-    params = []
-    cls.fields.forEach((param, i) => {
-        params[i] = dbObj[param.name]
-    });
+    if(!dbObj.length) { return false }
+    else { dbObj = dbObj[0] }
 
-    obj = new (cls)(...params)
+    let args = cls.fields.map(k => dbObj[k])
+    let obj = new (cls)(...args)
     obj.id = id
 
     return obj
 }
 
+// Load every $cls object from the database
+export async function loadAll(cls) {
+    let fields = `id, ${cls.fields.join(', ')}`
+    let dbObjs = await query(`SELECT ${fields} FROM ${cls.table};`)
+
+    let objs = []
+    dbObjs.forEach(dbObj => {
+        let args = cls.fields.map(k => dbObj[k])
+        let obj = new (cls)(...args)
+        obj.id = dbObj.id
+        objs.push(obj)
+    })
+
+    return objs
+}
+
 // Load a $cls object from the database given $where as the WHERE condition
-// Parameters of the WHERE condition should be escaped using a "?" and passed in the array $params
-async function advancedLoad(cls, where, params) {
-    fields = cls.fields.map(field => field.name).join(", ")
-    dbObj = (await query(`SELECT ${fields} FROM ${cls.table} WHERE ${where};`, params))[0]
+// Parameters of the WHERE condition should be escaped using a '?' and passed in the array $params
+export async function loadWhere(cls, where, params) {
+    let fields = `id, ${cls.fields.join(', ')}`
+    let dbObjs = await query(`SELECT ${fields} FROM ${cls.table} WHERE ${where};`, params)
 
-    params = []
-    cls.fields.forEach((param, i) => {
-        params[i] = dbObj[param.name]
-    });
+    let objs = []
+    dbObjs.forEach(dbObj => {
+        let args = cls.fields.map(k => dbObj[k])
+        let obj = new (cls)(...args)
+        obj.id = dbObj.id
+        objs.push(obj)
+    })
 
-    obj = new (cls)(...params)
-    obj.id = id
-
-    return obj
+    return objs
 }
 
 // Load the ID of every $cls object from the database
 // A WHERE condition can be given in the $where argument
-// Parameters of the WHERE condition should be escaped using a "?" and passed in the array $params
-async function loadIDs(cls, where = "", params = []) {
-    sql = where ? `SELECT id FROM ${cls.table} WHERE ${where};` : `SELECT id FROM ${cls.table};`
-    objs = await query(sql, params)
+// Parameters of the WHERE condition should be escaped using a '?' and passed in the array $params
+export async function loadIDs(cls, where = '', params = []) {
+    let sql = where ? `SELECT id FROM ${cls.table} WHERE ${where};` : `SELECT id FROM ${cls.table};`
+    let objs = await query(sql, params)
 
     return objs.map(obj => obj.id)
 }
 
 // Delete a $cls object from the database given its ID
-function del(cls, id) {
+export function del(cls, id) {
     return query(`DELETE FROM ${cls.table} WHERE id = ?;`, [id])
 }
 
-exports.types = types
-exports.query = query
-exports.create = create
-exports.update = update
-exports.load = load
-exports.advancedLoad = advancedLoad
-exports.loadIDs = loadIDs
-exports.del = del
+const db = { query, create, update, loadOne, loadAll, loadWhere, loadIDs, del }
+
+export default db

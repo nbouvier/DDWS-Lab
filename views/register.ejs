@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+
+<%- include('../partials/head'); %>
+
+<body>
+    <%- include('../partials/sideBar'); %>
+
+    <div id="content">
+        <%- include('../partials/header'); %>
+
+        <form id="registerForm" method="post" action="api/auth/register">
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label for="registerFirstName">First name</label>
+                    <input type="text" class="form-control" id="registerFirstName">
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="registerLastName">Last name</label>
+                    <input type="text" class="form-control" id="registerLastName">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="registerEmail">Email</label>
+                <input type="email" class="form-control" id="registerEmail">
+            </div>
+            <div class="form-group">
+                <label for="registerPassword">Password</label>
+                <input type="password" class="form-control" id="registerPassword">
+            </div>
+            <div class="form-group">
+                <label for="registerPasswordConfirmation">Password (confirmation)</label>
+                <input type="password" class="form-control" id="registerPasswordConfirmation">
+            </div>
+            <button type="submit" class="btn btn-primary">Register</button>
+        </form>
+
+        <%- include('../partials/footer'); %>
+    </div>
+
+    <%- include('../partials/scripts', { view: 'register' }); %>
+</body>
+
+</html>
