@@ -36,20 +36,29 @@ router.post('/register', (req, res, next) => {
     }, () => res.status(401).json({ error: 'Need to logout.' }))
 })
 
-router.get('/register/:hash', (req, res, next) => {
+router.get('/register', (req, res, next) => {
     middleware.guest(req, res, async () => {
         // Data validation
-        let [data, error] = await auth.verifyEmail(req.params.hash)
-        // Redirect with error message
-        if(data === false) { res.redirect('/login'); return }
-        // Redirect with success message
-        res.redirect('/login')
+        let [data, error] = await auth.verifyEmail(req.query.hash)
+
+        if(data === false) { res.status(200).json({ error: error }); return }
+
+        req.session.messages = [
+            { message: 'You registered successfuly.', alert: 'success' }
+        ]
+
+        res.redirect(`/login`)
     })
 })
 
-router.post('/initResetPassword', async (req, res, next) => {
+router.post('/init-reset-password', async (req, res, next) => {
     // Data validation
-    let [data, error] = await auth.initResetPassword(req.query.email)
+    let validatedData = {
+        user_id: req.session.user_id ? req.session.user_id : null,
+        email: req.body.email ? req.body.email : null
+    }
+
+    let [data, error] = await auth.initResetPassword(validatedData)
 
     if(data === false) { res.status(200).json({ error: error }); return }
 
@@ -59,23 +68,25 @@ router.post('/initResetPassword', async (req, res, next) => {
     })
 })
 
-router.post('/resetPassword', async (req, res, next) => {
+router.post('/reset-password', async (req, res, next) => {
     // Data validation
-    let [data, error] = await auth.resetPassword(req.body.hash, req.body.old_password, req.body.new_password)
+    // req.body.password == req.body.password_confirmation ?
+
+    let [data, error] = await auth.resetPassword(req.body.hash, req.body.password)
 
     if(data === false) { res.status(200).json({ error: error }); return }
 
     res.status(200).json({
         result: true,
-        message: 'Your password have been changed.'
+        message: 'Your password has been changed.'
     })
 })
 
 router.post('/logout', (req, res, next) => {
     middleware.user(req, res, () => {
         req.session.destroy(() => {
-            res.redirect('/login');
-        });
+            res.redirect('/login')
+        })
     }, () => res.status(401).json({ error: 'Already logged out.' }))
 })
 

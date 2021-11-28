@@ -29,12 +29,14 @@
             </a>
         </li>
         <li class="hr"></li>
+        <% if(user_type == 'admin') { %>
         <li>
             <a href="/admin">
                 <i class="fas fa-cog"></i>
                 <p>Administration</p>
             </a>
         </li>
+        <% } %>
     </ul>
 
     <ul class="list-unstyled components">

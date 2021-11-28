@@ -32,11 +32,15 @@ export async function create(cls, obj) {
 }
 
 // Update $obj in the database
-export function update(cls, obj) {
+export async function update(cls, obj) {
     let fieldsName = cls.fields.map(v => `${v} = ?`).join(', ')
     let values = cls.fields.map(k => obj[k])
 
-    return query(`UPDATE ${cls.table} SET ${fieldsName} WHERE id = ${obj.id};`, values)
+    try {
+        await query(`UPDATE ${cls.table} SET ${fieldsName} WHERE id = ${obj.id};`, values)
+    } catch(error) { return false }
+
+    return true
 }
 
 // Load a $cls object from the database given its ID

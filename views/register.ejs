@@ -4,12 +4,13 @@
 <%- include('../partials/head'); %>
 
 <body>
-    <%- include('../partials/sideBar'); %>
 
     <div id="content">
         <%- include('../partials/header'); %>
 
-        <form id="registerForm" method="post" action="api/auth/register">
+        <h2>Register</h2>
+
+        <form id="registerForm" method="post" action="/api/auth/register">
             <div class="form-row">
                 <div class="form-group col-md-6">
                     <label for="registerFirstName">First name</label>

@@ -1,23 +1,70 @@
-function profileFormValidation() {
-    console.log("login form validation")
+// ========== Page loading ========== //
+
+function loadProfilPageSuccess(user) {
+    $('#profileFirstName').val(user.name)
+    $('#profileLastName').val(user.forename)
+    $('#profileAddress').val(user.address)
+    $('#profileAdditionalAddress').val(user.additional_address)
+    $('#profileCity').val(user.city)
+    $('#profileZipCode').val(user.zip_code)
+
+    $('#securityEmail').val(user.email)
 }
 
-function profileFormSuccess(user) {
-    console.log(user)
+// ========== Profile form ========== //
+
+function profileFormData() {
+    return {
+        name: $('#profileFirstName').val(),
+        forename: $('#profileLastName').val(),
+        address: $('#profileAddress').val(),
+        additional_address: $('#profileAdditionalAddress').val(),
+        city: $('#profileCity').val(),
+        zip_code: $('#profileZipCode').val()
+    }
 }
+
+// ========== Security form ========== //
+
+function securityFormData(user) {
+    return {
+        email: $('#securityEmail').val()
+    }
+}
+
+function onClickChangePassword() {
+    $.ajax({
+
+        url: '/api/auth/init-reset-password',
+        type: 'POST',
+        dataType: 'JSON',
+        data: {
+            email: $('#securityEmail').val()
+        },
+
+        success: data => showSystemMessage(data.message, MessageType.success),
+
+        error: error => console.log(error)
+
+    })
+}
+
+// ========== Page ready ========== //
 
 $(document).ready(function() {
 
     $.ajax({
 
-        url: `/api/user/${$('#user-id').html()}`,
+        url: '/api/user',
         type: 'POST',
         dataType: 'JSON',
 
-        success: data => profileFormSuccess(data.user),
+        success: data => loadProfilPageSuccess(data.result.user),
 
-        error: () => console.error('Failed to load user\'s details.')
+        error: error => console.log(error)
 
     })
+
+    $('#changePassword').on('click', onClickChangePassword)
 
 })

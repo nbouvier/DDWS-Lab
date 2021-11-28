@@ -23,14 +23,14 @@ export async function login(email, password) {
 // Create the user and add a new line in the registration table.
 // Send an email.
 export async function register(name, forename, email, password) {
-    let user = await db.loadWhere(User, 'email = ?', [email])
+    let checkMail = await db.loadWhere(User, 'email = ?', [email])
 
-    if(user.length) {
+    if(checkMail.length) {
         return [false, 'Email is already used.']
     }
 
     password = crypto.encrypt(password)
-    user = new User(PROSUMER, name, forename, email, password)
+    let user = new User(PROSUMER, name, forename, email, password)
     user = await db.create(User, user)
 
     let hash = crypto.encrypt(email, 'sha1')
@@ -56,20 +56,32 @@ export async function verifyEmail(hash) {
 
 // Create a line in the reset_password table.
 // Send an email
-export async function initResetPassword(email) {
-    let user = (await db.loadWhere(User, 'email = ?', [email]))[0]
+export async function initResetPassword(data) {
+    let user
+    if(data.user_id) {
+        user = await db.loadOne(User, data.user_id)
+    } else {
+        user = (await db.loadWhere(User, 'email = ?', [email]))[0]
+    }
 
     let randomString = Math.random().toString(36).replace(/[^a-z]+/g, '')
     let hash = crypto.encrypt(randomString, 'sha1')
     db.query(`INSERT INTO reset_password (user_id, hash) VALUES (${user.id}, '${hash}');`)
 
     mailer.sendMail(user.email, 'Reset password', `Hash: ${hash}`)
+
+    return [true, null]
 }
 
 // Change the user's password and delete the reset_password line if the oldPassword
 // matches the current password and if the password reset is still pending.
 // Send an email.
-export async function resetPassword(hash, oldPassword, newPassword) {
+export async function resetPassword(hash, password) {
+    let resetPasswordEntry = await db.query('SELECT * FROM reset_password WHERE hash = ?;', [hash])
+    if(!resetPasswordEntry.length) {
+        return [false, 'No reset password request found. Request might have expire.']
+    }
+
     let userID = (await db.query('SELECT user_id FROM reset_password WHERE hash = ?;', [hash]))[0].user_id
     let user = await db.loadOne(User, userID)
 
@@ -77,16 +89,7 @@ export async function resetPassword(hash, oldPassword, newPassword) {
         return [false, 'User does not exists.']
     }
 
-    if(!crypto.compare(oldPassword, user.password)) {
-        return [false, 'Wrong password.']
-    }
-
-    let resetPasswordEntry = await db.query('SELECT * FROM reset_password WHERE hash = ?;', [hash])
-    if(!resetPasswordEntry.length) {
-        return [false, 'No reset password request found. Request might have expire.']
-    }
-
-    user.password = crypto.encrypt(newPassword)
+    user.password = crypto.encrypt(password)
     db.update(User, user)
 
     db.query(`DELETE FROM reset_password WHERE hash = ?;`, [hash])

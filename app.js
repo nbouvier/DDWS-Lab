@@ -14,7 +14,8 @@ app.set('view engine', 'ejs')
 app.use(express.static('public'))
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: false }))
-app.use(session({ secret: 'secret', resave: true, saveUninitialized: true }))
+// If there are some session problems, it might come from "resave: false"
+app.use(session({ secret: 'secret', resave: false, saveUninitialized: false }))
 
 app.use('/', viewsRoutes)
 app.use('/api/auth', authenticationRoutes)

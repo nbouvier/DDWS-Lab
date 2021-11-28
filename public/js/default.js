@@ -1,3 +1,31 @@
+const MessageType = {
+    info: 'info',
+    success: 'success',
+    danger: 'danger',
+    warning: 'warning'
+}
+
+function showSystemMessage(message, type = MessageType.info) {
+    $('body').append(`<div class="system-message system-${type}">${message}</div>`)
+}
+
+function formValidation() {
+    console.log('No data validation, please implement one.')
+    return true
+}
+
+function formSuccess(formName, data) {
+    if(data.error) {
+        showSystemMessage(data.error, MessageType.alert)
+    } else if(data.message) {
+        if(window[`${formName}Success`]) {
+            window[`${formName}Success`](data)
+        } else {
+            showSystemMessage(data.message, MessageType.success)
+        }
+    }
+}
+
 $(document).ready(function() {
 
     // ========== SideBar ========== //
@@ -12,30 +40,37 @@ $(document).ready(function() {
         $('#overlay').addClass('active')
     })
 
-    $('.logout').on('click', () => {
+    $('.logout').on('click', e => {
+        e.preventDefault()
+
         $.ajax({
             url: '/api/auth/logout',
             type: 'POST',
 
-            success: () => location.reload()
-        });
+            success: () => window.location.href = '/login'
+        })
     })
 
     // ========== Forms ========== //
 
-    $('form').submit(function(e) {
+    $('form button').on('click', function(e) {
         e.preventDefault()
+    })
 
-        form = $(this).attr('id')
-        if(window[`${form}Validation`]()) {
+    $('form button[type=submit]').on('click', function(e) {
+        form = $(this).parent('form')
+        formName = form.attr('id')
+        if(window[`${formName}Validation`] ? window[`${formName}Validation`]() : formValidation()) {
             $.ajax({
-                url: $(this).attr('action'),
-                type: $(this).attr('method'),
-                data: window[`${form}Data`](),
+                url: form.attr('action'),
+                type: form.attr('method'),
+                data: window[`${formName}Data`](),
                 dataType: 'JSON',
 
-                success: data => window[`${form}Success`](data)
-            });
+                success: data => formSuccess(formName, data),
+
+                error: error => window[`${formName}Error`] ? window[`${formName}Error`](error) : console.log(error)
+            })
         }
     })
 

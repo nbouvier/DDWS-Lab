@@ -9,34 +9,53 @@
     <div id="content">
         <%- include('../partials/header'); %>
 
-        <div id="user-id" class="d-none"><%= user_id %></div>
-
         <h2>Profile</h2>
 
-        <form id="profileForm" method="post" action="profile">
-            <div class="form-container">
-                <div><input type="text" placeholder="First Name" name="first_name" required></div>
-                <div><input type="text" placeholder="Last Name" name="last_name" required></div>
+        <form id="profileForm" method="post" action="/api/user/update-profile">
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label for="profileFirstName">First name</label>
+                    <input type="text" class="form-control" id="profileFirstName">
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="profileLastName">Last name</label>
+                    <input type="text" class="form-control" id="profileLastName">
+                </div>
             </div>
-            <div class="form-container">
-                <div><input type="text" placeholder="Address" name="address"></div>
-                <div><input type="text" placeholder="Additional address" name="additinal_address" ></div>
-                <div><input type="text" placeholder="City" name="city" ></div>
-                <div><input type="text" placeholder="ZIP Code" name="zip_code" ></div>
+            <div class="form-group">
+                <label for="profileAddress">Address</label>
+                <input type="text" class="form-control" id="profileAddress">
             </div>
-            <button type="reset">Undo</button>
-            <button type="submit">Save</button>
+            <div class="form-group">
+                <label for="profileAdditionalAddress">Addtional address</label>
+                <input type="text" class="form-control" id="profileAdditionalAddress">
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label for="profileCity">City</label>
+                    <input type="text" class="form-control" id="profileCity">
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="profileZipCode">ZIP Code</label>
+                    <input type="text" class="form-control" id="profileZipCode">
+                </div>
+            </div>
+            <button type="reset" class="btn btn-danger">Undo</button>
+            <button type="submit" class="btn btn-primary">Save</button>
         </form>
 
         <h2>Security</h2>
 
-        <form method="post" action="security">
-            <div class="form-container">
-                <div><input type="text" placeholder="Email" name="email" required></div>
-                <div><button>Change password</button></div>
+        <form id="securityForm" method="post" action="/api/user/update-security">
+            <div class="form-group">
+                <label for="securityEmail">Email</label>
+                <input type="email" class="form-control" id="securityEmail">
             </div>
-            <button type="reset">Undo</button>
-            <button type="submit">Save</button>
+            <div class="form-group">
+                <button id="changePassword" class="btn btn-primary">Change password</button>
+            </div>
+            <button type="reset" class="btn btn-danger">Undo</button>
+            <button type="submit" class="btn btn-primary">Save</button>
         </form>
 
         <%- include('../partials/footer'); %>

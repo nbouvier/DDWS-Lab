@@ -4,12 +4,13 @@
 <%- include('../partials/head'); %>
 
 <body>
-    <%- include('../partials/sideBar'); %>
 
     <div id="content">
         <%- include('../partials/header'); %>
 
-        <form id="loginForm" method="post" action="api/auth/login">
+        <h2>Login</h2>
+
+        <form id="loginForm" method="post" action="/api/auth/login">
             <div class="form-group">
                 <label for="loginEmail">Email</label>
                 <input type="email" class="form-control" id="loginEmail"> <!-- aria-describedby="loginEmailHelp"> -->
@@ -24,6 +25,8 @@
 
         <%- include('../partials/footer'); %>
     </div>
+
+    <%- include('../partials/messages'); %>
 
     <%- include('../partials/scripts', { view: 'login' }); %>
 </body>
