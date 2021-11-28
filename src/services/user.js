@@ -2,6 +2,7 @@ import db from '../database/database.js'
 
 import User from '../class/user.js'
 
+// Get a User given its ID.
 export async function get(userID) {
     let user = await db.loadOne(User, userID)
 
@@ -11,6 +12,15 @@ export async function get(userID) {
     return [user, null]
 }
 
+// Get every Users in the database.
+export async function getAll() {
+    let users = await db.loadAll(User)
+
+    return [users, null]
+}
+
+// Update a User given its ID using newData as data to update.
+// newData should be an object with <attribute>: <value> pairs.
 export async function update(userID, newData) {
     if(newData.email) {
         let checkMail = await db.loadWhere(User, 'email = ? AND id != ?', [newData.email, userID])
@@ -36,6 +46,6 @@ export async function update(userID, newData) {
     return [true, null]
 }
 
-const user = { get, update }
+const user = { get, getAll, update }
 
 export default user

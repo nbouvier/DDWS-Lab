@@ -82,3 +82,11 @@
 #sidebar li.hr {
     border-bottom: solid 2px black;
 }
+
+.btn-warning {
+    color: #fff
+}
+
+.btn-outline-warning:hover {
+    color: #fff
+}

@@ -3,7 +3,7 @@ export function guest(req, res, callbackSuccess, callbackFailed = null) {
         if(callbackFailed) { callbackFailed() }
         else {
             req.session.messages = [
-                { message: 'You cannot access this page as a logged user.', alert: 'warning' }
+                { message: 'You cannot access this page as a logged user.', alert: 'danger' }
             ]
 
             res.redirect(`/`)
@@ -18,7 +18,7 @@ export function user(req, res, callbackSuccess, callbackFailed = null) {
         if(callbackFailed) { callbackFailed() }
         else {
             req.session.messages = [
-                { message: 'You cannot access this page as a guest.', alert: 'warning' }
+                { message: 'You cannot access this page as a guest.', alert: 'danger' }
             ]
 
             res.redirect(`/login`) }

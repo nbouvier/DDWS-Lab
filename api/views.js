@@ -54,4 +54,14 @@ router.get('/profile', (req, res, next) => {
     })
 })
 
+router.get('/admin', (req, res, next) => {
+    middleware.user(req, res, () => {
+        let data = {
+            user_type: req.session.user_type
+        }
+
+        res.render('admin', data)
+    })
+})
+
 export default router

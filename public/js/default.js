@@ -6,7 +6,11 @@ const MessageType = {
 }
 
 function showSystemMessage(message, type = MessageType.info) {
-    $('body').append(`<div class="system-message system-${type}">${message}</div>`)
+    $('body').append(`
+        <div class="system-message system-${type}">
+            ${message}
+        </div>
+    `)
 }
 
 function formValidation() {

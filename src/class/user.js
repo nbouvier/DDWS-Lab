@@ -23,6 +23,7 @@ export default class User {
 
     serialize() {
         return {
+            id: this.id,
             type: this.type,
             name: this.name,
             forename: this.forename,

@@ -1,6 +1,8 @@
 // ========== Page loading ========== //
 
-function loadProfilPageSuccess(user) {
+function loadProfilPageSuccess(data) {
+    let user = data.user
+
     $('#profileFirstName').val(user.name)
     $('#profileLastName').val(user.forename)
     $('#profileAddress').val(user.address)
@@ -55,11 +57,11 @@ $(document).ready(function() {
 
     $.ajax({
 
-        url: '/api/user',
+        url: '/api/user/get',
         type: 'POST',
         dataType: 'JSON',
 
-        success: data => loadProfilPageSuccess(data.result.user),
+        success: data => loadProfilPageSuccess(data.result),
 
         error: error => console.log(error)
 

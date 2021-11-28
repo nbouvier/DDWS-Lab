@@ -5,7 +5,7 @@ import user from '../src/services/user.js'
 
 const router = express.Router()
 
-router.post('/', (req, res, next) => {
+router.post('/get', (req, res, next) => {
     middleware.user(req, res, async () => {
         // Data validation
         let [data, error] = await user.get(req.session.user_id)
@@ -14,6 +14,34 @@ router.post('/', (req, res, next) => {
 
         res.status(200).json({
            result: { user: data.serialize() },
+           message: ''
+        })
+    }, () => res.status(401).json({ error: 'Need to log in.' }))
+})
+
+router.post('/one/:user_id', (req, res, next) => {
+    middleware.user(req, res, async () => {
+        // Data validation
+        let [data, error] = await user.get(req.params.user_id)
+
+        if(data === false) { res.status(200).json({ error: error }); return }
+
+        res.status(200).json({
+           result: { user: data.serialize() },
+           message: ''
+        })
+    }, () => res.status(401).json({ error: 'Need to log in.' }))
+})
+
+router.post('/all', (req, res, next) => {
+    middleware.user(req, res, async () => {
+        // Data validation
+        let [data, error] = await user.getAll()
+
+        if(data === false) { res.status(200).json({ error: error }); return }
+
+        res.status(200).json({
+           result: { users: data.map(user => user.serialize()) },
            message: ''
         })
     }, () => res.status(401).json({ error: 'Need to log in.' }))
@@ -56,20 +84,6 @@ router.post('/update-security', (req, res, next) => {
         res.status(200).json({
            result: true,
            message: 'Your security data have been updated.'
-        })
-    }, () => res.status(401).json({ error: 'Need to log in.' }))
-})
-
-router.post('/:user_id', (req, res, next) => {
-    middleware.user(req, res, async () => {
-        // Data validation
-        let [data, error] = await user.get(req.params.user_id)
-
-        if(data === false) { res.status(200).json({ error: error }); return }
-
-        res.status(200).json({
-           result: { user: data.serialize() },
-           message: ''
         })
     }, () => res.status(401).json({ error: 'Need to log in.' }))
 })
