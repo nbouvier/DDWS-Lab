@@ -19,7 +19,7 @@ router.post('/login', (req, res, next) => {
             result: true,
             message: 'Login succeed.'
         })
-    }, () => res.status(401).json({ error: 'Already logged in.' }))
+    }, false)
 })
 
 router.post('/register', (req, res, next) => {
@@ -33,7 +33,7 @@ router.post('/register', (req, res, next) => {
             result: true,
             message: 'Registration succeed.'
         })
-    }, () => res.status(401).json({ error: 'Need to logout.' }))
+    }, false)
 })
 
 router.get('/register', (req, res, next) => {
@@ -87,7 +87,7 @@ router.post('/logout', (req, res, next) => {
         req.session.destroy(() => {
             res.redirect('/login')
         })
-    }, () => res.status(401).json({ error: 'Already logged out.' }))
+    }, false)
 })
 
 export default router

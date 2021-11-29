@@ -16,7 +16,7 @@ router.post('/get', (req, res, next) => {
            result: { user: data.serialize() },
            message: ''
         })
-    }, () => res.status(401).json({ error: 'Need to log in.' }))
+    }, false)
 })
 
 router.post('/one/:user_id', (req, res, next) => {
@@ -30,7 +30,7 @@ router.post('/one/:user_id', (req, res, next) => {
            result: { user: data.serialize() },
            message: ''
         })
-    }, () => res.status(401).json({ error: 'Need to log in.' }))
+    }, false)
 })
 
 router.post('/all', (req, res, next) => {
@@ -44,7 +44,7 @@ router.post('/all', (req, res, next) => {
            result: { users: data.map(user => user.serialize()) },
            message: ''
         })
-    }, () => res.status(401).json({ error: 'Need to log in.' }))
+    }, false)
 })
 
 router.post('/update-profile', (req, res, next) => {
@@ -67,7 +67,7 @@ router.post('/update-profile', (req, res, next) => {
            result: true,
            message: 'Your profile data have been updated.'
         })
-    }, () => res.status(401).json({ error: 'Need to log in.' }))
+    }, false)
 })
 
 router.post('/update-security', (req, res, next) => {
@@ -85,7 +85,7 @@ router.post('/update-security', (req, res, next) => {
            result: true,
            message: 'Your security data have been updated.'
         })
-    }, () => res.status(401).json({ error: 'Need to log in.' }))
+    }, false)
 })
 
 router.post('/block', (req, res, next) => {
@@ -99,7 +99,7 @@ router.post('/block', (req, res, next) => {
            result: true,
            message: 'User has been blocked successfuly.'
         })
-    }, () => res.status(401).json({ error: 'You do not have access to this functionality.' }))
+    }, false)
 })
 
 router.post('/delete', (req, res, next) => {
@@ -113,7 +113,7 @@ router.post('/delete', (req, res, next) => {
            result: true,
            message: 'User has been deleted successfuly.'
         })
-    }, () => res.status(401).json({ error: 'You do not have access to this functionality.' }))
+    }, false)
 })
 
 export default router

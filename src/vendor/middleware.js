@@ -1,9 +1,11 @@
 import { ADMIN } from '../class/user.js'
 
-export function guest(req, res, callbackSuccess, callbackFailed = null) {
+export function guest(req, res, callbackSuccess, callbackFail = true) {
     if(req.session.user_id) {
-        if(callbackFailed) { callbackFailed() }
-        else {
+        if(typeof callbackFail == 'function') { callbackFail() }
+        else if(!callbackFail) {
+            res.status(401).json({ error: 'You cannot access this page as a logged user.' })
+        } else {
             req.session.messages = [
                 { message: 'You cannot access this page as a logged user.', alert: 'danger' }
             ]
@@ -15,10 +17,12 @@ export function guest(req, res, callbackSuccess, callbackFailed = null) {
     }
 }
 
-export function user(req, res, callbackSuccess, callbackFailed = null) {
+export function user(req, res, callbackSuccess, callbackFail = true) {
     if(!req.session.user_id) {
-        if(callbackFailed) { callbackFailed() }
-        else {
+        if(typeof callbackFail == 'function') { callbackFail() }
+        else if(!callbackFail) {
+            res.status(401).json({ error: 'You cannot access this page as a guest.' })
+        } else {
             req.session.messages = [
                 { message: 'You cannot access this page as a guest.', alert: 'danger' }
             ]
@@ -29,12 +33,14 @@ export function user(req, res, callbackSuccess, callbackFailed = null) {
     }
 }
 
-export function admin(req, res, callbackSuccess, callbackFailed = null) {
+export function admin(req, res, callbackSuccess, callbackFail = true) {
     if(!req.session.user_type == ADMIN) {
-        if(callbackFailed) { callbackFailed() }
-        else {
+        if(typeof callbackFail == 'function') { callbackFail() }
+        else if(!callbackFail) {
+            res.status(401).json({ error: 'You do not have permission to access this page.' })
+        } else {
             req.session.messages = [
-                { message: 'You cannot access this page as a guest.', alert: 'danger' }
+                { message: 'You do not have permission to access this page.', alert: 'danger' }
             ]
 
             res.redirect(`/login`) }
