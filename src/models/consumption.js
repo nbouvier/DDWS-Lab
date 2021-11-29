@@ -4,7 +4,7 @@ import db from '../database/database.js'
 const SECONDS = 86400
 const REFRESH_FREQUENCY = 10
 
-// Values in Wh
+// Values in W/s
 const AVG_MIN_CONSUMTION = 0.01
 const AVG_MAX_CONSUMPTION = 0.5
 const AVG_SKEW = 3
@@ -15,11 +15,11 @@ const FLAT_SKEW = 1.75
 
 async function setHouseAverageConsumption() {
     // Use House Services
-    let houses = await db.query(`SELECT id FROM house WHERE id NOT IN (SELECT DISTINCT(house_id) FROM house_consumption);`)
+    let houses = await db.query(`SELECT id FROM house WHERE id NOT IN (SELECT DISTINCT(house_id) FROM global_house_consumption);`)
     houses.forEach(house => {
         let consumption = randn_bm(AVG_MIN_CONSUMTION*100, AVG_MAX_CONSUMPTION*100, AVG_SKEW) / 100
         let second = randn_bm(0, SECONDS-1, 1)
-        db.query(`INSERT INTO house_consumption (house_id, average_consumption, average_second) VALUES (${house.id}, ${consumption}, ${second});`)
+        db.query(`INSERT INTO global_house_consumption (house_id, average_consumption, average_second) VALUES (${house.id}, ${consumption}, ${second});`)
     });
 }
 
@@ -28,7 +28,7 @@ async function setProsumerConsumption() {
     let currentSecond = date.getHours() * 3600 + date.getMinutes() * 60 + date.getSeconds()
 
     // Use House Services getAll()
-    let houses = await db.query(`SELECT house_id AS id, average_consumption, average_second FROM house_consumption;`)
+    let houses = await db.query(`SELECT house_id AS id, average_consumption, average_second FROM global_house_consumption;`)
     houses.forEach(async house => {
         let avg_second = house.average_second
         let avg_consumption = house.average_consumption
@@ -47,7 +47,7 @@ async function setProsumerConsumption() {
         }
         let consumption = randn_bm(min_consumption*1000, max_consumption*1000, skew) / 1000 * REFRESH_FREQUENCY
 
-        db.query(`INSERT INTO consumption (house_id, consumption) VALUES (${house.id}, ${consumption});`)
+        db.query(`INSERT INTO house_consumption (house_id, consumption) VALUES (${house.id}, ${consumption});`)
     });
 }
 
