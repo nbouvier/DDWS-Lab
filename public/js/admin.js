@@ -51,12 +51,22 @@ function blockUserFormData() {
     }
 }
 
+function blockUserFormSuccess(data) {
+    $('#blockUserModal').modal('hide')
+    showSystemMessage(data.message, MessageType.success)
+}
+
 // ========== Delete user form ========== //
 
 function deleteUserFormData() {
     return {
         user_id: $('#deleteUserID').val()
     }
+}
+
+function deeteUserFormSuccess(data) {
+    $('#deleteUserModal').modal('hide')
+    showSystemMessage(data.message, MessageType.success)
 }
 
 // ========== Page ready ========== //
