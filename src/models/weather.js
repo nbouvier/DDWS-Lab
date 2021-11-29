@@ -1,6 +1,8 @@
 import { randn_bm } from './utils.js'
 import db from '../database/database.js'
 
+const REFRESH_FREQUENCY = 10
+
 // Values in m/s
 const MIN_WIND = 0
 const MAX_WIND = 75
@@ -18,7 +20,7 @@ async function setDailyWind() {
 async function setRealTimeWind() {
     let day = new Date().toISOString().slice(0, 10)
     let dailySpeed = (await db.query(`SELECT speed FROM daily_wind WHERE DATE(day) = '${day}';`))[0].speed
-    let previousSpeed = (await db.query(`SELECT speed FROM realtime_wind WHERE timestamps > '${day}' ORDER BY id DESC LIMIT 1;`))
+    let previousSpeed = await db.query(`SELECT speed FROM realtime_wind ORDER BY id DESC LIMIT 1;`)
     previousSpeed = previousSpeed.length ? previousSpeed[0].speed : dailySpeed
 
     let dailyMin = dailySpeed - DAILY_DELTA < MIN_WIND ? MIN_WIND : dailySpeed - DAILY_DELTA
@@ -52,5 +54,5 @@ export default async function generateData() {
             await setDailyWind()
         }
         setRealTimeWind()
-    }, 10000)
+    }, REFRESH_FREQUENCY * 1000)
 }

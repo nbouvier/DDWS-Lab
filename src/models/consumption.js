@@ -4,7 +4,7 @@ import db from '../database/database.js'
 const SECONDS = 86400
 const REFRESH_FREQUENCY = 10
 
-// Values in w/h
+// Values in Wh
 const AVG_MIN_CONSUMTION = 0.01
 const AVG_MAX_CONSUMPTION = 0.5
 const AVG_SKEW = 3

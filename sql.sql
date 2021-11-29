@@ -17,6 +17,35 @@ DROP DATABASE IF EXISTS `ddws`;
 CREATE DATABASE IF NOT EXISTS `ddws` /*!40100 DEFAULT CHARACTER SET latin1 */;
 USE `ddws`;
 
+-- Listage de la structure de la table ddws. block_user
+CREATE TABLE IF NOT EXISTS `block_user` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) NOT NULL,
+  `begin` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `end` timestamp NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `FK_BLOCK_USER_USER` (`user_id`),
+  CONSTRAINT `FK_BLOCK_USER_USER` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- Listage des données de la table ddws.block_user : ~0 rows (environ)
+DELETE FROM `block_user`;
+/*!40000 ALTER TABLE `block_user` DISABLE KEYS */;
+/*!40000 ALTER TABLE `block_user` ENABLE KEYS */;
+
+-- Listage de la structure de la table ddws. coal_production
+CREATE TABLE IF NOT EXISTS `coal_production` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `production` float NOT NULL,
+  `timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- Listage des données de la table ddws.coal_production : ~0 rows (environ)
+DELETE FROM `coal_production`;
+/*!40000 ALTER TABLE `coal_production` DISABLE KEYS */;
+/*!40000 ALTER TABLE `coal_production` ENABLE KEYS */;
+
 -- Listage de la structure de la table ddws. consumption
 CREATE TABLE IF NOT EXISTS `consumption` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -53,13 +82,11 @@ CREATE TABLE IF NOT EXISTS `house` (
   PRIMARY KEY (`id`),
   KEY `FK_HOUSE_USER` (`user_id`),
   CONSTRAINT `FK_HOUSE_USER` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- Listage des données de la table ddws.house : ~0 rows (environ)
 DELETE FROM `house`;
 /*!40000 ALTER TABLE `house` DISABLE KEYS */;
-INSERT INTO `house` (`id`, `user_id`) VALUES
-	(1, 1);
 /*!40000 ALTER TABLE `house` ENABLE KEYS */;
 
 -- Listage de la structure de la table ddws. house_consumption
@@ -71,13 +98,11 @@ CREATE TABLE IF NOT EXISTS `house_consumption` (
   PRIMARY KEY (`id`),
   KEY `FK_HOUSE_CONSUMPTION_HOUSE` (`house_id`),
   CONSTRAINT `FK_HOUSE_CONSUMPTION_HOUSE` FOREIGN KEY (`house_id`) REFERENCES `house` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- Listage des données de la table ddws.house_consumption : ~0 rows (environ)
 DELETE FROM `house_consumption`;
 /*!40000 ALTER TABLE `house_consumption` DISABLE KEYS */;
-INSERT INTO `house_consumption` (`id`, `house_id`, `average_consumption`, `average_second`) VALUES
-	(1, 1, 0.0454714, 29695.9);
 /*!40000 ALTER TABLE `house_consumption` ENABLE KEYS */;
 
 -- Listage de la structure de la table ddws. realtime_wind
@@ -118,7 +143,7 @@ CREATE TABLE IF NOT EXISTS `reset_password` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
--- Listage des données de la table ddws.reset_password : ~0 rows (environ)
+-- Listage des données de la table ddws.reset_password : ~2 rows (environ)
 DELETE FROM `reset_password`;
 /*!40000 ALTER TABLE `reset_password` DISABLE KEYS */;
 /*!40000 ALTER TABLE `reset_password` ENABLE KEYS */;
@@ -140,7 +165,7 @@ CREATE TABLE IF NOT EXISTS `user` (
   UNIQUE KEY `email` (`email`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
 
--- Listage des données de la table ddws.user : ~1 rows (environ)
+-- Listage des données de la table ddws.user : ~2 rows (environ)
 DELETE FROM `user`;
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
 INSERT INTO `user` (`id`, `type`, `name`, `forename`, `address`, `additional_address`, `city`, `zip_code`, `email`, `password`, `photo`) VALUES

@@ -16,6 +16,8 @@ server.listen(port)
 
 import generateWeather from './src/models/weather.js'
 import generateConsumption from './src/models/consumption.js'
+import generateCoalProduction from './src/models/coalProduction.js'
 
 generateWeather()
 generateConsumption()
+generateCoalProduction()
