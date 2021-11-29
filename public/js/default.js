@@ -1,3 +1,5 @@
+// ========== Messages ========== //
+
 const MessageType = {
     info: 'info',
     success: 'success',
@@ -12,6 +14,8 @@ function showSystemMessage(message, type = MessageType.info) {
         </div>
     `)
 }
+
+// ========== Forms ========== //
 
 function formValidation() {
     console.log('No data validation, please implement one.')
@@ -29,6 +33,8 @@ function formSuccess(formName, data) {
         }
     }
 }
+
+// ========== Page ready ========== //
 
 $(document).ready(function() {
 
@@ -62,7 +68,7 @@ $(document).ready(function() {
     })
 
     $('form button[type=submit]').on('click', function(e) {
-        form = $(this).parent('form')
+        form = $(this).parents('form').first()
         formName = form.attr('id')
         if(window[`${formName}Validation`] ? window[`${formName}Validation`]() : formValidation()) {
             $.ajax({

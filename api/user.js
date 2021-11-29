@@ -88,4 +88,32 @@ router.post('/update-security', (req, res, next) => {
     }, () => res.status(401).json({ error: 'Need to log in.' }))
 })
 
+router.post('/block', (req, res, next) => {
+    middleware.admin(req, res, async () => {
+        // Data validation
+        let [data, error] = await user.block(req.body.user_id, req.body.time,req.body.time_unit)
+
+        if(data === false) { res.status(200).json({ error: error }); return }
+
+        res.status(200).json({
+           result: true,
+           message: 'User has been blocked successfuly.'
+        })
+    }, () => res.status(401).json({ error: 'You do not have access to this functionality.' }))
+})
+
+router.post('/delete', (req, res, next) => {
+    middleware.admin(req, res, async () => {
+        // Data validation
+        let [data, error] = await user.del(req.body.user_id)
+
+        if(data === false) { res.status(200).json({ error: error }); return }
+
+        res.status(200).json({
+           result: true,
+           message: 'User has been deleted successfuly.'
+        })
+    }, () => res.status(401).json({ error: 'You do not have access to this functionality.' }))
+})
+
 export default router

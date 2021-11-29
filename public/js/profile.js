@@ -3,8 +3,8 @@
 function loadProfilPageSuccess(data) {
     let user = data.user
 
-    $('#profileFirstName').val(user.name)
-    $('#profileLastName').val(user.forename)
+    $('#profileFirstName').val(user.first_name)
+    $('#profileLastName').val(user.last_name)
     $('#profileAddress').val(user.address)
     $('#profileAdditionalAddress').val(user.additional_address)
     $('#profileCity').val(user.city)
@@ -28,7 +28,7 @@ function profileFormData() {
 
 // ========== Security form ========== //
 
-function securityFormData(user) {
+function securityFormData() {
     return {
         email: $('#securityEmail').val()
     }

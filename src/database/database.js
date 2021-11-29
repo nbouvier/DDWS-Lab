@@ -102,8 +102,12 @@ export async function loadIDs(cls, where = '', params = []) {
 }
 
 // Delete a $cls object from the database given its ID
-export function del(cls, id) {
-    return query(`DELETE FROM ${cls.table} WHERE id = ?;`, [id])
+export async function del(cls, id) {
+    try {
+        await query(`DELETE FROM ${cls.table} WHERE id = ?;`, [id])
+    } catch(error) { return false }
+
+    return true
 }
 
 const db = { query, create, update, loadOne, loadAll, loadWhere, loadIDs, del }
