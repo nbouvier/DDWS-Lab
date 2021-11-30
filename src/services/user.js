@@ -41,7 +41,7 @@ export async function update(userID, newData) {
         return [false, 'An error occured while updating the user.']
     }
 
-    return [true, null]
+    return [user, null]
 }
 
 // Block a user for a specific period of time.

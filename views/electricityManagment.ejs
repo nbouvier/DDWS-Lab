@@ -16,7 +16,7 @@
                     <div class="card">
                         <div class="card-body">
                             <p class="h5"><small class="text-muted">Production</small></p>
-                            <p><span id="production"></span>MWh</p>
+                            <p><span id="production"></span> MWh</p>
                         </div>
                     </div>
                 </div>
@@ -25,13 +25,13 @@
                     <div class="card">
                         <div class="card-body">
                             <p class="h5"><small class="text-muted">Buffer filling</small></p>
-                            <p><span id="production"></span>%</p>
+                            <p><span id="bufferFilling"></span> %</p>
                         </div>
                     </div>
                 </div>
 
                 <div class="col-md-3 ml-auto">
-                    <button type="button" class="btn btn-danger btn-lg btn-block">Stop</button>
+                    <button id="startAndStop" type="button" class="btn btn-danger btn-lg btn-block">Stop</button>
                 </div>
             </div>
 
@@ -47,7 +47,8 @@
                 </small>
             </p>
 
-            <form id="productionForm" method="post" action="/api/coal-power-plant/update">
+            <form id="productionForm" method="post" action="/api/coal-power-plant/update-production">
+                <input type="text" class="d-none" id="productionCoalPowerPlantID" value="1">
                 <div class="form-group input-group">
                     <p class="input-group-prepend pt-1">To buffer (<span id="toBuffer"></span> %)</p>
                     <input type="range" class="form-control-range form-control mx-3" id="productionBufferPercentage">
@@ -68,7 +69,7 @@
         <%- include('../partials/footer'); %>
     </div>
 
-    <%- include('../partials/scripts', { view: 'electricityManagment' }); %>
+    <%- include('../partials/scripts', { view: `electricityManagment-${user_type}` }); %>
 </body>
 
 </html>

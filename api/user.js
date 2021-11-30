@@ -10,7 +10,7 @@ router.post('/get', (req, res, next) => {
         // Data validation
         let [data, error] = await user.get(req.session.user_id)
 
-        if(data === false) { res.status(200).json({ error: error }); return }
+        if(error !== null) { res.status(200).json({ error: error }); return }
 
         res.status(200).json({
            result: { user: data.serialize() },
@@ -19,12 +19,12 @@ router.post('/get', (req, res, next) => {
     }, false)
 })
 
-router.post('/one/:user_id', (req, res, next) => {
+router.post('/one/:id', (req, res, next) => {
     middleware.user(req, res, async () => {
         // Data validation
-        let [data, error] = await user.get(req.params.user_id)
+        let [data, error] = await user.get(req.params.id)
 
-        if(data === false) { res.status(200).json({ error: error }); return }
+        if(error !== null) { res.status(200).json({ error: error }); return }
 
         res.status(200).json({
            result: { user: data.serialize() },
@@ -38,7 +38,7 @@ router.post('/all', (req, res, next) => {
         // Data validation
         let [data, error] = await user.getAll()
 
-        if(data === false) { res.status(200).json({ error: error }); return }
+        if(error !== null) { res.status(200).json({ error: error }); return }
 
         res.status(200).json({
            result: { users: data.map(user => user.serialize()) },
@@ -61,10 +61,10 @@ router.post('/update-profile', (req, res, next) => {
 
         let [data, error] = await user.update(req.session.user_id, validatedData)
 
-        if(data === false) { res.status(200).json({ error: error }); return }
+        if(error !== null) { res.status(200).json({ error: error }); return }
 
         res.status(200).json({
-           result: true,
+           result: { user: data.serialize() },
            message: 'Your profile data have been updated.'
         })
     }, false)
@@ -79,10 +79,10 @@ router.post('/update-security', (req, res, next) => {
 
         let [data, error] = await user.update(req.session.user_id, validatedData)
 
-        if(data === false) { res.status(200).json({ error: error }); return }
+        if(error !== null) { res.status(200).json({ error: error }); return }
 
         res.status(200).json({
-           result: true,
+           result: { user: data.serialize() },
            message: 'Your security data have been updated.'
         })
     }, false)
@@ -93,7 +93,7 @@ router.post('/block', (req, res, next) => {
         // Data validation
         let [data, error] = await user.block(req.body.user_id, req.body.time,req.body.time_unit)
 
-        if(data === false) { res.status(200).json({ error: error }); return }
+        if(error !== null) { res.status(200).json({ error: error }); return }
 
         res.status(200).json({
            result: true,
@@ -107,7 +107,7 @@ router.post('/delete', (req, res, next) => {
         // Data validation
         let [data, error] = await user.del(req.body.user_id)
 
-        if(data === false) { res.status(200).json({ error: error }); return }
+        if(error !== null) { res.status(200).json({ error: error }); return }
 
         res.status(200).json({
            result: true,

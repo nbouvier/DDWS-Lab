@@ -10,7 +10,7 @@ router.post('/login', (req, res, next) => {
         // Data validation
         let [data, error] = await auth.login(req.body.email, req.body.password)
 
-        if(data === false) { res.status(200).json({ error: error }); return }
+        if(error !== null) { res.status(200).json({ error: error }); return }
 
         req.session.user_id = data.id
         req.session.user_type = data.type
@@ -27,7 +27,7 @@ router.post('/register', (req, res, next) => {
         // Data validation
         let [data, error] = await auth.register(req.body.first_name, req.body.last_name, req.body.email, req.body.password)
 
-        if(data === false) { res.status(200).json({ error: error }); return }
+        if(error !== null) { res.status(200).json({ error: error }); return }
 
         res.status(200).json({
             result: true,
@@ -41,7 +41,7 @@ router.get('/register', (req, res, next) => {
         // Data validation
         let [data, error] = await auth.verifyEmail(req.query.hash)
 
-        if(data === false) { res.status(200).json({ error: error }); return }
+        if(error !== null) { res.status(200).json({ error: error }); return }
 
         req.session.messages = [
             { message: 'You registered successfuly.', alert: 'success' }
@@ -60,7 +60,7 @@ router.post('/init-reset-password', async (req, res, next) => {
 
     let [data, error] = await auth.initResetPassword(validatedData)
 
-    if(data === false) { res.status(200).json({ error: error }); return }
+    if(error !== null) { res.status(200).json({ error: error }); return }
 
     res.status(200).json({
         result: true,
@@ -74,7 +74,7 @@ router.post('/reset-password', async (req, res, next) => {
 
     let [data, error] = await auth.resetPassword(req.body.hash, req.body.password)
 
-    if(data === false) { res.status(200).json({ error: error }); return }
+    if(error !== null) { res.status(200).json({ error: error }); return }
 
     res.status(200).json({
         result: true,

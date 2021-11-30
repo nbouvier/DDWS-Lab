@@ -94,3 +94,10 @@
 input.form-control.form-control-range:focus {
     box-shadow: none;
 }
+
+section {
+    padding: 2rem 0;
+    border-bottom-width: 1px;
+    border-bottom-style: solid;
+    border-bottom-color: #6c757d;
+}

@@ -50,7 +50,7 @@ export async function loadOne(cls, id) {
 
     if(!dbObj.length) { return false }
     else { dbObj = dbObj[0] }
-
+    
     let args = cls.fields.map(k => dbObj[k])
     let obj = new (cls)(...args)
     obj.id = id

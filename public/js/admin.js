@@ -52,8 +52,8 @@ function blockUserFormData() {
 }
 
 function blockUserFormSuccess(data) {
-    $('#blockUserModal').modal('hide')
     showSystemMessage(data.message, MessageType.success)
+    $('#blockUserModal').modal('hide')
 }
 
 // ========== Delete user form ========== //

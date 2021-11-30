@@ -1,3 +1,39 @@
+// ========== Page loading ========== //
+
+function loadElectricityManagmentPage(callback) {
+    $.ajax({
+        url: '/api/coal-power-plant/one/1',
+        type: 'POST',
+        dataType: 'JSON',
+
+        success: data => callback(data.result),
+
+        error: error => console.log(error)
+    })
+}
+
+function loadElectricityManagmentPageSuccess(data) {
+    let coalPowerPlant = data.coal_power_plant
+    let buffer = coalPowerPlant.buffer
+    let bufferFilling = (buffer.ressource / buffer.capacity * 100).toFixed(2)
+
+    $('#startAndStop').attr('active', coalPowerPlant.running)
+    $('#production').html(coalPowerPlant.production.toFixed(3))
+    $('#bufferFilling').html(bufferFilling)
+    $('#productionBufferPercentage').val(coalPowerPlant.buffer_percentage)
+    $('#toBuffer').html(coalPowerPlant.buffer_percentage)
+    $('#toMarket').html(100 - coalPowerPlant.buffer_percentage)
+}
+
+function refreshElectricityManagmentPageSuccess(data) {
+    let coalPowerPlant = data.coal_power_plant
+    let buffer = coalPowerPlant.buffer
+    let bufferFilling = (buffer.ressource / buffer.capacity * 100).toFixed(2)
+
+    $('#production').html(coalPowerPlant.production.toFixed(3))
+    $('#bufferFilling').html(bufferFilling)
+}
+
 // ========== Production chart ========== //
 
 async function productionLoadDataFunction() {
@@ -30,12 +66,12 @@ async function productionPullDataFunction() {
     }, 10000)
 }
 
-function showProductionChart(loadDataFunction, pullDataFunction) {
+function showProductionChart(loadedData, pullDataFunction) {
     Highcharts.stockChart('productionChart', {
         chart: { events: { load: pullDataFunction } },
         title: { text: 'Coal power plant production over time' },
         xAxis: { type: 'datetime' },
-        yAxis: { title: { text: 'Production (MWh)' } },
+        yAxis: { title: { text: 'Production (MW)' } },
         legend: { enabled: false },
         plotOptions: {
             area: {
@@ -54,15 +90,33 @@ function showProductionChart(loadDataFunction, pullDataFunction) {
         },
         series: [{
             type: 'area',
-            name: 'Production (MWh)',
-            data: loadDataFunction
+            name: 'Production (MW)',
+            data: loadedData,
+            turboThreshold: 10000
         }]
     })
+}
+
+// ========== Production form ========== //
+
+function productionFormData() {
+    return {
+        id: $('#productionCoalPowerPlantID').val(),
+        buffer_percentage: $('#productionBufferPercentage').val()
+    }
+}
+
+function productionFormSuccess(data) {
+    showSystemMessage(data.message, MessageType.success)
+    $('#productionBufferPercentage').val(data.result.coal_power_plant.buffer_percentage)
 }
 
 // ========== Page ready ========== //
 
 $(document).ready(async function() {
+
+    loadElectricityManagmentPage(loadElectricityManagmentPageSuccess)
+    setInterval(() => loadElectricityManagmentPage(refreshElectricityManagmentPageSuccess), 10000)
 
     $('#productionBufferPercentage').on('input', function() {
         $('#toBuffer').html($(this).val())
