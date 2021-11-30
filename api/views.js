@@ -43,6 +43,17 @@ router.get('/', async (req, res, next) => {
     })
 })
 
+router.get('/electricity-managment', (req, res, next) => {
+    middleware.user(req, res, () => {
+        let data = {
+            user_id: req.session.user_id,
+            user_type: req.session.user_type
+        }
+
+        res.render('electricityManagment', data)
+    })
+})
+
 router.get('/profile', (req, res, next) => {
     middleware.user(req, res, () => {
         let data = {

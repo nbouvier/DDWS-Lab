@@ -36,7 +36,6 @@ function securityFormData() {
 
 function onClickChangePassword() {
     $.ajax({
-
         url: '/api/auth/init-reset-password',
         type: 'POST',
         dataType: 'JSON',
@@ -47,7 +46,6 @@ function onClickChangePassword() {
         success: data => showSystemMessage(data.message, MessageType.success),
 
         error: error => console.log(error)
-
     })
 }
 

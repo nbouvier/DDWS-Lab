@@ -90,3 +90,7 @@
 .btn-outline-warning:hover {
     color: #fff
 }
+
+input.form-control.form-control-range:focus {
+    box-shadow: none;
+}
