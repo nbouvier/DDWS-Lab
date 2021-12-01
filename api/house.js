@@ -28,7 +28,7 @@ router.post('/production', (req, res, next) => {
 
         if(error !== null) { res.status(200).json({ error: error }); return }
 
-        data = data.map(entry => [entry.timestamp, entry.production ])
+        data = data.map(entry => [ entry.timestamp, entry.production ])
 
         res.status(200).json({
            result: { production: data },
@@ -46,7 +46,7 @@ router.post('/consumption', (req, res, next) => {
 
         if(error !== null) { res.status(200).json({ error: error }); return }
 
-        data = data.map(entry => [entry.timestamp, entry.consumption ])
+        data = data.map(entry => [ entry.timestamp, entry.consumption ])
 
         res.status(200).json({
            result: { consumption: data },

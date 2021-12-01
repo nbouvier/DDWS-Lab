@@ -86,18 +86,18 @@ DELETE FROM `coal_production`;
 /*!40000 ALTER TABLE `coal_production` DISABLE KEYS */;
 /*!40000 ALTER TABLE `coal_production` ENABLE KEYS */;
 
--- Listage de la structure de la table ddws. daily_wind
-CREATE TABLE IF NOT EXISTS `daily_wind` (
+-- Listage de la structure de la table ddws. global_wind
+CREATE TABLE IF NOT EXISTS `global_wind` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `speed` float NOT NULL,
   `day` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
--- Listage des données de la table ddws.daily_wind : ~0 rows (environ)
-DELETE FROM `daily_wind`;
-/*!40000 ALTER TABLE `daily_wind` DISABLE KEYS */;
-/*!40000 ALTER TABLE `daily_wind` ENABLE KEYS */;
+-- Listage des données de la table ddws.global_wind : ~0 rows (environ)
+DELETE FROM `global_wind`;
+/*!40000 ALTER TABLE `global_wind` DISABLE KEYS */;
+/*!40000 ALTER TABLE `global_wind` ENABLE KEYS */;
 
 -- Listage de la structure de la table ddws. global_coal_power_plant_production
 CREATE TABLE IF NOT EXISTS `global_coal_power_plant_production` (
@@ -195,18 +195,18 @@ DELETE FROM `house_production`;
 /*!40000 ALTER TABLE `house_production` DISABLE KEYS */;
 /*!40000 ALTER TABLE `house_production` ENABLE KEYS */;
 
--- Listage de la structure de la table ddws. realtime_wind
-CREATE TABLE IF NOT EXISTS `realtime_wind` (
+-- Listage de la structure de la table ddws. wind
+CREATE TABLE IF NOT EXISTS `wind` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `speed` float NOT NULL,
   `timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
--- Listage des données de la table ddws.realtime_wind : ~0 rows (environ)
-DELETE FROM `realtime_wind`;
-/*!40000 ALTER TABLE `realtime_wind` DISABLE KEYS */;
-/*!40000 ALTER TABLE `realtime_wind` ENABLE KEYS */;
+-- Listage des données de la table ddws.wind : ~0 rows (environ)
+DELETE FROM `wind`;
+/*!40000 ALTER TABLE `wind` DISABLE KEYS */;
+/*!40000 ALTER TABLE `wind` ENABLE KEYS */;
 
 -- Listage de la structure de la table ddws. registration
 CREATE TABLE IF NOT EXISTS `registration` (

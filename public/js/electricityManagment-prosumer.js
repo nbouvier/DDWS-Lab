@@ -74,7 +74,7 @@ function underProductionFormSuccess(data) {
 $(document).ready(async function() {
 
     loadElectricityManagmentPage(loadElectricityManagmentPageSuccess)
-    // setInterval(() => loadElectricityManagmentPage(refreshElectricityManagmentPageSuccess), 10000)
+    setInterval(() => loadElectricityManagmentPage(refreshElectricityManagmentPageSuccess), 10000)
 
     $('#excessiveProductionBufferPercentage').on('input', function() {
         $('#toBuffer').html($(this).val())

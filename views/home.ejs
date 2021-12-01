@@ -9,14 +9,30 @@
     <div id="content">
         <%- include('../partials/header'); %>
 
-        <h2 class="h2">Home page</h2>
+        <section class="container-fluid">
+
+            <%- include('../partials/chart/productionChart'); %>
+
+            <div class="row">
+                <div class="col-lg-4">
+                    <%- include('../partials/chart/windChart'); %>
+                </div>
+
+                <div class="col-lg-4">
+                </div>
+
+                <div class="col-lg-4">
+                </div>
+            </div>
+
+        </section>
 
         <%- include('../partials/footer'); %>
     </div>
 
     <%- include('../partials/messages'); %>
 
-    <%- include('../partials/scripts'); %>
+    <%- include('../partials/scripts', { view: `home` }); %>
 </body>
 
 </html>

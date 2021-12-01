@@ -6,7 +6,7 @@ const REFRESH_FREQUENCY = 10
 // Values in m/s
 const MIN_WIND = 0
 const MAX_WIND = 75
-const SKEW = .5
+const SKEW = 2
 
 const DAILY_DELTA = 15
 const REAL_TIME_DELTA = 3
@@ -14,13 +14,13 @@ const REAL_TIME_DELTA = 3
 async function setDailyWind() {
     let speed = random.randomBM(MIN_WIND, MAX_WIND, SKEW)
 
-    await db.query('INSERT INTO daily_wind (speed) VALUES (?);', [ speed ])
+    await db.query('INSERT INTO global_wind (speed) VALUES (?);', [ speed ])
 }
 
 async function setRealTimeWind() {
     let day = new Date().toISOString().slice(0, 10)
-    let dailySpeed = (await db.query('SELECT speed FROM daily_wind WHERE DATE(day) = ?;', [ day ]))[0].speed
-    let previousSpeed = await db.query('SELECT speed FROM realtime_wind ORDER BY id DESC LIMIT 1;')
+    let dailySpeed = (await db.query('SELECT speed FROM global_wind WHERE DATE(day) = ?;', [ day ]))[0].speed
+    let previousSpeed = await db.query('SELECT speed FROM wind ORDER BY id DESC LIMIT 1;')
     previousSpeed = previousSpeed.length ? previousSpeed[0].speed : dailySpeed
 
     let dailyMin = dailySpeed - DAILY_DELTA < MIN_WIND ? MIN_WIND : dailySpeed - DAILY_DELTA
@@ -31,11 +31,11 @@ async function setRealTimeWind() {
 
     let speed = random.randomBM(realTimeMin, realTimeMax)
 
-    db.query('INSERT INTO realtime_wind (speed) VALUES (?);', [ speed ])
+    db.query('INSERT INTO wind (speed) VALUES (?);', [ speed ])
 }
 
 export default async function generateData() {
-    let lastDay = await db.query('SELECT DATE(day) AS day FROM daily_wind ORDER BY id DESC LIMIT 1;')
+    let lastDay = await db.query('SELECT DATE(day) AS day FROM global_wind ORDER BY id DESC LIMIT 1;')
     if(!lastDay.length) {
         await setDailyWind()
     } else {

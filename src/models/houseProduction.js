@@ -22,7 +22,7 @@ async function setHouseAverageProduction() {
 }
 
 async function setHouseProduction() {
-    let wind = await db.query('SELECT speed FROM realtime_wind ORDER BY timestamp DESC LIMIT 1;')
+    let wind = await db.query('SELECT speed FROM wind ORDER BY timestamp DESC LIMIT 1;')
     if(!wind.length) { return }
     wind = wind[0].speed
     let wind_ratio = wind / WIND_BOOST

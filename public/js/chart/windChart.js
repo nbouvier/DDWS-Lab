@@ -1,32 +1,28 @@
 // ========== Production ========== //
 
-async function productionLoadData() {
+async function windLoadData() {
     return new Promise((resolve, reject) => {
         $.ajax({
-            url: '/api/coal-power-plant/production',
+            url: '/api/weather/wind',
             type: 'POST',
             dataType: 'JSON',
-            data: { id: $('#productionCoalPowerPlantID').val() },
 
-            success: data => resolve(data.result.production),
+            success: data => resolve(data.result.wind),
 
             error: error => reject(error)
         })
     })
 }
 
-async function productionPullData(serie) {
+async function windPullData(serie) {
     setInterval(() => {
         $.ajax({
-            url: `/api/coal-power-plant/production`,
+            url: `/api/weather/wind`,
             type: 'POST',
             dataType: 'JSON',
-            data: {
-                id: $('#productionCoalPowerPlantID').val(),
-                from: date = Date.now() - 10000
-            },
+            data: { from: date = Date.now() - 10000 },
 
-            success: data => serie.addPoint(data.result.production[0], true, true),
+            success: data => serie.addPoint(data.result.wind[0], true, true),
 
             error: error => console.log(error)
         })
@@ -35,20 +31,20 @@ async function productionPullData(serie) {
 
 // ========== Chart ========== //
 
-async function showProductionChart() {
-    Highcharts.stockChart('productionChart', {
+async function showWindChart() {
+    Highcharts.stockChart('windChart', {
         chart: {
             events: {
                 load: function() {
                     setInterval(() => {
-                        productionPullData(this.series[0])
+                        windPullData(this.series[0])
                     }, 10000)
                 }
             }
         },
-        title: { text: 'Energy production over time' },
+        title: { text: 'Wind speed' },
         xAxis: { type: 'datetime' },
-        yAxis: { title: { text: 'Production (W)' } },
+        yAxis: { title: { text: 'Speed (m/s)' } },
         legend: { enabled: false },
         plotOptions: {
             area: {
@@ -59,8 +55,8 @@ async function showProductionChart() {
             }
         },
         series: [{
-            name: 'Production (W)',
-            data: await productionLoadData(),
+            name: 'Speed (m/s)',
+            data: await windLoadData(),
             turboThreshold: 0
         }]
     })

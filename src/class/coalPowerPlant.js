@@ -39,7 +39,7 @@ export default class CoalPowerPlant {
             additionalConditionsArgs.push(to)
         }
 
-        return await db.query(`SELECT production, timestamp FROM coal_production WHERE coal_power_plant_id = ? ${additionalConditions};`, [ this.id, ...additionalConditionsArgs ])
+        return await db.query(`SELECT production, UNIX_TIMESTAMP(timestamp) * 1000 AS timestamp FROM coal_production WHERE coal_power_plant_id = ? ${additionalConditions};`, [ this.id, ...additionalConditionsArgs ])
     }
 
     async serialize() {
