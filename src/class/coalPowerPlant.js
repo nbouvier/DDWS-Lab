@@ -20,7 +20,7 @@ export default class CoalPowerPlant {
         let production = 0
         let productions = await db.query(`SELECT production FROM coal_production WHERE coal_power_plant_id = ? ORDER BY timestamp DESC LIMIT 100;`, [ this.id ])
 
-        productions.forEach(p => production += p.production)
+        productions.forEach(e => production += e.production)
 
         return production / productions.length
     }

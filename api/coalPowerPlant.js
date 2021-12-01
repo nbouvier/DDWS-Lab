@@ -5,10 +5,10 @@ import coalPowerPlant from '../src/services/coalPowerPlant.js'
 
 const router = express.Router()
 
-router.post('/one/:id', (req, res, next) => {
+router.post('/one', (req, res, next) => {
     middleware.admin(req, res, async () => {
         // Data validation
-        let [data, error] = await coalPowerPlant.get(req.params.id)
+        let [data, error] = await coalPowerPlant.get(req.body.id)
 
         if(error !== null) { res.status(200).json({ error: error }); return }
 
@@ -22,13 +22,13 @@ router.post('/one/:id', (req, res, next) => {
 router.post('/production', (req, res, next) => {
     middleware.admin(req, res, async () => {
         // Data validation
-        let from = req.query.from ? parseInt(req.query.from) : null
+        let from = req.body.from ? parseInt(req.body.from) : null
 
-        let [data, error] = await coalPowerPlant.production(req.query.id, from)
+        let [data, error] = await coalPowerPlant.production(req.body.id, from)
 
         if(error !== null) { res.status(200).json({ error: error }); return }
 
-        data = data.map(entry => [entry.timestamp, entry.production / 3600])
+        data = data.map(entry => [entry.timestamp, entry.production ])
 
         res.status(200).json({
            result: { production: data },

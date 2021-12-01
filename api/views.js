@@ -50,7 +50,7 @@ router.get('/electricity-managment', (req, res, next) => {
             user_type: req.session.user_type
         }
 
-        res.render('electricityManagment', data)
+        res.render(`electricityManagment-${req.session.user_type}`, data)
     })
 })
 

@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+
+<%- include('../partials/head'); %>
+
+<body>
+    <%- include('../partials/sideBar'); %>
+
+    <div id="content">
+        <%- include('../partials/header'); %>
+
+        <section class="container-fluid">
+
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="row">
+                        <div class="col-xs-6">
+                            <div class="card">
+                                <div class="card-body">
+                                    <p class="h5"><small class="text-muted">Production</small></p>
+                                    <p><span id="production"></span> Wh</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-xs-6">
+                            <div class="card">
+                                <div class="card-body">
+                                    <p class="h5"><small class="text-muted">Consumption</small></p>
+                                    <p><span id="consumption"></span> Wh</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-xs-6">
+                            <div class="card">
+                                <div class="card-body">
+                                    <p class="h5"><small class="text-muted">Total production</small></p>
+                                    <p><span id="totalProduction"></span> Wh</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-xs-6">
+                            <div class="card">
+                                <div class="card-body">
+                                    <p class="h5"><small class="text-muted">Buffer filling</small></p>
+                                    <p><span id="bufferFilling"></span> %</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6 ml-auto">
+                    <img id="houseImage" class="img-fluid" alt="house">
+                    <button id="uploadHouseImage" type="button" class="btn btn-primary btn-lg btn-block">Upload</button>
+                </div>
+            </div>
+
+        </section>
+
+        <section class="container-fluid">
+
+            <div class="row">
+                <div class="col-lg-6">
+                    <h2 class="h2 mb-0">Excessive production</h2>
+
+                    <p class="h5">
+                        <small class="text-muted">
+                            Electricity will be sent to the market anyway is the buffer is full.
+                        </small>
+                    </p>
+
+                    <form id="excessiveProductionForm" method="post" action="/api/house/update-excessive-production">
+                        <input type="text" class="d-none" id="excessiveProductionHouseID" value="1">
+                        <div class="form-group input-group">
+                            <p class="input-group-prepend pt-1">To buffer (<span id="toBuffer"></span> %)</p>
+                            <input type="range" class="form-control-range form-control mx-3" id="excessiveProductionBufferPercentage">
+                            <p class="input-group-append pt-1">To market (<span id="toMarket"></span> %)</p>
+                        </div>
+                        <button type="reset" class="btn btn-danger">Reset</button>
+                        <button type="submit" class="btn btn-primary">Save</button>
+                    </form>
+                </div>
+
+                <div class="col-lg-6">
+                    <h2 class="h2 mb-0">Under-production</h2>
+
+                    <p class="h5">
+                        <small class="text-muted">
+                            Electricity will be taken from the market anyway is the buffer is empty.
+                        </small>
+                    </p>
+
+                    <form id="underProductionForm" method="post" action="/api/house/update-under-production">
+                        <input type="text" class="d-none" id="underProductionHouseID" value="1">
+                        <div class="form-group input-group">
+                            <p class="input-group-prepend pt-1">From buffer (<span id="fromBuffer"></span> %)</p>
+                            <input type="range" class="form-control-range form-control mx-3" id="underProductionBufferPercentage">
+                            <p class="input-group-append pt-1">From market (<span id="fromMarket"></span> %)</p>
+                        </div>
+                        <button type="reset" class="btn btn-danger">Reset</button>
+                        <button type="submit" class="btn btn-primary">Save</button>
+                    </form>
+                </div>
+            </div>
+
+        </section>
+
+        <section class="container-fluid">
+
+            <div id="productionChart"></div>
+
+        </section>
+
+        <%- include('../partials/footer'); %>
+    </div>
+
+    <%- include('../partials/scripts', { view: `electricityManagment-prosumer` }); %>
+</body>
+
+</html>

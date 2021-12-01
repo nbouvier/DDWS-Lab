@@ -19,10 +19,10 @@ router.post('/get', (req, res, next) => {
     }, false)
 })
 
-router.post('/one/:id', (req, res, next) => {
+router.post('/one', (req, res, next) => {
     middleware.user(req, res, async () => {
         // Data validation
-        let [data, error] = await user.get(req.params.id)
+        let [data, error] = await user.get(req.body.id)
 
         if(error !== null) { res.status(200).json({ error: error }); return }
 

@@ -9,54 +9,62 @@
     <div id="content">
         <%- include('../partials/header'); %>
 
-        <h2 class="h2">Profile</h2>
+        <section class="container-fluid">
+            
+            <h2 class="h2">Profile</h2>
 
-        <form id="profileForm" method="post" action="/api/user/update-profile">
-            <div class="form-row">
-                <div class="form-group col-md-6">
-                    <label for="profileFirstName">First name</label>
-                    <input type="text" class="form-control" id="profileFirstName">
+            <form id="profileForm" method="post" action="/api/user/update-profile">
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label for="profileFirstName">First name</label>
+                        <input type="text" class="form-control" id="profileFirstName">
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label for="profileLastName">Last name</label>
+                        <input type="text" class="form-control" id="profileLastName">
+                    </div>
                 </div>
-                <div class="form-group col-md-6">
-                    <label for="profileLastName">Last name</label>
-                    <input type="text" class="form-control" id="profileLastName">
+                <div class="form-group">
+                    <label for="profileAddress">Address</label>
+                    <input type="text" class="form-control" id="profileAddress">
                 </div>
-            </div>
-            <div class="form-group">
-                <label for="profileAddress">Address</label>
-                <input type="text" class="form-control" id="profileAddress">
-            </div>
-            <div class="form-group">
-                <label for="profileAdditionalAddress">Addtional address</label>
-                <input type="text" class="form-control" id="profileAdditionalAddress">
-            </div>
-            <div class="form-row">
-                <div class="form-group col-md-6">
-                    <label for="profileCity">City</label>
-                    <input type="text" class="form-control" id="profileCity">
+                <div class="form-group">
+                    <label for="profileAdditionalAddress">Addtional address</label>
+                    <input type="text" class="form-control" id="profileAdditionalAddress">
                 </div>
-                <div class="form-group col-md-6">
-                    <label for="profileZipCode">ZIP Code</label>
-                    <input type="text" class="form-control" id="profileZipCode">
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label for="profileCity">City</label>
+                        <input type="text" class="form-control" id="profileCity">
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label for="profileZipCode">ZIP Code</label>
+                        <input type="text" class="form-control" id="profileZipCode">
+                    </div>
                 </div>
-            </div>
-            <button type="reset" class="btn btn-danger">Undo</button>
-            <button type="submit" class="btn btn-primary">Save</button>
-        </form>
+                <button type="reset" class="btn btn-danger">Undo</button>
+                <button type="submit" class="btn btn-primary">Save</button>
+            </form>
 
-        <h2 class="h2">Security</h2>
+        </section>
 
-        <form id="securityForm" method="post" action="/api/user/update-security">
-            <div class="form-group">
-                <label for="securityEmail">Email</label>
-                <input type="email" class="form-control" id="securityEmail">
-            </div>
-            <div class="form-group">
-                <button type="button" id="changePassword" class="btn btn-primary">Change password</button>
-            </div>
-            <button type="reset" class="btn btn-danger">Undo</button>
-            <button type="submit" class="btn btn-primary">Save</button>
-        </form>
+        <section class="container-fluid">
+
+            <h2 class="h2">Security</h2>
+
+            <form id="securityForm" method="post" action="/api/user/update-security">
+                <div class="form-group">
+                    <label for="securityEmail">Email</label>
+                    <input type="email" class="form-control" id="securityEmail">
+                </div>
+                <div class="form-group">
+                    <button type="button" id="changePassword" class="btn btn-primary">Change password</button>
+                </div>
+                <button type="reset" class="btn btn-danger">Undo</button>
+                <button type="submit" class="btn btn-primary">Save</button>
+            </form>
+
+        </section>
 
         <%- include('../partials/footer'); %>
     </div>

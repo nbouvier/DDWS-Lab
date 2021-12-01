@@ -1,4 +1,4 @@
-import { randn_bm } from './utils.js'
+import random from '../vendor/random.js'
 import db from '../database/database.js'
 
 const REFRESH_FREQUENCY = 10
@@ -12,15 +12,15 @@ const DAILY_DELTA = 15
 const REAL_TIME_DELTA = 3
 
 async function setDailyWind() {
-    let speed = randn_bm(MIN_WIND, MAX_WIND, SKEW)
+    let speed = random.randomBM(MIN_WIND, MAX_WIND, SKEW)
 
-    await db.query(`INSERT INTO daily_wind (speed) VALUES (${speed});`)
+    await db.query('INSERT INTO daily_wind (speed) VALUES (?);', [ speed ])
 }
 
 async function setRealTimeWind() {
     let day = new Date().toISOString().slice(0, 10)
-    let dailySpeed = (await db.query(`SELECT speed FROM daily_wind WHERE DATE(day) = '${day}';`))[0].speed
-    let previousSpeed = await db.query(`SELECT speed FROM realtime_wind ORDER BY id DESC LIMIT 1;`)
+    let dailySpeed = (await db.query('SELECT speed FROM daily_wind WHERE DATE(day) = ?;', [ day ]))[0].speed
+    let previousSpeed = await db.query('SELECT speed FROM realtime_wind ORDER BY id DESC LIMIT 1;')
     previousSpeed = previousSpeed.length ? previousSpeed[0].speed : dailySpeed
 
     let dailyMin = dailySpeed - DAILY_DELTA < MIN_WIND ? MIN_WIND : dailySpeed - DAILY_DELTA
@@ -29,13 +29,13 @@ async function setRealTimeWind() {
     let realTimeMin = previousSpeed - REAL_TIME_DELTA < dailyMin ? dailyMin : previousSpeed - REAL_TIME_DELTA
     let realTimeMax = previousSpeed + REAL_TIME_DELTA < dailyMax ? dailyMax : previousSpeed + REAL_TIME_DELTA
 
-    let speed = randn_bm(realTimeMin, realTimeMax)
+    let speed = random.randomBM(realTimeMin, realTimeMax)
 
-    db.query(`INSERT INTO realtime_wind (speed) VALUES (${speed});`)
+    db.query('INSERT INTO realtime_wind (speed) VALUES (?);', [ speed ])
 }
 
 export default async function generateData() {
-    let lastDay = await db.query(`SELECT DATE(day) AS day FROM daily_wind ORDER BY id DESC LIMIT 1;`)
+    let lastDay = await db.query('SELECT DATE(day) AS day FROM daily_wind ORDER BY id DESC LIMIT 1;')
     if(!lastDay.length) {
         await setDailyWind()
     } else {
@@ -46,7 +46,7 @@ export default async function generateData() {
         }
     }
 
-    while(new Date().getSeconds() % 10) {}
+    while(new Date().getSeconds() % REFRESH_FREQUENCY) {}
 
     setInterval(async () => {
         let date = new Date()

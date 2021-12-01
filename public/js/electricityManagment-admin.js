@@ -2,9 +2,10 @@
 
 function loadElectricityManagmentPage(callback) {
     $.ajax({
-        url: '/api/coal-power-plant/one/1',
+        url: '/api/coal-power-plant/one',
         type: 'POST',
         dataType: 'JSON',
+        data: { id: $('#productionCoalPowerPlantID').val() },
 
         success: data => callback(data.result),
 
@@ -18,7 +19,7 @@ function loadElectricityManagmentPageSuccess(data) {
     let bufferFilling = (buffer.ressource / buffer.capacity * 100).toFixed(2)
 
     $('#startAndStop').attr('active', coalPowerPlant.running)
-    $('#production').html(coalPowerPlant.production.toFixed(3))
+    $('#production').html((coalPowerPlant.production * 3600).toFixed(3))
     $('#bufferFilling').html(bufferFilling)
     $('#productionBufferPercentage').val(coalPowerPlant.buffer_percentage)
     $('#toBuffer').html(coalPowerPlant.buffer_percentage)
@@ -30,7 +31,7 @@ function refreshElectricityManagmentPageSuccess(data) {
     let buffer = coalPowerPlant.buffer
     let bufferFilling = (buffer.ressource / buffer.capacity * 100).toFixed(2)
 
-    $('#production').html(coalPowerPlant.production.toFixed(3))
+    $('#production').html((coalPowerPlant.production * 3600).toFixed(3))
     $('#bufferFilling').html(bufferFilling)
 }
 
@@ -39,9 +40,10 @@ function refreshElectricityManagmentPageSuccess(data) {
 async function productionLoadDataFunction() {
     return new Promise((resolve, reject) => {
         $.ajax({
-            url: '/api/coal-power-plant/production?id=1',
+            url: '/api/coal-power-plant/production',
             type: 'POST',
             dataType: 'JSON',
+            data: { id: $('#productionCoalPowerPlantID').val() },
 
             success: data => resolve(data.result.production),
 
@@ -52,12 +54,14 @@ async function productionLoadDataFunction() {
 
 async function productionPullDataFunction() {
     setInterval(() => {
-        date = Date.now() - 10000
-
         $.ajax({
-            url: `/api/coal-power-plant/production?id=1&from=${date}`,
+            url: `/api/coal-power-plant/production`,
             type: 'POST',
             dataType: 'JSON',
+            data: {
+                id: $('#productionCoalPowerPlantID').val(),
+                from: date = Date.now() - 10000
+            },
 
             success: data => this.series[0].addPoint(data.result.production[0], true, true),
 
@@ -69,19 +73,12 @@ async function productionPullDataFunction() {
 function showProductionChart(loadedData, pullDataFunction) {
     Highcharts.stockChart('productionChart', {
         chart: { events: { load: pullDataFunction } },
-        title: { text: 'Coal power plant production over time' },
+        title: { text: 'Energy production over time' },
         xAxis: { type: 'datetime' },
         yAxis: { title: { text: 'Production (MW)' } },
         legend: { enabled: false },
         plotOptions: {
             area: {
-                fillColor: {
-                    linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1 },
-                    stops: [
-                        [0, Highcharts.getOptions().colors[0]],
-                        [1, Highcharts.color(Highcharts.getOptions().colors[0]).setOpacity(0).get('rgba')]
-                    ]
-                },
                 marker: { radius: 2 },
                 lineWidth: 1,
                 states: { hover: { lineWidth: 1 } },
@@ -89,10 +86,9 @@ function showProductionChart(loadedData, pullDataFunction) {
             }
         },
         series: [{
-            type: 'area',
             name: 'Production (MW)',
             data: loadedData,
-            turboThreshold: 10000
+            turboThreshold: 0
         }]
     })
 }
