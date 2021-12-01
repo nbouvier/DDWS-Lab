@@ -41,97 +41,6 @@ function refreshElectricityManagmentPageSuccess(data) {
     $('#bufferFilling').html(bufferFilling)
 }
 
-// ========== Production and consumption chart ========== //
-
-async function productionLoadDataFunction() {
-    return new Promise((resolve, reject) => {
-        $.ajax({
-            url: '/api/house/production',
-            type: 'POST',
-            dataType: 'JSON',
-            data: { id: $('#excessiveProductionHouseID').val() },
-
-            success: data => resolve(data.result.production),
-
-            error: error => reject(error)
-        })
-    })
-}
-
-async function consumptionLoadDataFunction() {
-    return new Promise((resolve, reject) => {
-        $.ajax({
-            url: '/api/house/consumption',
-            type: 'POST',
-            dataType: 'JSON',
-            data: { id: $('#excessiveProductionHouseID').val() },
-
-            success: data => resolve(data.result.consumption),
-
-            error: error => reject(error)
-        })
-    })
-}
-
-async function productionConsumptionPullDataFunction() {
-    setInterval(() => {
-        $.ajax({
-            url: '/api/house/production',
-            type: 'POST',
-            dataType: 'JSON',
-            data: {
-                id: $('#excessiveProductionHouseID').val(),
-                from: Date.now() - 10000
-            },
-
-            success: data => this.series[0].addPoint(data.result.production[0], true, true),
-
-            error: error => console.log(error)
-        })
-
-        $.ajax({
-            url: '/api/house/consumption',
-            type: 'POST',
-            dataType: 'JSON',
-            data: {
-                id: $('#excessiveProductionHouseID').val(),
-                from: Date.now() - 10000
-            },
-
-            success: data => this.series[1].addPoint(data.result.consumption[0], true, true),
-
-            error: error => console.log(error)
-        })
-    }, 10000)
-}
-
-function showProductionConsumptionChart(loadedData, pullDataFunction) {
-    Highcharts.stockChart('productionChart', {
-        chart: { events: { load: pullDataFunction } },
-        title: { text: 'Energy production over time' },
-        xAxis: { type: 'datetime' },
-        yAxis: { title: { text: 'Production (W)' } },
-        legend: { enabled: false },
-        plotOptions: {
-            area: {
-                marker: { radius: 2 },
-                lineWidth: 1,
-                states: { hover: { lineWidth: 1 } },
-                threshold: null
-            }
-        },
-        series: [{
-            name: 'Production (W)',
-            data: loadedData.production,
-            turboThreshold: 0
-        }, {
-            name: 'Consumption (W)',
-            data: loadedData.consumption,
-            turboThreshold: 0
-        }]
-    })
-}
-
 // ========== Excessive production form ========== //
 
 function excessiveProductionFormData() {
@@ -177,10 +86,6 @@ $(document).ready(async function() {
         $('#fromMarket').html(100 - $(this).val())
     })
 
-    let loadedData = {
-        production: await productionLoadDataFunction(),
-        consumption: await consumptionLoadDataFunction()
-    }
-    showProductionConsumptionChart(loadedData, productionConsumptionPullDataFunction)
+    showProductionChart()
 
 })
