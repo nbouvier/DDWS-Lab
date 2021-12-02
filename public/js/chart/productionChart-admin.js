@@ -6,7 +6,7 @@ async function productionLoadData() {
             url: '/api/coal-power-plant/production',
             type: 'POST',
             dataType: 'JSON',
-            data: { id: $('#productionCoalPowerPlantID').val() },
+            data: { id: $('#coalPowerPlantID').html() },
 
             success: data => resolve(data.result.production),
 
@@ -22,10 +22,11 @@ async function productionPullData(serie) {
             type: 'POST',
             dataType: 'JSON',
             data: {
-                id: $('#productionCoalPowerPlantID').val(),
+                id: $('#coalPowerPlantID').html(),
                 from: date = Date.now() - 10000
             },
 
+            id: $('#coalPowerPlantID').html(),
             success: data => serie.addPoint(data.result.production[0], true, true),
 
             error: error => console.log(error)
@@ -36,16 +37,8 @@ async function productionPullData(serie) {
 // ========== Chart ========== //
 
 async function showProductionChart() {
-    Highcharts.stockChart('productionChart', {
-        chart: {
-            events: {
-                load: function() {
-                    setInterval(() => {
-                        productionPullData(this.series[0])
-                    }, 10000)
-                }
-            }
-        },
+    Highcharts.chart('productionChart', {
+        chart: { events: { load: function() { productionPullData(this.series[0]) } } },
         title: { text: 'Energy production over time' },
         xAxis: { type: 'datetime' },
         yAxis: { title: { text: 'Production (W)' } },

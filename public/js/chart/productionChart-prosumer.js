@@ -6,7 +6,7 @@ async function productionLoadData() {
             url: '/api/house/production',
             type: 'POST',
             dataType: 'JSON',
-            data: { id: $('#excessiveProductionHouseID').val() },
+            data: { id: $('#houseID').html() },
 
             success: data => resolve(data.result.production),
 
@@ -21,7 +21,7 @@ function productionPullData(serie) {
         type: 'POST',
         dataType: 'JSON',
         data: {
-            id: $('#excessiveProductionHouseID').val(),
+            id: $('#houseID').html(),
             from: Date.now() - 10000
         },
 
@@ -39,7 +39,7 @@ async function consumptionLoadData() {
             url: '/api/house/consumption',
             type: 'POST',
             dataType: 'JSON',
-            data: { id: $('#excessiveProductionHouseID').val() },
+            data: { id: $('#houseID').html() },
 
             success: data => resolve(data.result.consumption),
 
@@ -54,7 +54,7 @@ function consumptionPullData(serie) {
         type: 'POST',
         dataType: 'JSON',
         data: {
-            id: $('#excessiveProductionHouseID').val(),
+            id: $('#houseID').html(),
             from: Date.now() - 10000
         },
 
@@ -67,7 +67,7 @@ function consumptionPullData(serie) {
 // ========== Chart ========== //
 
 async function showProductionChart() {
-    Highcharts.stockChart('productionChart', {
+    Highcharts.chart('productionChart', {
         chart: {
             events: {
                 load: function() {

@@ -1,8 +1,9 @@
 // ========== Page ready ========== //
 
-$(document).ready(async function() {
+$(document).ready(function() {
 
-    //showProductionChart()
+    showProductionChart()
     showWindChart()
+    showBufferChart()
 
 })

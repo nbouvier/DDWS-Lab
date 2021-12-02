@@ -5,10 +5,9 @@ import Buffer from './buffer.js'
 export default class House {
 
     static table = 'house'
-    static fields = [ 'user_id', 'to_buffer_percentage', 'from_buffer_percentage' ]
+    static fields = [ 'to_buffer_percentage', 'from_buffer_percentage' ]
 
-    constructor(user_id, to_buffer_percentage, from_buffer_percentage) {
-        this.user_id = user_id
+    constructor(to_buffer_percentage, from_buffer_percentage) {
         this.to_buffer_percentage = to_buffer_percentage
         this.from_buffer_percentage = from_buffer_percentage
     }
@@ -71,6 +70,7 @@ export default class House {
 
     async serialize() {
         return {
+            id: this.id,
             production: await this.actualProduction(),
             consumption: await this.actualConsumption(),
             to_buffer_percentage: this.to_buffer_percentage,

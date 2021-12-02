@@ -5,7 +5,7 @@ function loadElectricityManagmentPage(callback) {
         url: '/api/coal-power-plant/one',
         type: 'POST',
         dataType: 'JSON',
-        data: { id: $('#productionCoalPowerPlantID').val() },
+        data: { id: $('#coalPowerPlantID').html() },
 
         success: data => callback(data.result),
 
@@ -51,7 +51,7 @@ function productionFormSuccess(data) {
 
 // ========== Page ready ========== //
 
-$(document).ready(async function() {
+$(document).ready(function() {
 
     loadElectricityManagmentPage(loadElectricityManagmentPageSuccess)
     setInterval(() => loadElectricityManagmentPage(refreshElectricityManagmentPageSuccess), 10000)

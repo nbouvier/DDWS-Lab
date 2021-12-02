@@ -6,6 +6,12 @@
 <body>
     <%- include('../partials/sideBar'); %>
 
+    <% if(user_type == 'admin') { %>
+    <div id="coalPowerPlantID" class="d-none"><%= coal_power_plant_id %></div>
+    <% } else { %>
+    <div id="houseID" class="d-none"><%= house_id %></div>
+    <% } %>
+
     <div id="content">
         <%- include('../partials/header'); %>
 
@@ -22,6 +28,7 @@
                 </div>
 
                 <div class="col-lg-4">
+                    <%- include('../partials/chart/bufferChart'); %>
                 </div>
             </div>
 

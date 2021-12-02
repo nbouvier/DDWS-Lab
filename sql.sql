@@ -148,20 +148,36 @@ DELETE FROM `global_house_production`;
 -- Listage de la structure de la table ddws. house
 CREATE TABLE IF NOT EXISTS `house` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `user_id` int(11) NOT NULL,
   `to_buffer_percentage` float NOT NULL DEFAULT '0',
   `from_buffer_percentage` float NOT NULL DEFAULT '0',
-  PRIMARY KEY (`id`),
-  KEY `FK_HOUSE_USER` (`user_id`),
-  CONSTRAINT `FK_HOUSE_USER` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
 
 -- Listage des données de la table ddws.house : ~1 rows (environ)
 DELETE FROM `house`;
 /*!40000 ALTER TABLE `house` DISABLE KEYS */;
-INSERT INTO `house` (`id`, `user_id`, `to_buffer_percentage`, `from_buffer_percentage`) VALUES
-	(1, 2, 0, 0);
+INSERT INTO `house` (`id`, `to_buffer_percentage`, `from_buffer_percentage`) VALUES
+	(1, 0, 0);
 /*!40000 ALTER TABLE `house` ENABLE KEYS */;
+
+-- Listage de la structure de la table ddws. user_house
+CREATE TABLE IF NOT EXISTS `user_house` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) NOT NULL,
+  `house_id` float NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `FK_USER_HOUSE_USER` (`user_id`),
+  KEY `FK_USER_HOUSE_HOUSE` (`house_id`),
+  CONSTRAINT `FK_USER_HOUSE_USER` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `FK_USER_HOUSE_HOUSE` FOREIGN KEY (`house_id`) REFERENCES `house` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+
+-- Listage des données de la table ddws.user_house : ~1 rows (environ)
+DELETE FROM `user_house`;
+/*!40000 ALTER TABLE `user_house` DISABLE KEYS */;
+INSERT INTO `user_house` (`id`, `user_id`, `house_id`) VALUES
+	(1, 2, 1);
+/*!40000 ALTER TABLE `user_house` ENABLE KEYS */;
 
 -- Listage de la structure de la table ddws. house_consumption
 CREATE TABLE IF NOT EXISTS `house_consumption` (

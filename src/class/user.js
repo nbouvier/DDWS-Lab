@@ -32,6 +32,10 @@ export default class User {
         return await db.query(`INSERT INTO block_user (user_id, end) VALUES (?, ?);`, [ this.id, end ])
     }
 
+    async houses() {
+        return (await db.query('SELECT house_id FROM user_house WHERE user_id = ?;', [ this.id ])).map(house => house.house_id)
+    }
+
     serialize() {
         return {
             id: this.id,

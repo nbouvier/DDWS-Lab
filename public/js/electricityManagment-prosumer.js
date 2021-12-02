@@ -5,7 +5,7 @@ function loadElectricityManagmentPage(callback) {
         url: '/api/house/one',
         type: 'POST',
         dataType: 'JSON',
-        data: { id: $('#excessiveProductionHouseID').val() },
+        data: { id: $('#houseID').html() },
 
         success: data => callback(data.result),
 
@@ -71,7 +71,7 @@ function underProductionFormSuccess(data) {
 
 // ========== Page ready ========== //
 
-$(document).ready(async function() {
+$(document).ready(function() {
 
     loadElectricityManagmentPage(loadElectricityManagmentPageSuccess)
     setInterval(() => loadElectricityManagmentPage(refreshElectricityManagmentPageSuccess), 10000)

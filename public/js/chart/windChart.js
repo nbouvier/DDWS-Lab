@@ -32,16 +32,8 @@ async function windPullData(serie) {
 // ========== Chart ========== //
 
 async function showWindChart() {
-    Highcharts.stockChart('windChart', {
-        chart: {
-            events: {
-                load: function() {
-                    setInterval(() => {
-                        windPullData(this.series[0])
-                    }, 10000)
-                }
-            }
-        },
+    Highcharts.chart('windChart', {
+        chart: { events: { load: function() { windPullData(this.series[0]) } } },
         title: { text: 'Wind speed' },
         xAxis: { type: 'datetime' },
         yAxis: { title: { text: 'Speed (m/s)' } },

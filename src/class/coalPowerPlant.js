@@ -44,6 +44,7 @@ export default class CoalPowerPlant {
 
     async serialize() {
         return {
+            id: this.id,
             running: this.running,
             production: await this.actualProduction(),
             buffer_percentage: this.buffer_percentage,
