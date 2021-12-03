@@ -27,25 +27,23 @@ async function bufferLoadData() {
     })
 }
 
-async function bufferPullData(chart) {
-    setInterval(() => {
-        let url = $('#houseID').length ? '/api/house/one' : '/api/coal-power-plant/one'
-        let assetID = $('#houseID').length ? $('#houseID').html() : $('#coalPowerPlantID').html()
+function bufferPullData(chart) {
+    let url = $('#houseID').length ? '/api/house/one' : '/api/coal-power-plant/one'
+    let assetID = $('#houseID').length ? $('#houseID').html() : $('#coalPowerPlantID').html()
 
-        $.ajax({
-            url: url,
-            type: 'POST',
-            dataType: 'JSON',
-            data: {
-                id: assetID,
-                from: date = Date.now() - 10000
-            },
+    $.ajax({
+        url: url,
+        type: 'POST',
+        dataType: 'JSON',
+        data: {
+            id: assetID,
+            from: date = Date.now() - 10000
+        },
 
-            success: data => updateBufferChartData(chart, data),
+        success: data => updateBufferChartData(chart, data),
 
-            error: error => console.log(error)
-        })
-    }, 10000)
+        error: error => console.log(error)
+    })
 }
 
 function updateBufferChartData(chart, data) {
@@ -73,7 +71,13 @@ async function showBufferChart() {
     Highcharts.chart('bufferChart', {
         chart: {
             type: 'solidgauge',
-            events: { load: function() { bufferPullData(this) } }
+            events: {
+                load: function() {
+                    setInterval(() => {
+                        bufferPullData(this.series[0])
+                    }, 10000)
+                }
+            }
         },
         title: { text: 'Buffer filling' },
         subtitle: {

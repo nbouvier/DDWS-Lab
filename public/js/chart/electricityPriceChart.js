@@ -1,27 +1,27 @@
 // ========== Production ========== //
 
-async function windLoadData() {
+async function electricityPriceLoadData() {
     return new Promise((resolve, reject) => {
         $.ajax({
-            url: '/api/weather/wind',
+            url: '/api/market/modeled-price',
             type: 'POST',
             dataType: 'JSON',
 
-            success: data => resolve(data.result.wind),
+            success: data => resolve(data.result.modeled_price),
 
             error: error => reject(error)
         })
     })
 }
 
-function windPullData(serie) {
+function electricityPricePullData(serie) {
     $.ajax({
-        url: `/api/weather/wind`,
+        url: '/api/market/modeled-price',
         type: 'POST',
         dataType: 'JSON',
         data: { from: date = Date.now() - 10000 },
 
-        success: data => serie.addPoint(data.result.wind[0], true, true),
+        success: data => serie.addPoint(data.result.modeled_price[0], true, true),
 
         error: error => console.log(error)
     })
@@ -29,20 +29,20 @@ function windPullData(serie) {
 
 // ========== Chart ========== //
 
-async function showWindChart() {
-    Highcharts.chart('windChart', {
+async function showElectricityPriceChart() {
+    Highcharts.chart('electricityPriceChart', {
         chart: {
             events: {
                 load: function() {
                     setInterval(() => {
-                        windPullData(this.series[0])
+                        electricityPricePullData(this.series[0])
                     }, 10000)
                 }
             }
         },
-        title: { text: 'Wind speed over time' },
+        title: { text: 'Electricity price over time' },
         xAxis: { type: 'datetime' },
-        yAxis: { title: { text: 'Speed (m/s)' } },
+        yAxis: { title: { text: 'Price (€/kW)' } },
         legend: { enabled: false },
         plotOptions: {
             area: {
@@ -53,8 +53,8 @@ async function showWindChart() {
             }
         },
         series: [{
-            name: 'Speed (m/s)',
-            data: await windLoadData(),
+            name: 'Price (€/kW)',
+            data: await electricityPriceLoadData(),
             turboThreshold: 0
         }]
     })

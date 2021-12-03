@@ -18,8 +18,10 @@ import generateWeather from './src/models/weather.js'
 import generateProductionConsumption from './src/models/houseProduction.js'
 import generateHouseConsumption from './src/models/houseConsumption.js'
 import generateCoalProduction from './src/models/coalProduction.js'
+import generateElectricityPrice from './src/models/electricityPrice.js'
 
 generateWeather()
 generateProductionConsumption()
 generateHouseConsumption()
 generateCoalProduction()
+generateElectricityPrice()

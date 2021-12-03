@@ -8,6 +8,7 @@ import userRoutes from './api/user.js'
 import house from './api/house.js'
 import coalPowerPlant from './api/coalPowerPlant.js'
 import weatherRoutes from './api/weather.js'
+import marketRoutes from './api/market.js'
 
 const app = express()
 
@@ -24,5 +25,6 @@ app.use('/api/user', userRoutes)
 app.use('/api/house', house)
 app.use('/api/coal-power-plant', coalPowerPlant)
 app.use('/api/weather', weatherRoutes)
+app.use('/api/market', marketRoutes)
 
 export default app
