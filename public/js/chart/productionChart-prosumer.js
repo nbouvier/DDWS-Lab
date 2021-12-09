@@ -76,7 +76,8 @@ async function showProductionChart() {
                         consumptionPullData(this.series[1])
                     }, 10000)
                 }
-            }
+            },
+            zoomType: 'x'
         },
         title: { text: 'Energy production over time' },
         xAxis: { type: 'datetime' },

@@ -99,7 +99,8 @@ async function showElectricityPriceChart() {
                         }
                     }, 10000)
                 }
-            }
+            },
+            zoomType: 'x'
         },
         title: { text: 'Electricity price over time' },
         xAxis: { type: 'datetime' },

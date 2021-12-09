@@ -38,7 +38,8 @@ async function showWindChart() {
                         windPullData(this.series[0])
                     }, 10000)
                 }
-            }
+            },
+            zoomType: 'x'
         },
         title: { text: 'Wind speed over time' },
         xAxis: { type: 'datetime' },
