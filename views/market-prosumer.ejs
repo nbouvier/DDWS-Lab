@@ -6,6 +6,8 @@
 <body>
     <%- include('../partials/sideBar'); %>
 
+    <div id="houseID" class="d-none"><%= house_id %></div>
+
     <div id="content">
         <%- include('../partials/header'); %>
 
@@ -19,32 +21,74 @@
 
             <h2 class="h2">Trading</h2>
 
-            <div class="row">
-                <div class="col-md-6">
+            <div class="row g-5">
+                <div class="col-sm-6">
                     <form id="sellForm" method="post" action="/api/market/sell">
                         <div class="form-group">
-                            <label for="sellAmount">Electricity</label>
-                            <input type="number" class="form-control" id="sellAmount">
+                            <div class="d-flex justify-content-between">
+                                <label for="sellAmount">Electricity</label>
+                                <small class="form-text text-muted font-weight-bold">
+                                    Max <span id="sellMaxAmount"></span> kW
+                                </small>
+                            </div>
+                            <div class="input-group">
+                                <input type="number" value="0" class="form-control" id="sellAmount" aria-describedby="sellAmountHelp">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text font-weight-bold">kW</span>
+                                </div>
+                            </div>
+                            <small id="sellAmountHelp" class="form-text text-muted">
+                                Electricity will be taken from your buffer.
+                            </small>
                         </div>
                         <div class="form-group">
-                            <label for="sellPrice">Price</label>
-                            <input type="number" class="form-control" id="sellPrice" disabled>
+                            <label for="sellPrice">Estimated price</label>
+                            <div class="input-group">
+                                <input type="number" value="0" class="form-control" id="sellPrice" disabled aria-describedby="sellPriceHelp">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text font-weight-bold">$</span>
+                                </div>
+                            </div>
+                            <small id="sellPriceHelp" class="form-text text-muted">
+                                Price will be deducted from your next electricity bill.
+                            </small>
                         </div>
-                        <button type="submit" class="btn btn-success btn-lg">Sell</button>
+                        <button type="submit" class="btn btn-danger btn-block">Sell</button>
                     </form>
                 </div>
 
-                <div class="col-md-6">
+                <div class="col-sm-6">
                     <form id="buyForm" method="post" action="/api/market/buy">
                         <div class="form-group">
-                            <label for="buyAmount">Electricity</label>
-                            <input type="number" class="form-control" id="buyAmount">
+                            <div class="d-flex justify-content-between">
+                                <label for="buyAmount">Electricity</label>
+                                <small class="form-text text-muted font-weight-bold">
+                                    Max <span id="buyMaxAmount"></span> kW
+                                </small>
+                            </div>
+                            <div class="input-group">
+                                <input type="number" value="0" class="form-control" id="buyAmount" aria-describedby="buyAmountHelp">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text font-weight-bold">kW</span>
+                                </div>
+                            </div>
+                            <small id="buyAmountHelp" class="form-text text-muted">
+                                Electricity will be sent to your buffer.
+                            </small>
                         </div>
                         <div class="form-group">
-                            <label for="buyPrice">Price</label>
-                            <input type="number" class="form-control" id="buyPrice" disabled>
+                            <label for="buyPrice">Estimated price</label>
+                            <div class="input-group">
+                                <input type="number" value="0" class="form-control" id="buyPrice" disabled aria-describedby="buyPriceHelp">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text font-weight-bold">$</span>
+                                </div>
+                            </div>
+                            <small id="buyPriceHelp" class="form-text text-muted">
+                                Price will be added to your next electricity bill.
+                            </small>
                         </div>
-                        <button type="submit" class="btn btn-primary btn-lg">Buy</button>
+                        <button type="submit" class="btn btn-success btn-block">Buy</button>
                     </form>
                 </div>
             </div>
@@ -54,7 +98,7 @@
         <%- include('../partials/footer'); %>
     </div>
 
-    <%- include('../partials/scripts'); %>
+    <%- include('../partials/scripts', { view: 'market-prosumer' }); %>
 </body>
 
 </html>

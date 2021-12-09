@@ -68,7 +68,7 @@ function updateBufferChartData(chart, data) {
 async function showBufferChart() {
     let bufferFilling = await bufferLoadData()
 
-    Highcharts.chart('bufferChart', {
+    return Highcharts.chart('bufferChart', {
         chart: {
             type: 'solidgauge',
             events: {

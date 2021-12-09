@@ -27,18 +27,18 @@ async function setHouseProduction() {
     wind = wind[0].speed
     let wind_ratio = wind / WIND_BOOST
 
-    let houses = await db.query('SELECT h.id, h.to_buffer_percentage, ghp.average_production, b.id AS b_id, b.capacity AS b_capacity, b.ressource AS b_ressource FROM house h JOIN buffer b ON h.id = b.house_id JOIN global_house_production ghp ON h.id = ghp.house_id;')
+    let houses = await db.query('SELECT h.id, h.to_buffer_percentage, ghp.average_production, b.id AS b_id, b.capacity AS b_capacity, b.resource AS b_resource FROM house h JOIN buffer b ON h.id = b.house_id JOIN global_house_production ghp ON h.id = ghp.house_id;')
     houses.forEach(async house => {
         let min_production = house.average_production / DELTA_PRODUCTION
         let max_production = (2 * house.average_production - min_production) * wind_ratio
         min_production *= wind_ratio
         let production = random.randomBM(min_production * 100, max_production * 100) / 100 * REFRESH_FREQUENCY
         let productionToBuffer = production * house.to_buffer_percentage / 100
-        productionToBuffer = productionToBuffer + house.b_ressource > house.b_capacity ? house.b_capacity - house.b_ressource : productionToBuffer
-        let bufferRessource = house.b_ressource + productionToBuffer
+        productionToBuffer = productionToBuffer + house.b_resource > house.b_capacity ? house.b_capacity - house.b_resource : productionToBuffer
+        let bufferResource = house.b_resource + productionToBuffer
         let remainingProduction = production - productionToBuffer
 
-        db.query('UPDATE buffer SET ressource = ? WHERE id = ?;', [ bufferRessource, house.b_id ])
+        db.query('UPDATE buffer SET resource = ? WHERE id = ?;', [ bufferResource, house.b_id ])
         db.query('INSERT INTO house_production (house_id, production, remaining_production) VALUES (?, ?, ?);', [ house.id, production, remainingProduction ])
     })
 }

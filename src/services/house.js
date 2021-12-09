@@ -1,6 +1,7 @@
 import db from '../database/database.js'
 
 import House from '../class/house.js'
+import Buffer from '../class/buffer.js'
 
 // Get a House given its ID.
 export async function get(houseID) {
@@ -47,7 +48,7 @@ export async function production(houseID, from = null) {
 export async function consumption(houseID, from = null) {
     let house = await db.loadOne(House, houseID)
 
-    if(!house) { return [false, 'CoalPowerPlant does not exists.'] }
+    if(!house) { return [false, 'House does not exists.'] }
 
     if(from) {
         let date = new Date(from).toISOString().slice(0, 10)
@@ -59,6 +60,42 @@ export async function consumption(houseID, from = null) {
     return [await house.consumption(from), null]
 }
 
-const house = { get, update, production, consumption }
+// Fill a buffer given its ID and a filling amount
+export async function fillBuffer(bufferID, amount) {
+    let buffer = await db.loadOne(Buffer, bufferID)
+
+    if(!buffer) { return [false, 'Buffer does not exists.'] }
+
+    let maxAmount = buffer.capacity - buffer.resource
+    let filledAmount = amount > maxAmount ? maxAmount : amount
+
+    buffer.resource += filledAmount
+
+    if(!(await db.update(Buffer, buffer))) {
+        return [false, 'An error occured while updating the buffer.']
+    }
+
+    return [filledAmount, null]
+}
+
+// Empty a buffer given its ID and an emptying amount
+export async function emptyBuffer(bufferID, amount) {
+    let buffer = await db.loadOne(Buffer, bufferID)
+
+    if(!buffer) { return [false, 'Buffer does not exists.'] }
+
+    let maxAmount = buffer.resource
+    let emptiedAmount = amount > maxAmount ? maxAmount : amount
+
+    buffer.resource -= emptiedAmount
+
+    if(!(await db.update(Buffer, buffer))) {
+        return [false, 'An error occured while updating the buffer.']
+    }
+
+    return [emptiedAmount, null]
+}
+
+const house = { get, update, production, consumption, fillBuffer, emptyBuffer }
 
 export default house

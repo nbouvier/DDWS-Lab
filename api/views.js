@@ -81,10 +81,23 @@ router.get('/electricity-managment', (req, res, next) => {
 })
 
 router.get('/market', (req, res, next) => {
-    middleware.user(req, res, () => {
+    middleware.user(req, res, async () => {
+        let [data, error] = await user.get(req.session.user_id)
+
+        let asset = {}
+        if(error === null) {
+            if(data.isAdmin()) {
+                let [data, error] = await coalPowerPlant.get(1)
+
+                if(error === null) { asset.coal_power_plant_id = data.id }
+                else { messages.push({ message: error, type: 'danger' }) }
+            } else { asset.house_id = (await data.houses())[0] }
+        } else { messages.push({ message: error, type: 'danger' }) }
+
         res.render(`market-${req.session.user_type}`, {
             user_id: req.session.user_id,
-            user_type: req.session.user_type
+            user_type: req.session.user_type,
+            ...asset
         })
     })
 })

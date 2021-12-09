@@ -91,4 +91,28 @@ router.post('/update-under-production', (req, res, next) => {
     }, false)
 })
 
+router.post('/fill-buffer', async (req, res, next) => {
+    // Data validation
+    let [data, error] = await house.fillBuffer(req.body.id, req.body.amount)
+
+    if(error !== null) { res.status(200).json({ error: error }); return }
+
+    res.status(200).json({
+       result: { filled_amount: data },
+       message: 'Buffer has been filled.'
+    })
+})
+
+router.post('/empty-buffer', async (req, res, next) => {
+    // Data validation
+    let [data, error] = await house.emptyBuffer(req.body.id, req.body.amount)
+
+    if(error !== null) { res.status(200).json({ error: error }); return }
+
+    res.status(200).json({
+       result: { emptied_amount: data },
+       message: 'Buffer has been emptied.'
+    })
+})
+
 export default router

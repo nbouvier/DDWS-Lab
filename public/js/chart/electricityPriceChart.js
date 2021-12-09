@@ -30,7 +30,7 @@ function electricityPricePullData(serie) {
 // ========== Chart ========== //
 
 async function showElectricityPriceChart() {
-    Highcharts.chart('electricityPriceChart', {
+    return Highcharts.chart('electricityPriceChart', {
         chart: {
             events: {
                 load: function() {

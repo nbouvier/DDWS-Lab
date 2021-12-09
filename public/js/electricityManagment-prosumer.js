@@ -16,7 +16,7 @@ function loadElectricityManagmentPage(callback) {
 function loadElectricityManagmentPageSuccess(data) {
     let house = data.house
     let buffer = house.buffer
-    let bufferFilling = (buffer.ressource / buffer.capacity * 100).toFixed(2)
+    let bufferFilling = (buffer.resource / buffer.capacity * 100).toFixed(2)
 
     $('#production').html((house.production * 3600).toFixed(3))
     $('#consumption').html((house.consumption * 3600).toFixed(3))
@@ -33,7 +33,7 @@ function loadElectricityManagmentPageSuccess(data) {
 function refreshElectricityManagmentPageSuccess(data) {
     let house = data.coal_power_plant
     let buffer = house.buffer
-    let bufferFilling = (buffer.ressource / buffer.capacity * 100).toFixed(2)
+    let bufferFilling = (buffer.resource / buffer.capacity * 100).toFixed(2)
 
     $('#production').html((house.production * 3600).toFixed(3))
     $('#consumption').html((house.consumption * 3600).toFixed(3))
@@ -45,7 +45,7 @@ function refreshElectricityManagmentPageSuccess(data) {
 
 function excessiveProductionFormData() {
     return {
-        id: $('#excessiveProductionHouseID').val(),
+        id: $('#houseID').val(),
         to_buffer_percentage: $('#excessiveProductionBufferPercentage').val()
     }
 }
@@ -59,7 +59,7 @@ function excessiveProductionFormSuccess(data) {
 
 function underProductionFormData() {
     return {
-        id: $('#underProductionHouseID').val(),
+        id: $('#houseID').val(),
         from_buffer_percentage: $('#underProductionBufferPercentage').val()
     }
 }

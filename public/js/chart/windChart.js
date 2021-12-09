@@ -30,7 +30,7 @@ function windPullData(serie) {
 // ========== Chart ========== //
 
 async function showWindChart() {
-    Highcharts.chart('windChart', {
+    return Highcharts.chart('windChart', {
         chart: {
             events: {
                 load: function() {

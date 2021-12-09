@@ -34,7 +34,7 @@ function productionPullData(serie) {
 // ========== Chart ========== //
 
 async function showProductionChart() {
-    Highcharts.chart('productionChart', {
+    return Highcharts.chart('productionChart', {
         chart: {
             events: {
                 load: function() {

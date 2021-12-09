@@ -26,13 +26,13 @@ router.post('/modeled-price', async (req, res, next) => {
 router.post('/sell', async (req, res, next) => {
     middleware.prosumer(req, res, async () => {
         // Data validation
-        let [data, error] = await market.sell(req.body.amount, req.session.user_id)
+        let [data, error] = await market.sell(req.body.amount, req.body.house_id)
 
         if(error !== null) { res.status(200).json({ error: error }); return }
 
         res.status(200).json({
-           result: true,
-           message: ''
+           result: { amount: data },
+           message: `Transaction succeed for an amount of ${data} kW.`
         })
     }, false)
 })
@@ -40,13 +40,13 @@ router.post('/sell', async (req, res, next) => {
 router.post('/buy', async (req, res, next) => {
     middleware.prosumer(req, res, async () => {
         // Data validation
-        let [data, error] = await market.buy(req.body.amount, req.session.user_id)
+        let [data, error] = await market.buy(req.body.amount, req.body.house_id)
 
         if(error !== null) { res.status(200).json({ error: error }); return }
 
         res.status(200).json({
-           result: true,
-           message: ''
+           result: { amount: data },
+           message: `Transaction succeed for an amount of ${data} kW.`
         })
     }, false)
 })

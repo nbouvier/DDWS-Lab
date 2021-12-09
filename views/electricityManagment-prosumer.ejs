@@ -77,7 +77,6 @@
                     </p>
 
                     <form id="excessiveProductionForm" method="post" action="/api/house/update-excessive-production">
-                        <input type="text" class="d-none" id="excessiveProductionHouseID" value="1">
                         <div class="form-group input-group">
                             <p class="input-group-prepend pt-1">To buffer (<span id="toBuffer"></span> %)</p>
                             <input type="range" class="form-control-range form-control mx-3" id="excessiveProductionBufferPercentage">
@@ -98,7 +97,6 @@
                     </p>
 
                     <form id="underProductionForm" method="post" action="/api/house/update-under-production">
-                        <input type="text" class="d-none" id="underProductionHouseID" value="1">
                         <div class="form-group input-group">
                             <p class="input-group-prepend pt-1">From buffer (<span id="fromBuffer"></span> %)</p>
                             <input type="range" class="form-control-range form-control mx-3" id="underProductionBufferPercentage">

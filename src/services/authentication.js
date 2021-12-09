@@ -90,7 +90,9 @@ export async function resetPassword(hash, password) {
     }
 
     user.password = crypto.encrypt(password)
-    db.update(User, user)
+    if(!(await db.update(User, user))) {
+        return [false, 'An error occured while updating the user.']
+    }
 
     db.query(`DELETE FROM reset_password WHERE hash = ?;`, [hash])
 
