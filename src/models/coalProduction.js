@@ -14,16 +14,13 @@ async function setCoalPowerPlantProduction() {
         let productionToBuffer = production * coalPowerPlant.buffer_percentage / 100
         productionToBuffer = productionToBuffer + coalPowerPlant.b_ressource > coalPowerPlant.b_capacity ? coalPowerPlant.b_capacity - coalPowerPlant.b_ressource : productionToBuffer
         let bufferRessource = coalPowerPlant.b_ressource + productionToBuffer
+        let remainingProduction = production - productionToBuffer
 
         db.query('UPDATE buffer SET ressource = ? WHERE id = ?;', [ bufferRessource, coalPowerPlant.b_id ])
-        db.query('INSERT INTO coal_production (coal_power_plant_id, production) VALUES (?, ?);', [ coalPowerPlant.id, production ])
+        db.query('INSERT INTO coal_production (coal_power_plant_id, production, remaining_production) VALUES (?, ?, ?);', [ coalPowerPlant.id, production, remainingProduction ])
     })
 }
 
-export default async function generateData() {
-    while(new Date().getSeconds() % REFRESH_FREQUENCY) {}
+const coalProduction = { setCoalPowerPlantProduction }
 
-    setInterval(() => {
-        setCoalPowerPlantProduction()
-    }, REFRESH_FREQUENCY * 1000)
-}
+export default coalProduction

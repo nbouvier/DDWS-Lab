@@ -1,3 +1,5 @@
+// ========== Register form ========== //
+
 function registerFormData() {
     return {
         first_name: $('#registerFirstName').val(),

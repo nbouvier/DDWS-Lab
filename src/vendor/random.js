@@ -4,7 +4,7 @@ export function randomBM(min, max, skew = 1) {
     while(v === 0) v = Math.random()
     let num = Math.sqrt( -2.0 * Math.log( u ) ) * Math.cos( 2.0 * Math.PI * v )
     num = num / 10.0 + 0.5
-    if (num > 1 || num < 0) num = randn_bm(min, max)
+    if (num > 1 || num < 0) num = randomBM(min, max)
     num = Math.pow(num, skew)
     num *= max - min
     num += min

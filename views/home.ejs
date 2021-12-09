@@ -20,6 +20,11 @@
             <%- include('../partials/chart/productionChart'); %>
 
             <div class="row">
+                <% if(user_type == 'admin') { %>
+                <div class="col-lg-8">
+                    <%- include('../partials/chart/electricityPriceChart'); %>
+                </div>
+                <% } else { %>
                 <div class="col-lg-4">
                     <%- include('../partials/chart/windChart'); %>
                 </div>
@@ -27,6 +32,7 @@
                 <div class="col-lg-4">
                     <%- include('../partials/chart/electricityPriceChart'); %>
                 </div>
+                <% } %>
 
                 <div class="col-lg-4">
                     <%- include('../partials/chart/bufferChart'); %>

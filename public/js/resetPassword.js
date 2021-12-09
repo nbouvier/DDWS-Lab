@@ -1,3 +1,5 @@
+// ========== Reset password form ========== //
+
 function resetPasswordFormData() {
     return {
         hash: $('#resetPasswordHash').val(),

@@ -23,4 +23,32 @@ router.post('/modeled-price', async (req, res, next) => {
     }, false)
 })
 
+router.post('/sell', async (req, res, next) => {
+    middleware.prosumer(req, res, async () => {
+        // Data validation
+        let [data, error] = await market.sell(req.body.amount, req.session.user_id)
+
+        if(error !== null) { res.status(200).json({ error: error }); return }
+
+        res.status(200).json({
+           result: true,
+           message: ''
+        })
+    }, false)
+})
+
+router.post('/buy', async (req, res, next) => {
+    middleware.prosumer(req, res, async () => {
+        // Data validation
+        let [data, error] = await market.buy(req.body.amount, req.session.user_id)
+
+        if(error !== null) { res.status(200).json({ error: error }); return }
+
+        res.status(200).json({
+           result: true,
+           message: ''
+        })
+    }, false)
+})
+
 export default router

@@ -10,9 +10,12 @@ const GROWTH_FACTOR = 4
 async function calculateElectricityPrice() {
     let production = (await db.query('SELECT SUM(production) AS production FROM coal_production cp JOIN (SELECT coal_power_plant_id, MAX(timestamp) AS timestamp FROM coal_production GROUP BY coal_power_plant_id) t ON cp.coal_power_plant_id = t.coal_power_plant_id AND cp.timestamp = t.timestamp;'))[0].production
     let consumption = (await db.query('SELECT SUM(consumption) AS consumption FROM house_consumption hc JOIN (SELECT house_id, MAX(timestamp) AS timestamp FROM house_consumption GROUP BY house_id) t ON hc.house_id = t.house_id AND hc.timestamp = t.timestamp;'))[0].consumption
-    let price = (Math.exp(GROWTH_FACTOR * consumption / production / SPREAD_FACTOR) - 1) / REGULATORY_FACTOR
 
-    db.query('INSERT INTO modeled_electricity_price (price) VALUES (?);', [ price ])
+    if(production !== null && consumption !== null) {
+        let price = (Math.exp(GROWTH_FACTOR * consumption / production / SPREAD_FACTOR) - 1) / REGULATORY_FACTOR
+
+        db.query('INSERT INTO modeled_electricity_price (price) VALUES (?);', [ price ])
+    }
 }
 
 export default async function generateData() {

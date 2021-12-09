@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+
+<%- include('../partials/head'); %>
+
+<body>
+    <%- include('../partials/sideBar'); %>
+
+    <div id="content">
+        <%- include('../partials/header'); %>
+
+        <section class="container-fluid">
+
+            <%- include('../partials/chart/electricityPriceChart'); %>
+
+        </section>
+
+        <section class="container-fluid">
+
+            <h2 class="h2">Trading</h2>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <form id="sellForm" method="post" action="/api/market/sell">
+                        <div class="form-group">
+                            <label for="sellAmount">Electricity</label>
+                            <input type="number" class="form-control" id="sellAmount">
+                        </div>
+                        <div class="form-group">
+                            <label for="sellPrice">Price</label>
+                            <input type="number" class="form-control" id="sellPrice" disabled>
+                        </div>
+                        <button type="submit" class="btn btn-success btn-lg">Sell</button>
+                    </form>
+                </div>
+
+                <div class="col-md-6">
+                    <form id="buyForm" method="post" action="/api/market/buy">
+                        <div class="form-group">
+                            <label for="buyAmount">Electricity</label>
+                            <input type="number" class="form-control" id="buyAmount">
+                        </div>
+                        <div class="form-group">
+                            <label for="buyPrice">Price</label>
+                            <input type="number" class="form-control" id="buyPrice" disabled>
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-lg">Buy</button>
+                    </form>
+                </div>
+            </div>
+
+        </section>
+
+        <%- include('../partials/footer'); %>
+    </div>
+
+    <%- include('../partials/scripts'); %>
+</body>
+
+</html>

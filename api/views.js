@@ -80,6 +80,15 @@ router.get('/electricity-managment', (req, res, next) => {
     })
 })
 
+router.get('/market', (req, res, next) => {
+    middleware.user(req, res, () => {
+        res.render(`market-${req.session.user_type}`, {
+            user_id: req.session.user_id,
+            user_type: req.session.user_type
+        })
+    })
+})
+
 router.get('/profile', (req, res, next) => {
     middleware.user(req, res, () => {
         res.render('profile', {

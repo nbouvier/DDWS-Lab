@@ -50,11 +50,6 @@ async function setHouseConsumption() {
     });
 }
 
-export default async function generateData() {
-    while(new Date().getSeconds() % REFRESH_FREQUENCY) {}
+const houseConsumption = { setHouseAverageConsumption, setHouseConsumption }
 
-    setInterval(() => {
-        setHouseAverageConsumption()
-        setHouseConsumption()
-    }, REFRESH_FREQUENCY * 1000)
-}
+export default houseConsumption
