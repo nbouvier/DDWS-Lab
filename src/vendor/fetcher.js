@@ -1,17 +1,12 @@
+import fetch from 'node-fetch'
+
 // Query the database
-export function fetchFromService(url, data) {
-    return new Promise((resolve, reject) => {
-        $.ajax({
-            url: url,
-            type: 'POST',
-            dataType: 'JSON',
-            data: data,
-
-            success: data => resolve(data),
-
-            error: error => reject(error)
-        })
-    })
+export async function fetchFromService(url, data) {
+    return await (await fetch(process.env.URL + url, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json;charset=utf-8' },
+        body: JSON.stringify(data)
+    })).json()
 }
 
 const fetcher = { fetchFromService }

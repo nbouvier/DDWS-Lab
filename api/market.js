@@ -5,6 +5,38 @@ import market from '../src/services/market.js'
 
 const router = express.Router()
 
+router.post('/set-price', async (req, res, next) => {
+    middleware.user(req, res, async () => {
+        // Data validation
+        let [data, error] = await market.setPrice(req.body.price)
+
+        if(error !== null) { res.status(200).json({ error: error }); return }
+
+        res.status(200).json({
+           result: { price: data },
+           message: 'Price has been updated.'
+        })
+    }, false)
+})
+
+router.post('/price', async (req, res, next) => {
+    middleware.user(req, res, async () => {
+        // Data validation
+        let from = req.body.from ? parseInt(req.body.from) : null
+
+        let [data, error] = await market.price(from)
+
+        if(error !== null) { res.status(200).json({ error: error }); return }
+
+        data = data.map(entry => [ entry.timestamp, entry.price ])
+
+        res.status(200).json({
+           result: { price: data },
+           message: ''
+        })
+    }, false)
+})
+
 router.post('/modeled-price', async (req, res, next) => {
     middleware.admin(req, res, async () => {
         // Data validation
@@ -18,6 +50,22 @@ router.post('/modeled-price', async (req, res, next) => {
 
         res.status(200).json({
            result: { modeled_price: data },
+           message: ''
+        })
+    }, false)
+})
+
+
+
+router.post('/orders', async (req, res, next) => {
+    middleware.admin(req, res, async () => {
+        // Data validation
+        let [data, error] = await market.orders()
+
+        if(error !== null) { res.status(200).json({ error: error }); return }
+
+        res.status(200).json({
+           result: { orders: data },
            message: ''
         })
     }, false)

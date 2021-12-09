@@ -47,6 +47,18 @@ router.post('/all', (req, res, next) => {
     }, false)
 })
 
+router.post('/from-house', async (req, res, next) => {
+    // Data validation
+    let [data, error] = await user.getFromHouse(req.body.id)
+
+    if(error !== null) { res.status(200).json({ error: error }); return }
+
+    res.status(200).json({
+       result: { user: data },
+       message: ''
+    })
+})
+
 router.post('/update-profile', (req, res, next) => {
     middleware.user(req, res, async () => {
         // Data validation

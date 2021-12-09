@@ -3,8 +3,9 @@
 $(document).ready(function() {
 
     showProductionChart()
-    showWindChart()
     showElectricityPriceChart()
     showBufferChart()
+
+    if($('#houseID').length) { showWindChart() }
 
 })

@@ -21,7 +21,7 @@ function windPullData(serie) {
         dataType: 'JSON',
         data: { from: date = Date.now() - 10000 },
 
-        success: data => serie.addPoint(data.result.wind[0], true, true),
+        success: data => serie.addPoint(data.result.wind[0]),
 
         error: error => console.log(error)
     })
@@ -54,8 +54,7 @@ async function showWindChart() {
         },
         series: [{
             name: 'Speed (m/s)',
-            data: await windLoadData(),
-            turboThreshold: 0
+            data: await windLoadData()
         }]
     })
 }

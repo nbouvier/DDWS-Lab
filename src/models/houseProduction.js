@@ -27,7 +27,7 @@ async function setHouseProduction() {
     wind = wind[0].speed
     let wind_ratio = wind / WIND_BOOST
 
-    let houses = await db.query('SELECT h.id, h.to_buffer_percentage, ghp.average_production, b.id AS b_id, b.capacity AS b_capacity, b.resource AS b_resource FROM house h JOIN buffer b ON h.id = b.house_id JOIN global_house_production ghp ON h.id = ghp.house_id;')
+    let houses = await db.query('SELECT h.id, h.to_buffer_percentage, ghp.average_production, b.id AS b_id, b.capacity AS b_capacity, b.resource AS b_resource FROM house h JOIN buffer b ON h.buffer_id = b.id JOIN global_house_production ghp ON h.id = ghp.house_id;')
     houses.forEach(async house => {
         let min_production = house.average_production / DELTA_PRODUCTION
         let max_production = (2 * house.average_production - min_production) * wind_ratio

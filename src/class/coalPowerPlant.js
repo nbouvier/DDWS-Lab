@@ -5,15 +5,16 @@ import Buffer from './buffer.js'
 export default class CoalPowerPlant {
 
     static table = 'coal_power_plant'
-    static fields = [ 'running', 'buffer_percentage' ]
+    static fields = [ 'running', 'buffer_percentage', 'buffer_id' ]
 
-    constructor(running, buffer_percentage) {
+    constructor(running, buffer_percentage, buffer_id) {
         this.running = running
         this.buffer_percentage = buffer_percentage
+        this.buffer_id = buffer_id
     }
 
     async buffer() {
-        return (await db.loadWhere(Buffer, 'coal_power_plant_id = ?', [ this.id ]))[0]
+        return await db.loadOne(Buffer, this.buffer_id)
     }
 
     async actualProduction() {

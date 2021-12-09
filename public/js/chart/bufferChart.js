@@ -2,7 +2,7 @@
 
 function calculateBufferFilling(data) {
     let buffer = data.result[data.result.house ? 'house' : 'coal_power_plant'].buffer
-    let bufferFilling = parseFloat((buffer.ressource / buffer.capacity * 100).toFixed(2))
+    let bufferFilling = parseFloat((buffer.resource / buffer.capacity * 100).toFixed(2))
 
     return bufferFilling
 }

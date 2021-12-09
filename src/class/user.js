@@ -8,10 +8,10 @@ export default class User {
     static table = 'user'
     static fields = [
         'type', 'name', 'forename', 'email', 'password', 'address',
-        'additional_address', 'city', 'zip_code'
+        'additional_address', 'city', 'zip_code', 'house_id'
     ]
 
-    constructor(type, name, forename, email, password, address, additionalAddress, city, zipCode) {
+    constructor(type, name, forename, email, password, address, additionalAddress, city, zipCode, houseID) {
         this.type = type
         this.name = name
         this.forename = forename
@@ -21,6 +21,7 @@ export default class User {
         this.additional_address = additionalAddress
         this.city = city
         this.zip_code = zipCode
+        this.house_id = houseID
     }
 
     isAdmin() {
@@ -30,10 +31,6 @@ export default class User {
     async block(time) {
         let end = new Date(Date.now().valueOf() + time).toISOString().slice(0, 19).replace('T', ' ')
         return await db.query(`INSERT INTO block_user (user_id, end) VALUES (?, ?);`, [ this.id, end ])
-    }
-
-    async houses() {
-        return (await db.query('SELECT house_id FROM user_house WHERE user_id = ?;', [ this.id ])).map(house => house.house_id)
     }
 
     serialize() {
@@ -46,7 +43,8 @@ export default class User {
             address: this.address,
             additional_address: this.additional_address,
             city: this.city,
-            zip_code: this.zip_code
+            zip_code: this.zip_code,
+            house_id: this.house_id
         }
     }
 }

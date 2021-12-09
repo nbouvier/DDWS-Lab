@@ -25,7 +25,7 @@ function productionPullData(serie) {
             from: date = Date.now() - 10000
         },
 
-        success: data => serie.addPoint(data.result.production[0], true, true),
+        success: data => serie.addPoint(data.result.production[0]),
 
         error: error => console.log(error)
     })
@@ -58,8 +58,7 @@ async function showProductionChart() {
         },
         series: [{
             name: 'Production (W)',
-            data: await productionLoadData(),
-            turboThreshold: 0
+            data: await productionLoadData()
         }]
     })
 }

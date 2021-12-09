@@ -47,7 +47,7 @@ router.get('/', (req, res, next) => {
 
                 if(error === null) { asset.coal_power_plant_id = data.id }
                 else { messages.push({ message: error, type: 'danger' }) }
-            } else { asset.house_id = (await data.houses())[0] }
+            } else { asset.house_id = data.house_id }
         } else { messages.push({ message: error, type: 'danger' }) }
 
         res.render('home', {
@@ -69,7 +69,7 @@ router.get('/electricity-managment', (req, res, next) => {
 
                 if(error === null) { asset.coal_power_plant_id = data.id }
                 else { messages.push({ message: error, type: 'danger' }) }
-            } else { asset.house_id = (await data.houses())[0] }
+            } else { asset.house_id = data.house_id }
         } else { messages.push({ message: error, type: 'danger' }) }
 
         res.render(`electricityManagment-${req.session.user_type}`, {
@@ -91,7 +91,7 @@ router.get('/market', (req, res, next) => {
 
                 if(error === null) { asset.coal_power_plant_id = data.id }
                 else { messages.push({ message: error, type: 'danger' }) }
-            } else { asset.house_id = (await data.houses())[0] }
+            } else { asset.house_id = data.house_id }
         } else { messages.push({ message: error, type: 'danger' }) }
 
         res.render(`market-${req.session.user_type}`, {

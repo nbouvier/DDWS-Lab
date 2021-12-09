@@ -70,6 +70,12 @@ $(document).ready(function() {
     $('form button[type=submit]').on('click', function(e) {
         form = $(this).parents('form').first()
         formName = form.attr('id')
+
+        if(!window[`${formName}Data`]) {
+            console.log(`${formName}Data is missing !`)
+            return
+        }
+
         if(window[`${formName}Validation`] ? window[`${formName}Validation`]() : formValidation()) {
             $.ajax({
                 url: form.attr('action'),

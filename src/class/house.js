@@ -5,15 +5,16 @@ import Buffer from './buffer.js'
 export default class House {
 
     static table = 'house'
-    static fields = [ 'to_buffer_percentage', 'from_buffer_percentage' ]
+    static fields = [ 'to_buffer_percentage', 'from_buffer_percentage', 'buffer_id' ]
 
-    constructor(to_buffer_percentage, from_buffer_percentage) {
+    constructor(to_buffer_percentage, from_buffer_percentage, buffer_id) {
         this.to_buffer_percentage = to_buffer_percentage
         this.from_buffer_percentage = from_buffer_percentage
+        this.buffer_id = buffer_id
     }
 
     async buffer() {
-        return (await db.loadWhere(Buffer, 'house_id = ?', [ this.id ]))[0]
+        return await db.loadOne(Buffer, this.buffer_id)
     }
 
     async actualProduction() {

@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+
+<%- include('../partials/head'); %>
+
+<body>
+    <%- include('../partials/sideBar'); %>
+
+    <div id="coalPowerPlantID" class="d-none"><%= coal_power_plant_id %></div>
+
+    <div id="content">
+        <%- include('../partials/header'); %>
+
+        <section class="container-fluid">
+
+            <div class="row">
+                <div class="col-md-8">
+                    <%- include('../partials/chart/electricityPriceChart'); %>
+                </div>
+
+                <div class="col-md-4">
+                    <form id="setPriceForm" method="post" action="/api/market/set-price">
+                        <div class="form-group">
+                            <label for="sellPrice">Price</label>
+                            <div class="input-group">
+                                <input type="number" step="0.001" class="form-control" id="setPricePrice">
+                                <div class="input-group-append">
+                                    <span class="input-group-text font-weight-bold">$/kW</span>
+                                </div>
+                            </div>
+                        </div>
+                        <button type="reset" class="btn btn-danger">Undo</button>
+                        <button type="submit" class="btn btn-primary">Save</button>
+                    </form>
+                </div>
+            </div>
+
+        </section>
+
+        <section class="container-fluid">
+
+            <h2 class="h2">Order flow</h2>
+
+            <p class="h5">
+                <small class="text-muted">
+
+                </small>
+            </p>
+
+            <table id="orderFlowList" class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">Action</th>
+                        <th scope="col">Amount (kW)</th>
+                        <th scope="col">Price ($)</th>
+                        <th scope="col">Total</th>
+                        <th scope="col">User</th>
+                        <th scope="col">Date</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+
+        </section>
+
+        <%- include('../partials/footer'); %>
+    </div>
+
+    <%- include('../partials/scripts', { view: 'market-admin' }); %>
+</body>
+
+</html>

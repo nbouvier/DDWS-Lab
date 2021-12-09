@@ -18,6 +18,15 @@ export async function getAll() {
     return [users, null]
 }
 
+// Get a User given its house id.
+export async function getFromHouse(houseID) {
+    let user = (await db.loadWhere(User, 'house_id = ?', [ houseID ]))[0]
+
+    if(!user) { return [false, 'User does not exists.'] }
+
+    return [user, null]
+}
+
 // Update a User given its ID using newData as data to update.
 // newData should be an object with <attribute>: <value> pairs.
 export async function update(userID, newData) {
@@ -85,6 +94,6 @@ export async function del(userID) {
     return [true, null]
 }
 
-const user = { get, getAll, update, block, del }
+const user = { get, getAll, getFromHouse, update, block, del }
 
 export default user
