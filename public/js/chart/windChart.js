@@ -41,10 +41,19 @@ async function showWindChart() {
             },
             zoomType: 'x'
         },
-        title: { text: 'Wind speed over time' },
+        title: {
+            useHTML: true,
+            align: 'left',
+            text: '<h4 class="h5">Wind speed over time</h4>'
+        },
         xAxis: { type: 'datetime' },
         yAxis: { title: { text: 'Speed (m/s)' } },
-        legend: { enabled: false },
+        legend: {
+            align: 'left',
+            verticalAlign: 'top',
+            borderWidth: 0
+        },
+        exporting: { enabled: false },
         plotOptions: {
             area: {
                 marker: { radius: 2 },

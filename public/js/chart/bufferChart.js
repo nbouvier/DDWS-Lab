@@ -79,7 +79,11 @@ async function showBufferChart() {
                 }
             }
         },
-        title: { text: 'Buffer filling' },
+        title: {
+            useHTML: true,
+            align: 'left',
+            text: '<h4 class="h5">Buffer filling</h4>'
+        },
         subtitle: {
             floating: true,
             verticalAlign: 'middle',
@@ -108,6 +112,7 @@ async function showBufferChart() {
             lineWidth: 0,
             tickPositions: []
         },
+        exporting: { enabled: false },
         plotOptions: {
             solidgauge: {
                 dataLabels: { enabled: false },

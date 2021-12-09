@@ -102,10 +102,19 @@ async function showElectricityPriceChart() {
             },
             zoomType: 'x'
         },
-        title: { text: 'Electricity price over time' },
+        title: {
+            useHTML: true,
+            align: 'left',
+            text: '<h4 class="h5">Electricity price over time</h4>'
+        },
         xAxis: { type: 'datetime' },
         yAxis: { title: { text: 'Price (€/kW)' } },
-        legend: { enabled: false },
+        legend: {
+            align: 'left',
+            verticalAlign: 'top',
+            borderWidth: 0
+        },
+        exporting: { enabled: false },
         plotOptions: {
             area: {
                 marker: { radius: 2 },
