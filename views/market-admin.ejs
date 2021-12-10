@@ -4,12 +4,14 @@
 <%- include('../partials/head'); %>
 
 <body>
-    <%- include('../partials/sideBar'); %>
 
     <div id="coalPowerPlantID" class="d-none"><%= coal_power_plant_id %></div>
 
+    <%- include('../partials/header', { view_title: 'Market' }); %>
+
+    <%- include('../partials/sideBar', { view: 'market' }); %>
+
     <div id="content">
-        <%- include('../partials/header'); %>
 
         <section class="container-fluid">
 
@@ -67,6 +69,7 @@
     </div>
 
     <%- include('../partials/scripts', { view: 'market-admin' }); %>
+
 </body>
 
 </html>

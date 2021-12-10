@@ -4,17 +4,20 @@
 <%- include('../partials/head'); %>
 
 <body>
-    <%- include('../partials/sideBar'); %>
+
+    <%- include('../partials/header', { view_title: 'Template' }); %>
+
+    <%- include('../partials/sideBar', { view: 'template' }); %>
 
     <div id="content">
-        <%- include('../partials/header'); %>
 
         <!-- Content -->
 
         <%- include('../partials/footer'); %>
     </div>
 
-    <%- include('../partials/scripts'); %>
+    <%- include('../partials/scripts', { view: 'template' }); %>
+
 </body>
 
 </html>

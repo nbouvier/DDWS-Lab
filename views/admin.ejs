@@ -4,10 +4,12 @@
 <%- include('../partials/head'); %>
 
 <body>
-    <%- include('../partials/sideBar'); %>
+
+    <%- include('../partials/header', { view_title: 'Administration' }); %>
+
+    <%- include('../partials/sideBar', { view: 'admin' }); %>
 
     <div id="content">
-        <%- include('../partials/header'); %>
 
         <h2 class="h2">Users</h2>
 
@@ -91,6 +93,7 @@
     </div>
 
     <%- include('../partials/scripts', { view: 'admin' }); %>
+
 </body>
 
 </html>

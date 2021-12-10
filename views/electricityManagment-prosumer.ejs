@@ -4,12 +4,14 @@
 <%- include('../partials/head'); %>
 
 <body>
-    <%- include('../partials/sideBar'); %>
 
     <div id="houseID" class="d-none"><%= house_id %></div>
 
+    <%- include('../partials/header', { view_title: 'Electricity managment' }); %>
+
+    <%- include('../partials/sideBar', { view: 'electricityManagment' }); %>
+
     <div id="content">
-        <%- include('../partials/header'); %>
 
         <section class="container-fluid">
 
@@ -120,6 +122,7 @@
     </div>
 
     <%- include('../partials/scripts', { view: `electricityManagment-prosumer` }); %>
+
 </body>
 
 </html>

@@ -1,55 +1,46 @@
 <!-- Sidebar  -->
-<nav id="sidebar" class="minimized">
-    <div class="dismiss">
-        <i class="fas fa-times"></i>
-    </div>
-
-    <div id="sidebar-header">
-        <h3>AppName</h3>
-        <strong><i class="fas fa-bars"></i></strong>
-    </div>
-
-    <ul class="list-unstyled components">
-        <li class="active">
-            <a href="/">
-                <i class="fas fa-home"></i>
-                <p>Dashboard</p>
+<nav id="sidebar" class="minimized d-flex flex-column bg-blue">
+    <ul class="list-unstyled components mt-5">
+        <li class="<% if(view == 'home') { %> active <% } %>mb-2 overflow-hidden text-nowrap">
+            <a href="/" class="text-light-grey text-decoration-none" title="Dasboard">
+                <span class="sidebar-icon"><i class="fas fa-home"></i></span>
+                <span class="sidebar-text ml-3">Dashboard</span>
             </a>
         </li>
-        <li>
-            <a href="/electricity-managment">
-                <i class="fas fa-wrench"></i>
-                <p>Electricity managment</p>
+        <li class="<% if(view == 'electricityManagment') { %> active <% } %>mb-2 overflow-hidden text-nowrap">
+            <a href="/electricity-managment" class="text-light-grey text-decoration-none" title="Electricity managment">
+                <span class="sidebar-icon"><i class="fas fa-wrench"></i></span>
+                <span class="sidebar-text ml-3">Electricity managment</span>
             </a>
         </li>
-        <li>
-            <a href="/market">
-                <i class="fas fa-dollar-sign"></i>
-                <p>Market</p>
+        <li class="<% if(view == 'market') { %> active <% } %> overflow-hidden text-nowrap">
+            <a href="/market" class="text-light-grey text-decoration-none" title="Market">
+                <span class="sidebar-icon"><i class="fas fa-dollar-sign"></i></span>
+                <span class="sidebar-text ml-3">Market</span>
             </a>
         </li>
         <% if(user_type == 'admin') { %>
-        <li class="hr"></li>
-        <li>
-            <a href="/admin">
-                <i class="fas fa-cog"></i>
-                <p>Administration</p>
+        <li class="hr border-light-grey my-4"></li>
+        <li class="<% if(view == 'admin') { %> active <% } %> overflow-hidden text-nowrap">
+            <a href="/admin" class="text-light-grey text-decoration-none" title="Administration">
+                <span class="sidebar-icon"><i class="fas fa-cog"></i></span>
+                <span class="sidebar-text ml-3">Administration</span>
             </a>
         </li>
         <% } %>
     </ul>
 
-    <ul class="list-unstyled components">
-        <li>
-            <a href="/profile">
-                <i class="fas fa-user"></i>
-                <p>Profile</p>
+    <ul class="list-unstyled components mt-auto mb-4">
+        <li class="<% if(view == 'profile') { %> active <% } %>mb-2 overflow-hidden text-nowrap">
+            <a href="/profile" class="text-light-grey text-decoration-none" title="Profile">
+                <span class="sidebar-icon"><i class="fas fa-user"></i></span>
+                <span class="sidebar-text ml-3">Profile</span>
             </a>
         </li>
-        <li>
-            <a href="#" class="logout">
-                <i class="fas fa-sign-out-alt"></i>
-                <p>Logout</p>
+        <li class="overflow-hidden text-nowrap">
+            <a href="#" class="logout text-light-grey text-decoration-none" title="Logout">
+                <span class="sidebar-icon"><i class="fas fa-sign-out-alt"></i></span>
+                <span class="sidebar-text ml-3">Logout</span>
             </a>
         </li>
     </ul>

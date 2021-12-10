@@ -4,13 +4,15 @@
 <%- include('../partials/head'); %>
 
 <body>
-    <%- include('../partials/sideBar'); %>
+
+    <%- include('../partials/header', { view_title: 'Profile' }); %>
+
+    <%- include('../partials/sideBar', { view: 'profile' }); %>
 
     <div id="content">
-        <%- include('../partials/header'); %>
 
         <section class="container-fluid">
-            
+
             <h2 class="h2">Profile</h2>
 
             <form id="profileForm" method="post" action="/api/user/update-profile">
@@ -70,6 +72,7 @@
     </div>
 
     <%- include('../partials/scripts', { view: 'profile' }); %>
+
 </body>
 
 </html>

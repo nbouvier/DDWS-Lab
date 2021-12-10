@@ -5,8 +5,9 @@
 
 <body>
 
+    <%- include('../partials/header, { view_title: 'Login' }'); %>
+
     <div id="content">
-        <%- include('../partials/header'); %>
 
         <h2 class="h2">Login</h2>
 
@@ -29,6 +30,7 @@
     <%- include('../partials/messages'); %>
 
     <%- include('../partials/scripts', { view: 'login' }); %>
+
 </body>
 
 </html>

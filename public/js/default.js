@@ -40,14 +40,16 @@ $(document).ready(function() {
 
     // ========== SideBar ========== //
 
-    $('#sidebar .dismiss, #overlay').on('click', () => {
+    $('#sidebar').on('mouseleave', () => {
         $('#sidebar').addClass('minimized')
-        $('#overlay').removeClass('active')
+        $('#overlay').animate({ opacity: 0 }, 500, function() {
+            $(this).css({ width: '0', height: '0' })
+        })
     })
 
-    $('#sidebar-header').on('click', () => {
+    $('#sidebar').on('mouseenter', () => {
         $('#sidebar').removeClass('minimized')
-        $('#overlay').addClass('active')
+        $('#overlay').css({ width: '100vw', height: '100vh' }).animate({ opacity: 1 }, 500)
     })
 
     $('.logout').on('click', e => {
