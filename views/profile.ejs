@@ -11,9 +11,11 @@
 
     <div id="content">
 
-        <section class="container-fluid">
+        <section>
 
-            <h2 class="h2">Profile</h2>
+            <div class="section-title">
+                <h2>Profile</h2>
+            </div>
 
             <form id="profileForm" method="post" action="/api/user/update-profile">
                 <div class="form-row">
@@ -44,15 +46,19 @@
                         <input type="text" class="form-control" id="profileZipCode">
                     </div>
                 </div>
-                <button type="reset" class="btn btn-danger">Undo</button>
-                <button type="submit" class="btn btn-primary">Save</button>
+                <div class="d-flex justify-content-end mt-3">
+                    <button type="reset" class="btn btn-danger mr-2">Reset</button>
+                    <button type="submit" class="btn btn-primary">Save</button>
+                </div>
             </form>
 
         </section>
 
-        <section class="container-fluid">
+        <section>
 
-            <h2 class="h2">Security</h2>
+            <div class="section-title">
+                <h2>Security</h2>
+            </div>
 
             <form id="securityForm" method="post" action="/api/user/update-security">
                 <div class="form-group">
@@ -62,14 +68,18 @@
                 <div class="form-group">
                     <button type="button" id="changePassword" class="btn btn-primary">Change password</button>
                 </div>
-                <button type="reset" class="btn btn-danger">Undo</button>
-                <button type="submit" class="btn btn-primary">Save</button>
+                <div class="d-flex justify-content-end">
+                    <button type="reset" class="btn btn-danger mr-2">Reset</button>
+                    <button type="submit" class="btn btn-primary">Save</button>
+                </div>
             </form>
 
         </section>
 
         <%- include('../partials/footer'); %>
     </div>
+
+    <%- include('../partials/messages'); %>
 
     <%- include('../partials/scripts', { view: 'profile' }); %>
 

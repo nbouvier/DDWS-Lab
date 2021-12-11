@@ -45,11 +45,7 @@ async function showProductionChart() {
             },
             zoomType: 'x'
         },
-        title: {
-            useHTML: true,
-            align: 'left',
-            text: '<h4 class="h5">Energy production over time</h4>'
-        },
+        title: { style: { display: 'none' } },
         xAxis: { type: 'datetime' },
         yAxis: { title: { text: 'Production (W)' } },
         legend: {

@@ -5,11 +5,13 @@
 
 <body>
 
-    <%- include('../partials/header, { view_title: 'Login' }'); %>
+    <%- include('../partials/header', { view_title: 'Login' }); %>
 
     <div id="content">
 
-        <h2 class="h2">Login</h2>
+        <div class="section-title">
+            <h2>Login</h2>
+        </div>
 
         <form id="loginForm" method="post" action="/api/auth/login">
             <div class="form-group">
@@ -21,7 +23,9 @@
                 <label for="loginPassword">Password</label>
                 <input type="password" class="form-control" id="loginPassword">
             </div>
-            <button type="submit" class="btn btn-primary">Login</button>
+            <div class="d-flex justify-content-end mt-3">
+                <button type="submit" class="btn btn-primary">Login</button>
+            </div>
         </form>
 
         <%- include('../partials/footer'); %>

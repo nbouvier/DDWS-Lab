@@ -45,7 +45,7 @@ function refreshElectricityManagmentPageSuccess(data) {
 
 function excessiveProductionFormData() {
     return {
-        id: $('#houseID').val(),
+        id: $('#houseID').html(),
         to_buffer_percentage: $('#excessiveProductionBufferPercentage').val()
     }
 }
@@ -59,7 +59,7 @@ function excessiveProductionFormSuccess(data) {
 
 function underProductionFormData() {
     return {
-        id: $('#houseID').val(),
+        id: $('#houseID').html(),
         from_buffer_percentage: $('#underProductionBufferPercentage').val()
     }
 }

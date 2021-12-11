@@ -80,19 +80,14 @@ async function showBufferChart() {
             }
         },
         title: {
-            useHTML: true,
-            align: 'left',
-            text: '<h4 class="h5">Buffer filling</h4>'
-        },
-        subtitle: {
             floating: true,
             verticalAlign: 'middle',
             text: `${bufferFilling} %`,
             style: {
-                fontSize: '2.5em',
+                fontSize: '2rem',
                 fontWeight: 'bold',
                 color: Highcharts.getOptions().colors[0],
-                transform: 'translateY(25px)'
+                transform: 'translateY(10px)'
             }
         },
         tooltip: { enabled: false },

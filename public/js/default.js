@@ -8,11 +8,14 @@ const MessageType = {
 }
 
 function showSystemMessage(message, type = MessageType.info) {
-    $('body').append(`
-        <div class="system-message system-${type}">
-            ${message}
+    $('#messagesContainer').append(`
+        <div class="jumbotron message bg-${type} py-3 px-4 m-0 mt-2 text-nowrap" style="display: none">
+            <p class="text-${type} m-0">${message}</p>
         </div>
     `)
+    $('#messagesContainer .message').show(500).delay(5000).fadeOut(1000, function() {
+        $(this).remove()
+    })
 }
 
 // ========== Forms ========== //
@@ -42,14 +45,12 @@ $(document).ready(function() {
 
     $('#sidebar').on('mouseleave', () => {
         $('#sidebar').addClass('minimized')
-        $('#overlay').animate({ opacity: 0 }, 500, function() {
-            $(this).css({ width: '0', height: '0' })
-        })
+        $('#overlay').fadeOut(500)
     })
 
     $('#sidebar').on('mouseenter', () => {
         $('#sidebar').removeClass('minimized')
-        $('#overlay').css({ width: '100vw', height: '100vh' }).animate({ opacity: 1 }, 500)
+        $('#overlay').fadeIn(500)
     })
 
     $('.logout').on('click', e => {
@@ -90,6 +91,12 @@ $(document).ready(function() {
                 error: error => window[`${formName}Error`] ? window[`${formName}Error`](error) : console.log(error)
             })
         }
+    })
+
+    // ========== Messages ========== //
+
+    $('#messagesContainer .message').show(500).delay(5000).fadeOut(1000, function() {
+        $(this).remove()
     })
 
 })

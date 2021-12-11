@@ -11,7 +11,9 @@
 
     <div id="content">
 
-        <h2 class="h2">Users</h2>
+        <div class="section-title">
+            <h2>Users</h2>
+        </div>
 
         <table id="adminUserList" class="table">
             <thead>
@@ -91,6 +93,8 @@
 
         <%- include('../partials/footer'); %>
     </div>
+
+    <%- include('../partials/messages'); %>
 
     <%- include('../partials/scripts', { view: 'admin' }); %>
 

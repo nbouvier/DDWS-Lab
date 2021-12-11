@@ -13,18 +13,20 @@
 
     <div id="content">
 
-        <section class="container-fluid">
+        <section>
 
             <%- include('../partials/chart/electricityPriceChart'); %>
 
         </section>
 
-        <section class="container-fluid">
+        <section>
 
-            <h2 class="h2">Trading</h2>
+            <div class="section-title">
+                <h2>Trading</h2>
+            </div>
 
             <div class="row">
-                <div class="col-sm-6">
+                <div class="col-md-6 pr-md-5 border-right-white-md">
                     <form id="sellForm" method="post" action="/api/market/sell">
                         <div class="form-group">
                             <div class="d-flex justify-content-between">
@@ -59,7 +61,7 @@
                     </form>
                 </div>
 
-                <div class="col-sm-6">
+                <div class="col-md-6 pl-md-5 border-left-white-md">
                     <form id="buyForm" method="post" action="/api/market/buy">
                         <div class="form-group">
                             <div class="d-flex justify-content-between">
@@ -99,6 +101,8 @@
 
         <%- include('../partials/footer'); %>
     </div>
+
+    <%- include('../partials/messages'); %>
 
     <%- include('../partials/scripts', { view: 'market-prosumer' }); %>
 

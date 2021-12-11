@@ -19,7 +19,7 @@ function loadElectricityManagmentPageSuccess(data) {
     let bufferFilling = (buffer.resource / buffer.capacity * 100).toFixed(2)
 
     $('#startAndStop').attr('active', coalPowerPlant.running)
-    $('#production').html((coalPowerPlant.production * 3600).toFixed(3))
+    $('#production').html((coalPowerPlant.production * 3600 / 1000000).toFixed(3))
     $('#bufferFilling').html(bufferFilling)
     $('#productionBufferPercentage').val(coalPowerPlant.buffer_percentage)
     $('#toBuffer').html(coalPowerPlant.buffer_percentage)
@@ -31,7 +31,7 @@ function refreshElectricityManagmentPageSuccess(data) {
     let buffer = coalPowerPlant.buffer
     let bufferFilling = (buffer.resource / buffer.capacity * 100).toFixed(2)
 
-    $('#production').html((coalPowerPlant.production * 3600).toFixed(3))
+    $('#production').html((coalPowerPlant.production * 3600 / 1000000).toFixed(3))
     $('#bufferFilling').html(bufferFilling)
 }
 
@@ -39,7 +39,7 @@ function refreshElectricityManagmentPageSuccess(data) {
 
 function productionFormData() {
     return {
-        id: $('#coalPowerPlantID').val(),
+        id: $('#coalPowerPlantID').html(),
         buffer_percentage: $('#productionBufferPercentage').val()
     }
 }

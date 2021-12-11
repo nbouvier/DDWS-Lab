@@ -7,7 +7,7 @@ export function guest(req, res, callbackSuccess, callbackFail = true) {
             res.status(401).json({ error: 'You cannot access this page as a logged user.' })
         } else {
             req.session.messages = [
-                { message: 'You cannot access this page as a logged user.', alert: 'danger' }
+                { message: 'You cannot access this page as a logged user.', type: 'danger' }
             ]
 
             res.redirect(`/`)
@@ -24,7 +24,7 @@ export function user(req, res, callbackSuccess, callbackFail = true) {
             res.status(401).json({ error: 'You cannot access this page as a guest.' })
         } else {
             req.session.messages = [
-                { message: 'You cannot access this page as a guest.', alert: 'danger' }
+                { message: 'You cannot access this page as a guest.', type: 'danger' }
             ]
 
             res.redirect(`/login`) }
@@ -40,7 +40,7 @@ export function admin(req, res, callbackSuccess, callbackFail = true) {
             res.status(401).json({ error: 'You do not have permission to access this page.' })
         } else {
             req.session.messages = [
-                { message: 'You do not have permission to access this page.', alert: 'danger' }
+                { message: 'You do not have permission to access this page.', type: 'danger' }
             ]
 
             res.redirect(`/profile`) }
@@ -56,7 +56,7 @@ export function prosumer(req, res, callbackSuccess, callbackFail = true) {
             res.status(401).json({ error: 'You do not have permission to access this page.' })
         } else {
             req.session.messages = [
-                { message: 'You do not have permission to access this page.', alert: 'danger' }
+                { message: 'You do not have permission to access this page.', type: 'danger' }
             ]
 
             res.redirect(`/profile`) }

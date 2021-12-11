@@ -9,7 +9,9 @@
 
     <div id="content">
 
-        <h2 class="h2">Register</h2>
+        <div class="section-title">
+            <h2>Register</h2>
+        </div>
 
         <form id="registerForm" method="post" action="/api/auth/register">
             <div class="form-row">
@@ -39,6 +41,8 @@
 
         <%- include('../partials/footer'); %>
     </div>
+
+    <%- include('../partials/messages'); %>
 
     <%- include('../partials/scripts', { view: 'register' }); %>
 

@@ -44,7 +44,7 @@ router.get('/register', (req, res, next) => {
         if(error !== null) { res.status(200).json({ error: error }); return }
 
         req.session.messages = [
-            { message: 'You registered successfuly.', alert: 'success' }
+            { message: 'You registered successfuly.', type: 'success' }
         ]
 
         res.redirect(`/login`)

@@ -1,3 +1,7 @@
-<% if(messages) { messages.forEach(message => { %>
-<div class="message message-<%= message.type %>"><%= message.message %></div>
-<% }) } %>
+<div id="messagesContainer">
+    <% if(typeof messages !== 'undefined') { messages.forEach(message => { %>
+    <div class="jumbotron message bg-<%= message.type %> py-3 px-4 m-0 mt-2 text-nowrap" style="display: none">
+        <p class="m-0"><%= message.message %></p>
+    </div>
+    <% }) } %>
+</div>
