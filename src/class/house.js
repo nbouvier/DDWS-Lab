@@ -18,12 +18,12 @@ export default class House {
     }
 
     async actualProduction() {
-        let production = 0
-        let productions = await db.query(`SELECT production FROM house_production WHERE house_id = ? ORDER BY timestamp DESC LIMIT 100;`, [ this.id ])
+        let production = await db.query('SELECT production FROM house_production WHERE house_id = ? ORDER BY timestamp DESC LIMIT 1;', [ this.id ])
 
-        productions.forEach(e => production += e.production)
+        if(!production.length) { production = 0 }
+        else { production = production[0].production }
 
-        return production / productions.length
+        return production
     }
 
     async actualConsumption() {

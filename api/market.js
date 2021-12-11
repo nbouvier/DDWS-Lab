@@ -55,8 +55,6 @@ router.post('/modeled-price', async (req, res, next) => {
     }, false)
 })
 
-
-
 router.post('/orders', async (req, res, next) => {
     middleware.admin(req, res, async () => {
         // Data validation

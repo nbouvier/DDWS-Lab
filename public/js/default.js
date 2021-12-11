@@ -9,7 +9,7 @@ const MessageType = {
 
 function showSystemMessage(message, type = MessageType.info) {
     $('#messagesContainer').append(`
-        <div class="jumbotron message bg-${type} py-3 px-4 m-0 mt-2 text-nowrap" style="display: none">
+        <div class="jumbotron message bg-${type} border-${type}" style="display: none">
             <p class="text-${type} m-0">${message}</p>
         </div>
     `)

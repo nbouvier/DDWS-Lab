@@ -1,7 +1,9 @@
 import fetch from 'node-fetch'
 
 // Query the database
-export async function fetchFromService(url, data) {
+export async function fetchFromService(url, data = {}) {
+    data.source = 'server'
+
     return await (await fetch(process.env.URL + url, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json;charset=utf-8' },

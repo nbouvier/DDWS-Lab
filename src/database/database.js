@@ -38,7 +38,7 @@ export async function update(cls, obj) {
 
     try {
         await query(`UPDATE ${cls.table} SET ${fieldsName} WHERE id = ${obj.id};`, values)
-    } catch(error) { return false }
+    } catch(error) { console.log(error); return false }
 
     return true
 }
@@ -105,7 +105,7 @@ export async function loadIDs(cls, where = '', params = []) {
 export async function del(cls, id) {
     try {
         await query(`DELETE FROM ${cls.table} WHERE id = ?;`, [id])
-    } catch(error) { return false }
+    } catch(error) { console.log(error); return false }
 
     return true
 }

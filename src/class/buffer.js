@@ -10,6 +10,24 @@ export default class Buffer {
         this.resource = resource
     }
 
+    fill(amount) {
+        let maxAmount = this.capacity - this.resource
+        let filledAmount = amount > maxAmount ? maxAmount : amount
+
+        this.resource = this.resource + filledAmount
+
+        return filledAmount
+    }
+
+    empty(amount) {
+        let maxAmount = this.resource
+        let emptiedAmount = amount > maxAmount ? maxAmount : amount
+
+        this.resource = this.resource - emptiedAmount
+
+        return emptiedAmount
+    }
+
     serialize() {
         return {
             id: this.id,

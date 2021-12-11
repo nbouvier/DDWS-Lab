@@ -66,10 +66,7 @@ export async function fillBuffer(bufferID, amount) {
 
     if(!buffer) { return [false, 'Buffer does not exists.'] }
 
-    let maxAmount = buffer.capacity - buffer.resource
-    let filledAmount = amount > maxAmount ? maxAmount : amount
-
-    buffer.resource += filledAmount
+    let filledAmount = buffer.fill(amount)
 
     if(!(await db.update(Buffer, buffer))) {
         return [false, 'An error occured while updating the buffer.']
@@ -84,10 +81,7 @@ export async function emptyBuffer(bufferID, amount) {
 
     if(!buffer) { return [false, 'Buffer does not exists.'] }
 
-    let maxAmount = buffer.resource
-    let emptiedAmount = amount > maxAmount ? maxAmount : amount
-
-    buffer.resource -= emptiedAmount
+    let emptiedAmount = buffer.empty(amount)
 
     if(!(await db.update(Buffer, buffer))) {
         return [false, 'An error occured while updating the buffer.']

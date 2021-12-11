@@ -56,20 +56,20 @@ export async function orders(from = null) {
 
         orders[i].user = data.result.user.email
     }
-    
+
     return [orders, null]
 }
 
 // Sell a specific amount of kW from the house's buffer at current market price.
 export async function sell(amount, houseID) {
-    let [data, error] = await fetcher.fetchFromService('/api/house/one', { id: houseID })
+    let data = await fetcher.fetchFromService('/api/house/one', { id: houseID })
 
-    if(error !== null) { return [false, error] }
+    if(data.error) { return [false, data.error] }
 
     let bufferID = data.result.house.buffer.id
-    [data, error] = await fetcher.fetchFromService('/api/house/empty-buffer', { id: bufferID })
+    data = await fetcher.fetchFromService('/api/house/empty-buffer', { id: bufferID, amount: amount })
 
-    if(error !== null) { return [false, error] }
+    if(data.error) { return [false, data.error] }
 
     amount = data.result.emptied_amount
     let price = (await db.query('SELECT price FROM electricity_price ORDER BY timestamp DESC LIMIT 1;'))[0].price
@@ -82,14 +82,14 @@ export async function sell(amount, houseID) {
 
 // Buy a specific amount of kW at current market price and send it to the house's buffer.
 export async function buy(amount, houseID) {
-    let [data, error] = await fetcher.fetchFromService('/api/house/one', { id: houseID })
+    let data = await fetcher.fetchFromService('/api/house/one', { id: houseID })
 
-    if(error !== null) { return [false, error] }
+    if(data.error) { return [false, data.error] }
 
     let bufferID = data.result.house.buffer.id
-    [data, error] = await fetcher.fetchFromService('/api/house/fill-buffer', { id: bufferID })
+    data = await fetcher.fetchFromService('/api/house/fill-buffer', { id: bufferID, amount: amount })
 
-    if(error !== null) { return [false, error] }
+    if(data.error) { return [false, data.error] }
 
     amount = data.result.filled_amount
     let price = (await db.query('SELECT price FROM electricity_price ORDER BY timestamp DESC LIMIT 1;'))[0].price

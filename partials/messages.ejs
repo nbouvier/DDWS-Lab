@@ -1,6 +1,6 @@
 <div id="messagesContainer">
     <% if(typeof messages !== 'undefined') { messages.forEach(message => { %>
-    <div class="jumbotron message bg-<%= message.type %> py-3 px-4 m-0 mt-2 text-nowrap" style="display: none">
+    <div class="jumbotron message bg-<%= message.type %> border-<%= message.type %>" style="display: none">
         <p class="m-0"><%= message.message %></p>
     </div>
     <% }) } %>

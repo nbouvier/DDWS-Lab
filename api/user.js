@@ -48,14 +48,16 @@ router.post('/all', (req, res, next) => {
 })
 
 router.post('/from-house', async (req, res, next) => {
-    // Data validation
-    let [data, error] = await user.getFromHouse(req.body.id)
+    middleware.admin(req, res, async () => {
+        // Data validation
+        let [data, error] = await user.getFromHouse(req.body.id)
 
-    if(error !== null) { res.status(200).json({ error: error }); return }
+        if(error !== null) { res.status(200).json({ error: error }); return }
 
-    res.status(200).json({
-       result: { user: data },
-       message: ''
+        res.status(200).json({
+           result: { user: data },
+           message: ''
+        })
     })
 })
 

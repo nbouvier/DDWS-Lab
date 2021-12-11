@@ -1,4 +1,4 @@
-// ========== Order flow list ========== //
+/ ========== Order flow list ========== //
 
 async function loadOrderFlowListData() {
     return new Promise((resolve, reject) => {
@@ -42,15 +42,16 @@ $(document).ready(async function() {
     $('#setPricePrice').val(chart.series[0].data.slice(-1)[0].y)
 
     $('#orderFlowList').DataTable({
-        'data': await loadOrderFlowListData(),
-        'columns': [
+        data: await loadOrderFlowListData(),
+        columns: [
             { data: 'action' },
             { data: 'amount' },
             { data: 'price' },
             { data: 'total' },
             { data: 'user' },
             { data: 'date' }
-        ]
+        ],
+        order: [ [ 5, 'desc' ] ]
     })
 
 })

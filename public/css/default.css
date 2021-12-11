@@ -1,5 +1,9 @@
 .text-light-grey { color: #edf1f6!important; }
 
+.border-info { border-color: #0b3d91!important; }
+.border-success { border-color: #006e2c!important; }
+.border-danger { border-color: #951d32!important; }
+.border-warning { border-color: #640!important; }
 .border-light-grey { border-color: #edf1f6!important; }
 .border-left-white-lg,
 .border-left-white-md {
@@ -38,6 +42,8 @@
 .bg-success .text-success { color: #006e2c!important; }
 .bg-danger .text-danger { color: #951d32!important; }
 .bg-warning .text-warning { color: #640!important; }
+
+.h-100 { height: 100%; }
 
 .col-xs-6 {
     position: relative;
@@ -155,7 +161,15 @@ header h2 {
     z-index: 990;
     padding: 1em;
 }
-.message { font-weight: 500; }
+
+.message {
+    font-weight: 500;
+    white-space: nowrap;
+    padding: 1rem 1.5rem;
+    margin: 0;
+    margin-bottom: .5rem;
+    border: 1px solid rgba(0, 0, 0, 0)
+}
 
 .card {
     height: 100%;
@@ -168,11 +182,6 @@ header h2 {
     justify-content: center;
     align-items: center;
     white-space: nowrap;
-}
-
-#startAndStop {
-    height: 100%;
-    letter-spacing: .1rem;
 }
 
 p.input-group-prepend,

@@ -93,7 +93,9 @@ router.post('/update-under-production', (req, res, next) => {
 
 router.post('/fill-buffer', async (req, res, next) => {
     // Data validation
-    let [data, error] = await house.fillBuffer(req.body.id, req.body.amount)
+    let amount = parseFloat(req.body.amount)
+
+    let [data, error] = await house.fillBuffer(req.body.id, amount)
 
     if(error !== null) { res.status(200).json({ error: error }); return }
 
@@ -105,7 +107,9 @@ router.post('/fill-buffer', async (req, res, next) => {
 
 router.post('/empty-buffer', async (req, res, next) => {
     // Data validation
-    let [data, error] = await house.emptyBuffer(req.body.id, req.body.amount)
+    let amount = parseFloat(req.body.amount)
+
+    let [data, error] = await house.emptyBuffer(req.body.id, amount)
 
     if(error !== null) { res.status(200).json({ error: error }); return }
 

@@ -55,4 +55,32 @@ router.post('/update-production', (req, res, next) => {
     }, false)
 })
 
+router.post('/stop', (req, res, next) => {
+    middleware.admin(req, res, async () => {
+        // Data validation
+        let [data, error] = await coalPowerPlant.update(req.body.id, { running: 0 })
+
+        if(error !== null) { res.status(200).json({ error: error }); return }
+
+        res.status(200).json({
+           result: true,
+           message: 'Stopped coal power plant.'
+        })
+    }, false)
+})
+
+router.post('/start', (req, res, next) => {
+    middleware.admin(req, res, async () => {
+        // Data validation
+        let [data, error] = await coalPowerPlant.update(req.body.id, { running: 1 })
+
+        if(error !== null) { res.status(200).json({ error: error }); return }
+
+        res.status(200).json({
+           result: true,
+           message: 'Started coal power plant.'
+        })
+    }, false)
+})
+
 export default router

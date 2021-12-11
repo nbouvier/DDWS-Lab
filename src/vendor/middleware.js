@@ -1,5 +1,8 @@
 import { ADMIN, PROSUMER } from '../class/user.js'
 
+// req.body.source == 'server' is used as a bypass for services to communicate
+// this should be improved using cryptography
+
 export function guest(req, res, callbackSuccess, callbackFail = true) {
     if(req.session.user_id) {
         if(typeof callbackFail == 'function') { callbackFail() }
@@ -12,13 +15,11 @@ export function guest(req, res, callbackSuccess, callbackFail = true) {
 
             res.redirect(`/`)
         }
-    } else {
-        callbackSuccess()
-    }
+    } else { callbackSuccess() }
 }
 
 export function user(req, res, callbackSuccess, callbackFail = true) {
-    if(!req.session.user_id) {
+    if(!req.session.user_id && req.body.source != 'server') {
         if(typeof callbackFail == 'function') { callbackFail() }
         else if(!callbackFail) {
             res.status(401).json({ error: 'You cannot access this page as a guest.' })
@@ -28,13 +29,11 @@ export function user(req, res, callbackSuccess, callbackFail = true) {
             ]
 
             res.redirect(`/login`) }
-    } else {
-        callbackSuccess()
-    }
+    } else { callbackSuccess() }
 }
 
 export function admin(req, res, callbackSuccess, callbackFail = true) {
-    if(!req.session.user_type == ADMIN) {
+    if(!req.session.user_type == ADMIN && req.body.source != 'server') {
         if(typeof callbackFail == 'function') { callbackFail() }
         else if(!callbackFail) {
             res.status(401).json({ error: 'You do not have permission to access this page.' })
@@ -44,13 +43,11 @@ export function admin(req, res, callbackSuccess, callbackFail = true) {
             ]
 
             res.redirect(`/profile`) }
-    } else {
-        callbackSuccess()
-    }
+    } else { callbackSuccess() }
 }
 
 export function prosumer(req, res, callbackSuccess, callbackFail = true) {
-    if(!req.session.user_type == PROSUMER) {
+    if(!req.session.user_type == PROSUMER && req.body.source != 'server') {
         if(typeof callbackFail == 'function') { callbackFail() }
         else if(!callbackFail) {
             res.status(401).json({ error: 'You do not have permission to access this page.' })
@@ -60,9 +57,7 @@ export function prosumer(req, res, callbackSuccess, callbackFail = true) {
             ]
 
             res.redirect(`/profile`) }
-    } else {
-        callbackSuccess()
-    }
+    } else { callbackSuccess() }
 }
 
 const middleware = { guest, user, admin, prosumer }

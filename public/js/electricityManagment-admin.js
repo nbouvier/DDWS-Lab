@@ -1,6 +1,12 @@
 // ========== Page loading ========== //
 
-function loadElectricityManagmentPage(callback) {
+function loadElectricityManagmentPage() {
+    loadCoalPowerPlant(loadCoalPowerPlantSuccess)
+}
+
+// ========== Coal Power Plant ========== //
+
+function loadCoalPowerPlant(callback) {
     $.ajax({
         url: '/api/coal-power-plant/one',
         type: 'POST',
@@ -13,12 +19,15 @@ function loadElectricityManagmentPage(callback) {
     })
 }
 
-function loadElectricityManagmentPageSuccess(data) {
+function loadCoalPowerPlantSuccess(data) {
     let coalPowerPlant = data.coal_power_plant
+    let running = coalPowerPlant.running == '1'
+    let url = running ? '/api/coal-power-plant/stop' : '/api/coal-power-plant/start'
     let buffer = coalPowerPlant.buffer
     let bufferFilling = (buffer.resource / buffer.capacity * 100).toFixed(2)
 
-    $('#startAndStop').attr('active', coalPowerPlant.running)
+    $('#startAndStopForm').attr('action', url)
+    $('#startAndStop').html(running ? 'STOP' : 'RUN').addClass(`btn-${running ? 'danger' : 'success'}`)
     $('#production').html((coalPowerPlant.production * 3600 / 1000000).toFixed(3))
     $('#bufferFilling').html(bufferFilling)
     $('#productionBufferPercentage').val(coalPowerPlant.buffer_percentage)
@@ -26,13 +35,30 @@ function loadElectricityManagmentPageSuccess(data) {
     $('#toMarket').html(100 - coalPowerPlant.buffer_percentage)
 }
 
-function refreshElectricityManagmentPageSuccess(data) {
+function refreshCoalPowerPlantSuccess(data) {
     let coalPowerPlant = data.coal_power_plant
     let buffer = coalPowerPlant.buffer
     let bufferFilling = (buffer.resource / buffer.capacity * 100).toFixed(2)
 
     $('#production').html((coalPowerPlant.production * 3600 / 1000000).toFixed(3))
     $('#bufferFilling').html(bufferFilling)
+}
+
+// ========== Start and stop form ========== //
+
+function startAndStopFormData() {
+    return {
+        id: $('#coalPowerPlantID').html()
+    }
+}
+
+function startAndStopFormSuccess(data) {
+    showSystemMessage(data.message, MessageType.success)
+
+    let url = data.result ? '/api/coal-power-plant/stop' : '/api/coal-power-plant/start'
+
+    $('#startAndStopForm').attr('action', url)
+    $('#startAndStop').html(data.result ? 'STOP' : 'RUN').addClass(`btn-${data.result ? 'danger' : 'success'}`)
 }
 
 // ========== Production form ========== //
@@ -53,8 +79,8 @@ function productionFormSuccess(data) {
 
 $(document).ready(function() {
 
-    loadElectricityManagmentPage(loadElectricityManagmentPageSuccess)
-    setInterval(() => loadElectricityManagmentPage(refreshElectricityManagmentPageSuccess), 10000)
+    loadElectricityManagmentPage()
+    setInterval(() => loadCoalPowerPlant(refreshCoalPowerPlantSuccess), 10000)
 
     $('#productionBufferPercentage').on('input', function() {
         $('#toBuffer').html($(this).val())

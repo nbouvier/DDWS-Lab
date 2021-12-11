@@ -23,16 +23,38 @@ function loadMarketPage() {
 
 function sellFormData() {
     return {
-        amount: $('#sellAmout').val()
+        house_id: $('#houseID').html(),
+        amount: $('#sellAmount').val()
     }
+}
+
+function sellFormSuccess(data) {
+    showSystemMessage(data.message, MessageType.success)
+
+    newBuyAmount = parseFloat($('#buyMaxAmount').html()) + parseFloat(data.result.amount)
+    newSellAmount = parseFloat($('#sellMaxAmount').html()) - parseFloat(data.result.amount)
+
+    $('#buyMaxAmount').html(newBuyAmount)
+    $('#sellMaxAmount').html(newSellAmount)
 }
 
 // ========== Buy form ========== //
 
 function buyFormData() {
     return {
-        amount: $('#buyAmout').val()
+        house_id: $('#houseID').html(),
+        amount: $('#buyAmount').val()
     }
+}
+
+function buyFormSuccess(data) {
+    showSystemMessage(data.message, MessageType.success)
+
+    newBuyAmount = parseFloat($('#buyMaxAmount').html()) - parseFloat(data.result.amount)
+    newSellAmount = parseFloat($('#sellMaxAmount').html()) + parseFloat(data.result.amount)
+
+    $('#buyMaxAmount').html(newBuyAmount)
+    $('#sellMaxAmount').html(newSellAmount)
 }
 
 // ========== Page ready ========== //
