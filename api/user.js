@@ -1,14 +1,14 @@
 import express from 'express'
 
 import middleware from '../src/vendor/middleware.js'
-import user from '../src/services/user.js'
+import userService from '../src/services/user.js'
 
 const router = express.Router()
 
 router.post('/get', (req, res, next) => {
     middleware.user(req, res, async () => {
         // Data validation
-        let [data, error] = await user.get(req.session.user_id)
+        let [data, error] = await userService.get(req.session.user_id)
 
         if(error !== null) { res.status(200).json({ error: error }); return }
 
@@ -22,7 +22,7 @@ router.post('/get', (req, res, next) => {
 router.post('/one', (req, res, next) => {
     middleware.user(req, res, async () => {
         // Data validation
-        let [data, error] = await user.get(req.body.id)
+        let [data, error] = await userService.get(req.body.id)
 
         if(error !== null) { res.status(200).json({ error: error }); return }
 
@@ -36,7 +36,7 @@ router.post('/one', (req, res, next) => {
 router.post('/all', (req, res, next) => {
     middleware.user(req, res, async () => {
         // Data validation
-        let [data, error] = await user.getAll()
+        let [data, error] = await userService.getAll()
 
         if(error !== null) { res.status(200).json({ error: error }); return }
 
@@ -50,7 +50,7 @@ router.post('/all', (req, res, next) => {
 router.post('/from-house', async (req, res, next) => {
     middleware.admin(req, res, async () => {
         // Data validation
-        let [data, error] = await user.getFromHouse(req.body.id)
+        let [data, error] = await userService.getFromHouse(req.body.id)
 
         if(error !== null) { res.status(200).json({ error: error }); return }
 
@@ -73,7 +73,7 @@ router.post('/update-profile', (req, res, next) => {
             zip_code: req.body.zip_code
         }
 
-        let [data, error] = await user.update(req.session.user_id, validatedData)
+        let [data, error] = await userService.update(req.session.user_id, validatedData)
 
         if(error !== null) { res.status(200).json({ error: error }); return }
 
@@ -91,7 +91,7 @@ router.post('/update-security', (req, res, next) => {
             email: req.body.email
         }
 
-        let [data, error] = await user.update(req.session.user_id, validatedData)
+        let [data, error] = await userService.update(req.session.user_id, validatedData)
 
         if(error !== null) { res.status(200).json({ error: error }); return }
 
@@ -105,7 +105,7 @@ router.post('/update-security', (req, res, next) => {
 router.post('/block', (req, res, next) => {
     middleware.admin(req, res, async () => {
         // Data validation
-        let [data, error] = await user.block(req.body.user_id, req.body.time,req.body.time_unit)
+        let [data, error] = await userService.block(req.body.user_id, req.body.time,req.body.time_unit)
 
         if(error !== null) { res.status(200).json({ error: error }); return }
 
@@ -119,7 +119,7 @@ router.post('/block', (req, res, next) => {
 router.post('/delete', (req, res, next) => {
     middleware.admin(req, res, async () => {
         // Data validation
-        let [data, error] = await user.del(req.body.user_id)
+        let [data, error] = await userService.del(req.body.user_id)
 
         if(error !== null) { res.status(200).json({ error: error }); return }
 

@@ -31,7 +31,7 @@ function loadElectricityManagmentPageSuccess(data) {
 }
 
 function refreshElectricityManagmentPageSuccess(data) {
-    let house = data.coal_power_plant
+    let house = data.house
     let buffer = house.buffer
     let bufferFilling = (buffer.resource / buffer.capacity * 100).toFixed(2)
 

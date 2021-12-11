@@ -1,14 +1,14 @@
 import express from 'express'
 
 import middleware from '../src/vendor/middleware.js'
-import auth from '../src/services/authentication.js'
+import authService from '../src/services/authentication.js'
 
 const router = express.Router()
 
 router.post('/login', (req, res, next) => {
     middleware.guest(req, res, async () => {
         // Data validation
-        let [data, error] = await auth.login(req.body.email, req.body.password)
+        let [data, error] = await authService.login(req.body.email, req.body.password)
 
         if(error !== null) { res.status(200).json({ error: error }); return }
 
@@ -25,7 +25,7 @@ router.post('/login', (req, res, next) => {
 router.post('/register', (req, res, next) => {
     middleware.guest(req, res, async () => {
         // Data validation
-        let [data, error] = await auth.register(req.body.first_name, req.body.last_name, req.body.email, req.body.password)
+        let [data, error] = await authService.register(req.body.first_name, req.body.last_name, req.body.email, req.body.password)
 
         if(error !== null) { res.status(200).json({ error: error }); return }
 
@@ -39,7 +39,7 @@ router.post('/register', (req, res, next) => {
 router.get('/register', (req, res, next) => {
     middleware.guest(req, res, async () => {
         // Data validation
-        let [data, error] = await auth.verifyEmail(req.query.hash)
+        let [data, error] = await authService.verifyEmail(req.query.hash)
 
         if(error !== null) { res.status(200).json({ error: error }); return }
 
@@ -58,7 +58,7 @@ router.post('/init-reset-password', async (req, res, next) => {
         email: req.body.email ? req.body.email : null
     }
 
-    let [data, error] = await auth.initResetPassword(validatedData)
+    let [data, error] = await authService.initResetPassword(validatedData)
 
     if(error !== null) { res.status(200).json({ error: error }); return }
 
@@ -72,7 +72,7 @@ router.post('/reset-password', async (req, res, next) => {
     // Data validation
     // req.body.password == req.body.password_confirmation ?
 
-    let [data, error] = await auth.resetPassword(req.body.hash, req.body.password)
+    let [data, error] = await authService.resetPassword(req.body.hash, req.body.password)
 
     if(error !== null) { res.status(200).json({ error: error }); return }
 

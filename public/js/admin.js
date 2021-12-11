@@ -1,43 +1,51 @@
 // ========== Page loading ========== //
 
-function loadAdminPageSuccess(data) {
-    data.users.forEach(user => userTableAddRow(user))
+function loadAdminPage() {
+    $.ajax({
+        url: '/api/user/all',
+        type: 'POST',
+        dataType: 'JSON',
+
+        success: data => data.result.users.forEach(user => userTableAddRow(user)),
+
+        error: error => console.log(error)
+    })
 }
 
 // ========== User table ========== //
 
 function userTableAddRow(user) {
     $('#adminUserList tbody').append(`
-        <tr user-id=${user.id} user-first-name=${user.first_name} user-last-name=${user.last_name}>
+        <tr data-user-id=${user.id} data-user-first-name=${user.first_name} data-user-last-name=${user.last_name}>
             <td>${user.email}</td>
             <td>${user.first_name}</td>
             <td>${user.last_name}</td>
             <td>${user.status}</td>
             <td>
-                <button type="button" class="btn btn-outline-primary btn-sm" title="See user" onclick="seeUser(this)"><i class="far fa-eye"></i></i></button>
-                <button type="button" class="btn btn-outline-warning btn-sm" title="Block from selling" onclick="showBlockUserModal(this)"><i class="fas fa-ban"></i></button>
-                <button type="button" class="btn btn-outline-danger btn-sm" title="Delete user" onclick="showDeleteUserModal(this)"><i class="fas fa-trash"></i></button>
+                <button type="button" class="btn btn-outline-primary btn-sm seeUser" title="See user"><i class="far fa-eye"></i></i></button>
+                <button type="button" class="btn btn-outline-warning btn-sm blockUser" title="Block from selling"><i class="fas fa-ban"></i></button>
+                <button type="button" class="btn btn-outline-danger btn-sm deleteUser" title="Delete user""><i class="fas fa-trash"></i></button>
             </td>
         </tr>
     `)
 }
 
-function seeUser(el) {
-    userID = $(el).parents('tr').first().attr('user-id')
-    window.location.href = `/system?user-id=${user}`
+function seeUser() {console.log(this)
+    userID = $(this).parents('tr').first().attr('data-user-id')
+    window.location.href = `/profile/${userID}`
 }
 
-function showBlockUserModal(el) {
-    $('#blockUserID').val($(el).parents('tr').first().attr('user-id'))
-    $('#blockUserFirstName').html($(el).parents('tr').first().attr('user-first-name'))
-    $('#blockUserLastName').html($(el).parents('tr').first().attr('user-last-name'))
+function showBlockUserModal() {
+    $('#blockUserID').val($(this).parents('tr').first().attr('data-user-id'))
+    $('#blockUserFirstName').html($(this).parents('tr').first().attr('data-user-first-name'))
+    $('#blockUserLastName').html($(this).parents('tr').first().attr('data-user-last-name'))
     $('#blockUserModal').modal('show')
 }
 
-function showDeleteUserModal(el) {
-    $('#deleteUserID').val($(el).parents('tr').first().attr('user-id'))
-    $('#deleteUserFirstName').html($(el).parents('tr').first().attr('user-first-name'))
-    $('#deleteUserLastName').html($(el).parents('tr').first().attr('user-last-name'))
+function showDeleteUserModal() {
+    $('#deleteUserID').val($(this).parents('tr').first().attr('data-user-id'))
+    $('#deleteUserFirstName').html($(this).parents('tr').first().attr('data-user-first-name'))
+    $('#deleteUserLastName').html($(this).parents('tr').first().attr('data-user-last-name'))
     $('#deleteUserModal').modal('show')
 }
 
@@ -73,16 +81,10 @@ function deeteUserFormSuccess(data) {
 
 $(document).ready(function() {
 
-    $.ajax({
+    loadAdminPage()
 
-        url: '/api/user/all',
-        type: 'POST',
-        dataType: 'JSON',
-
-        success: data => loadAdminPageSuccess(data.result),
-
-        error: error => console.log(error)
-
-    })
+    $('#adminUserList').on('click', '.seeUser', seeUser)
+    $('#adminUserList').on('click', '.blockUser', showBlockUserModal)
+    $('#adminUserList').on('click', '.deleteUser', showDeleteUserModal)
 
 })

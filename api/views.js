@@ -1,8 +1,7 @@
 import express from 'express'
 
 import middleware from '../src/vendor/middleware.js'
-import user from '../src/services/user.js'
-import coalPowerPlant from '../src/services/coalPowerPlant.js'
+import userService from '../src/services/user.js'
 
 const router = express.Router()
 
@@ -38,17 +37,11 @@ router.get('/', (req, res, next) => {
         let messages = req.session.messages
         req.session.messages = []
 
-        let [data, error] = await user.get(req.session.user_id)
+        let [user, error] = await userService.get(req.session.user_id)
 
         let asset = {}
-        if(error === null) {
-            if(data.isAdmin()) {
-                let [data, error] = await coalPowerPlant.get(1)
-
-                if(error === null) { asset.coal_power_plant_id = data.id }
-                else { messages.push({ message: error, type: 'danger' }) }
-            } else { asset.house_id = data.house_id }
-        } else { messages.push({ message: error, type: 'danger' }) }
+        if(error !== null) { messages.push({ message: error, type: 'danger' }) }
+        else { asset = user.getAssetID() }
 
         res.render('home', {
             user_type: req.session.user_type,
@@ -60,21 +53,40 @@ router.get('/', (req, res, next) => {
 
 router.get('/electricity-managment', (req, res, next) => {
     middleware.user(req, res, async () => {
-        let [data, error] = await user.get(req.session.user_id)
+        let messages = req.session.messages
+        req.session.messages = []
+
+        let [user, error] = await userService.get(req.session.user_id)
 
         let asset = {}
-        if(error === null) {
-            if(data.isAdmin()) {
-                let [data, error] = await coalPowerPlant.get(1)
-
-                if(error === null) { asset.coal_power_plant_id = data.id }
-                else { messages.push({ message: error, type: 'danger' }) }
-            } else { asset.house_id = data.house_id }
-        } else { messages.push({ message: error, type: 'danger' }) }
+        if(error !== null) { messages.push({ message: error, type: 'danger' }) }
+        else { asset = user.getAssetID() }
 
         res.render(`electricityManagment-${req.session.user_type}`, {
             user_id: req.session.user_id,
             user_type: req.session.user_type,
+            messages: messages,
+            ...asset
+        })
+    })
+})
+
+router.get('/electricity-managment/:user_id', (req, res, next) => {
+    middleware.user(req, res, async () => {
+        let messages = req.session.messages
+        req.session.messages = []
+
+        let [user, error] = await userService.get(req.params.user_id)
+
+        let asset = {}
+        if(error !== null) { messages.push({ message: error, type: 'danger' }) }
+        else { asset = user.getAssetID() }
+
+        res.render('electricityManagment-prosumer', {
+            user_id: req.session.user_id,
+            user_type: req.session.user_type,
+            preview_user_id: user.id,
+            messages: messages,
             ...asset
         })
     })
@@ -82,21 +94,19 @@ router.get('/electricity-managment', (req, res, next) => {
 
 router.get('/market', (req, res, next) => {
     middleware.user(req, res, async () => {
-        let [data, error] = await user.get(req.session.user_id)
+        let messages = req.session.messages
+        req.session.messages = []
+
+        let [user, error] = await userService.get(req.session.user_id)
 
         let asset = {}
-        if(error === null) {
-            if(data.isAdmin()) {
-                let [data, error] = await coalPowerPlant.get(1)
-
-                if(error === null) { asset.coal_power_plant_id = data.id }
-                else { messages.push({ message: error, type: 'danger' }) }
-            } else { asset.house_id = data.house_id }
-        } else { messages.push({ message: error, type: 'danger' }) }
+        if(error !== null) { messages.push({ message: error, type: 'danger' }) }
+        else { asset = user.getAssetID() }
 
         res.render(`market-${req.session.user_type}`, {
             user_id: req.session.user_id,
             user_type: req.session.user_type,
+            messages: messages,
             ...asset
         })
     })
@@ -107,6 +117,25 @@ router.get('/profile', (req, res, next) => {
         res.render('profile', {
             user_id: req.session.user_id,
             user_type: req.session.user_type
+        })
+    })
+})
+
+router.get('/profile/:user_id', (req, res, next) => {
+    middleware.admin(req, res, async () => {
+        let [user, error] = await userService.get(req.params.user_id)
+
+        if(error !== null) {
+            req.session.messages.push({ message: error, type: 'danger' })
+            res.redirect('/admin')
+            return
+        }
+
+        res.render('profile', {
+            user_id: req.session.user_id,
+            user_type: req.session.user_type,
+            preview_user_id: user.id,
+            preview_user_type: user.type
         })
     })
 })

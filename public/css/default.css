@@ -29,6 +29,11 @@
 .btn-primary { background-color: #3490db; }
 .btn-primary:hover { background-color: #2071b5; }
 .btn-warning { color: #fff; }
+.btn-outline-primary {
+    color: #3490db;
+    border-color: #3490db;
+}
+.btn-outline-primary:hover { background-color: #3490db; }
 .btn-outline-warning:hover { color: #fff; }
 
 .bg-dark-blue { background-color: #1d66a3; }

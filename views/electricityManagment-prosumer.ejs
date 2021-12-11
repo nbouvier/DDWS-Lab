@@ -72,7 +72,9 @@
 
                 <div class="col-md-4 ml-auto">
                     <img id="houseImage" class="img-fluid" alt="house">
+                    <% if(typeof preview_user_id == 'undefined') { %>
                     <button id="uploadHouseImage" type="button" class="btn btn-primary btn-lg btn-block">Upload</button>
+                    <% } %>
                 </div>
             </div>
 
@@ -96,10 +98,12 @@
                                 <p class="input-group-append pt-1">To market (<span id="toMarket"></span> %)</p>
                             </div>
                         </div>
+                        <% if(typeof preview_user_id == 'undefined') { %>
                         <div class="d-flex justify-content-end mt-3">
                             <button type="reset" class="btn btn-danger mr-2">Reset</button>
                             <button type="submit" class="btn btn-primary">Save</button>
                         </div>
+                        <% } %>
                     </form>
                 </div>
 
@@ -118,10 +122,12 @@
                                 <p class="input-group-append pt-1">From market (<span id="fromMarket"></span> %)</p>
                             </div>
                         </div>
+                        <% if(typeof preview_user_id == 'undefined') { %>
                         <div class="d-flex justify-content-end mt-3">
                             <button type="reset" class="btn btn-danger mr-2">Reset</button>
                             <button type="submit" class="btn btn-primary">Save</button>
                         </div>
+                        <% } %>
                     </form>
                 </div>
             </div>

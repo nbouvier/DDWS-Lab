@@ -1,5 +1,18 @@
 // ========== Page loading ========== //
 
+function loadProfilPage() {
+    $.ajax({
+        url: '/api/user/one',
+        type: 'POST',
+        dataType: 'JSON',
+        data: { id: $('#userID').html() },
+
+        success: data => loadProfilPageSuccess(data.result),
+
+        error: error => console.log(error)
+    })
+}
+
 function loadProfilPageSuccess(data) {
     let user = data.user
 
@@ -53,18 +66,9 @@ function onClickChangePassword() {
 
 $(document).ready(function() {
 
-    $.ajax({
-
-        url: '/api/user/get',
-        type: 'POST',
-        dataType: 'JSON',
-
-        success: data => loadProfilPageSuccess(data.result),
-
-        error: error => console.log(error)
-
-    })
+    loadProfilPage()
 
     $('#changePassword').on('click', onClickChangePassword)
+    $('#seeElectricityManagment').on('click', () => window.location.href = `/electricity-managment/${$('#userID').html()}`)
 
 })

@@ -1,14 +1,14 @@
 import express from 'express'
 
 import middleware from '../src/vendor/middleware.js'
-import house from '../src/services/house.js'
+import houseService from '../src/services/house.js'
 
 const router = express.Router()
 
 router.post('/one', (req, res, next) => {
     middleware.user(req, res, async () => {
         // Data validation
-        let [data, error] = await house.get(req.body.id)
+        let [data, error] = await houseService.get(req.body.id)
 
         if(error !== null) { res.status(200).json({ error: error }); return }
 
@@ -24,7 +24,7 @@ router.post('/production', (req, res, next) => {
         // Data validation
         let from = req.body.from ? parseInt(req.body.from) : null
 
-        let [data, error] = await house.production(req.body.id, from)
+        let [data, error] = await houseService.production(req.body.id, from)
 
         if(error !== null) { res.status(200).json({ error: error }); return }
 
@@ -42,7 +42,7 @@ router.post('/consumption', (req, res, next) => {
         // Data validation
         let from = req.body.from ? parseInt(req.body.from) : null
 
-        let [data, error] = await house.consumption(req.body.id, from)
+        let [data, error] = await houseService.consumption(req.body.id, from)
 
         if(error !== null) { res.status(200).json({ error: error }); return }
 
@@ -62,7 +62,7 @@ router.post('/update-excessive-production', (req, res, next) => {
             to_buffer_percentage: req.body.to_buffer_percentage
         }
 
-        let [data, error] = await house.update(req.body.id, validatedData)
+        let [data, error] = await houseService.update(req.body.id, validatedData)
 
         if(error !== null) { res.status(200).json({ error: error }); return }
 
@@ -80,7 +80,7 @@ router.post('/update-under-production', (req, res, next) => {
             from_buffer_percentage: req.body.from_buffer_percentage
         }
 
-        let [data, error] = await house.update(req.body.id, validatedData)
+        let [data, error] = await houseService.update(req.body.id, validatedData)
 
         if(error !== null) { res.status(200).json({ error: error }); return }
 
@@ -95,7 +95,7 @@ router.post('/fill-buffer', async (req, res, next) => {
     // Data validation
     let amount = parseFloat(req.body.amount)
 
-    let [data, error] = await house.fillBuffer(req.body.id, amount)
+    let [data, error] = await houseService.fillBuffer(req.body.id, amount)
 
     if(error !== null) { res.status(200).json({ error: error }); return }
 
@@ -109,7 +109,7 @@ router.post('/empty-buffer', async (req, res, next) => {
     // Data validation
     let amount = parseFloat(req.body.amount)
 
-    let [data, error] = await house.emptyBuffer(req.body.id, amount)
+    let [data, error] = await houseService.emptyBuffer(req.body.id, amount)
 
     if(error !== null) { res.status(200).json({ error: error }); return }
 

@@ -33,7 +33,7 @@ export function user(req, res, callbackSuccess, callbackFail = true) {
 }
 
 export function admin(req, res, callbackSuccess, callbackFail = true) {
-    if(!req.session.user_type == ADMIN && req.body.source != 'server') {
+    if(req.session.user_type != ADMIN && req.body.source != 'server') {
         if(typeof callbackFail == 'function') { callbackFail() }
         else if(!callbackFail) {
             res.status(401).json({ error: 'You do not have permission to access this page.' })
@@ -47,7 +47,7 @@ export function admin(req, res, callbackSuccess, callbackFail = true) {
 }
 
 export function prosumer(req, res, callbackSuccess, callbackFail = true) {
-    if(!req.session.user_type == PROSUMER && req.body.source != 'server') {
+    if(req.session.user_type != PROSUMER && req.body.source != 'server') {
         if(typeof callbackFail == 'function') { callbackFail() }
         else if(!callbackFail) {
             res.status(401).json({ error: 'You do not have permission to access this page.' })

@@ -1,14 +1,14 @@
 import express from 'express'
 
 import middleware from '../src/vendor/middleware.js'
-import market from '../src/services/market.js'
+import marketService from '../src/services/market.js'
 
 const router = express.Router()
 
 router.post('/set-price', async (req, res, next) => {
     middleware.user(req, res, async () => {
         // Data validation
-        let [data, error] = await market.setPrice(req.body.price)
+        let [data, error] = await marketService.setPrice(req.body.price)
 
         if(error !== null) { res.status(200).json({ error: error }); return }
 
@@ -24,7 +24,7 @@ router.post('/price', async (req, res, next) => {
         // Data validation
         let from = req.body.from ? parseInt(req.body.from) : null
 
-        let [data, error] = await market.price(from)
+        let [data, error] = await marketService.price(from)
 
         if(error !== null) { res.status(200).json({ error: error }); return }
 
@@ -42,7 +42,7 @@ router.post('/modeled-price', async (req, res, next) => {
         // Data validation
         let from = req.body.from ? parseInt(req.body.from) : null
 
-        let [data, error] = await market.modeledPrice(from)
+        let [data, error] = await marketService.modeledPrice(from)
 
         if(error !== null) { res.status(200).json({ error: error }); return }
 
@@ -58,7 +58,7 @@ router.post('/modeled-price', async (req, res, next) => {
 router.post('/orders', async (req, res, next) => {
     middleware.admin(req, res, async () => {
         // Data validation
-        let [data, error] = await market.orders()
+        let [data, error] = await marketService.orders()
 
         if(error !== null) { res.status(200).json({ error: error }); return }
 
@@ -72,7 +72,7 @@ router.post('/orders', async (req, res, next) => {
 router.post('/sell', async (req, res, next) => {
     middleware.prosumer(req, res, async () => {
         // Data validation
-        let [data, error] = await market.sell(req.body.amount, req.body.house_id)
+        let [data, error] = await marketService.sell(req.body.amount, req.body.house_id)
 
         if(error !== null) { res.status(200).json({ error: error }); return }
 
@@ -86,7 +86,7 @@ router.post('/sell', async (req, res, next) => {
 router.post('/buy', async (req, res, next) => {
     middleware.prosumer(req, res, async () => {
         // Data validation
-        let [data, error] = await market.buy(req.body.amount, req.body.house_id)
+        let [data, error] = await marketService.buy(req.body.amount, req.body.house_id)
 
         if(error !== null) { res.status(200).json({ error: error }); return }
 

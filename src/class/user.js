@@ -33,6 +33,15 @@ export default class User {
         return await db.query(`INSERT INTO block_user (user_id, end) VALUES (?, ?);`, [ this.id, end ])
     }
 
+    getAssetID() {
+        let asset = {}
+
+        if(this.isAdmin()) { asset.coal_power_plant_id = 1 }
+        else { asset.house_id = this.house_id }
+
+        return asset
+    }
+
     serialize() {
         return {
             id: this.id,
