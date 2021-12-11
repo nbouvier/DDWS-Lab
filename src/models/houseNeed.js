@@ -11,6 +11,11 @@ async function calculateHouseNeed() {
         consumption = consumption.length ? consumption[0].consumption : 0
         let need = consumption - production
 
+        if(need < 0) {
+            let block = await db.query('SELECT bu.* FROM block_user bu JOIN user u ON bu.user_id = u.id JOIN house h ON u.house_id = h.id WHERE h.id = ? AND NOW() BETWEEN bu.begin AND bu.end;' [ house.id ])
+            if(block.length) { need = 0 }
+        }
+
         db.query('INSERT INTO house_need (house_id, need) VALUES (?, ?)', [ house.id, need ])
     })
 }
