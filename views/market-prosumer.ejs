@@ -57,7 +57,7 @@
                                 Price will be deducted from your next electricity bill.
                             </small>
                         </div>
-                        <button type="submit" class="btn btn-danger btn-block">Sell</button>
+                        <button type="submit" class="btn btn-danger btn-block" <%= user.blocked ? 'disabled=true' : '' %>>Sell</button>
                     </form>
                 </div>
 

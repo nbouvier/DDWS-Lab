@@ -12,7 +12,7 @@ async function calculateHouseNeed() {
         let need = consumption - production
 
         if(need < 0) {
-            let block = await db.query('SELECT bu.* FROM block_user bu JOIN user u ON bu.user_id = u.id JOIN house h ON u.house_id = h.id WHERE h.id = ? AND NOW() BETWEEN bu.begin AND bu.end;' [ house.id ])
+            let block = await db.query('SELECT bu.* FROM block_user bu JOIN user u ON bu.user_id = u.id JOIN house h ON u.house_id = h.id WHERE h.id = ? AND NOW() BETWEEN bu.begin AND bu.end;', [ house.id ])
             if(block.length) { need = 0 }
         }
 

@@ -44,6 +44,7 @@ router.get('/', (req, res, next) => {
         else { asset = user.getAssetID() }
 
         res.render('home', {
+            user: req.session.user,
             user_type: req.session.user_type,
             messages: messages,
             ...asset
@@ -63,6 +64,7 @@ router.get('/electricity-managment', (req, res, next) => {
         else { asset = user.getAssetID() }
 
         res.render(`electricityManagment-${req.session.user_type}`, {
+            user: req.session.user,
             user_id: req.session.user_id,
             user_type: req.session.user_type,
             messages: messages,
@@ -83,6 +85,7 @@ router.get('/electricity-managment/:user_id', (req, res, next) => {
         else { asset = user.getAssetID() }
 
         res.render('electricityManagment-prosumer', {
+            user: req.session.user,
             user_id: req.session.user_id,
             user_type: req.session.user_type,
             preview_user_id: user.id,
@@ -104,6 +107,7 @@ router.get('/market', (req, res, next) => {
         else { asset = user.getAssetID() }
 
         res.render(`market-${req.session.user_type}`, {
+            user: req.session.user,
             user_id: req.session.user_id,
             user_type: req.session.user_type,
             messages: messages,
@@ -115,6 +119,7 @@ router.get('/market', (req, res, next) => {
 router.get('/profile', (req, res, next) => {
     middleware.user(req, res, () => {
         res.render('profile', {
+            user: req.session.user,
             user_id: req.session.user_id,
             user_type: req.session.user_type
         })
@@ -132,6 +137,7 @@ router.get('/profile/:user_id', (req, res, next) => {
         }
 
         res.render('profile', {
+            user: req.session.user,
             user_id: req.session.user_id,
             user_type: req.session.user_type,
             preview_user_id: user.id,
@@ -143,6 +149,7 @@ router.get('/profile/:user_id', (req, res, next) => {
 router.get('/admin', (req, res, next) => {
     middleware.user(req, res, () => {
         res.render('admin', {
+            user: req.session.user,
             user_type: req.session.user_type
         })
     })

@@ -13,7 +13,7 @@ router.post('/get', (req, res, next) => {
         if(error !== null) { res.status(200).json({ error: error }); return }
 
         res.status(200).json({
-           result: { user: data.serialize() },
+           result: { user: await data.serialize() },
            message: ''
         })
     }, false)
@@ -27,7 +27,7 @@ router.post('/one', (req, res, next) => {
         if(error !== null) { res.status(200).json({ error: error }); return }
 
         res.status(200).json({
-           result: { user: data.serialize() },
+           result: { user: await data.serialize() },
            message: ''
         })
     }, false)
@@ -41,7 +41,7 @@ router.post('/all', (req, res, next) => {
         if(error !== null) { res.status(200).json({ error: error }); return }
 
         res.status(200).json({
-           result: { users: data.map(user => user.serialize()) },
+           result: { users: data.map(async user => await user.serialize()) },
            message: ''
         })
     }, false)
@@ -78,7 +78,7 @@ router.post('/update-profile', (req, res, next) => {
         if(error !== null) { res.status(200).json({ error: error }); return }
 
         res.status(200).json({
-           result: { user: data.serialize() },
+           result: { user: await data.serialize() },
            message: 'Your profile data have been updated.'
         })
     }, false)
@@ -96,7 +96,7 @@ router.post('/update-security', (req, res, next) => {
         if(error !== null) { res.status(200).json({ error: error }); return }
 
         res.status(200).json({
-           result: { user: data.serialize() },
+           result: { user: await data.serialize() },
            message: 'Your security data have been updated.'
         })
     }, false)

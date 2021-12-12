@@ -2,18 +2,20 @@ import express from 'express'
 
 import middleware from '../src/vendor/middleware.js'
 import authService from '../src/services/authentication.js'
+import userService from '../src/services/user.js'
 
 const router = express.Router()
 
 router.post('/login', (req, res, next) => {
     middleware.guest(req, res, async () => {
         // Data validation
-        let [data, error] = await authService.login(req.body.email, req.body.password)
+        let [user, error] = await authService.login(req.body.email, req.body.password)
 
         if(error !== null) { res.status(200).json({ error: error }); return }
 
-        req.session.user_id = data.id
-        req.session.user_type = data.type
+        req.session.user = await user.serialize()
+        req.session.user_id = user.id
+        req.session.user_type = user.type
 
         res.status(200).json({
             result: true,

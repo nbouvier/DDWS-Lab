@@ -28,9 +28,13 @@ export default class User {
         return this.type == ADMIN
     }
 
+    async isBlocked() {
+        return (await db.query('SELECT * FROM block_user WHERE user_id = ?;', [ this.id ])).length != 0
+    }
+
     async block(time) {
         let end = new Date(Date.now().valueOf() + time).toISOString().slice(0, 19).replace('T', ' ')
-        return await db.query(`INSERT INTO block_user (user_id, end) VALUES (?, ?);`, [ this.id, end ])
+        return await db.query('INSERT INTO block_user (user_id, end) VALUES (?, ?);', [ this.id, end ])
     }
 
     getAssetID() {
@@ -42,7 +46,7 @@ export default class User {
         return asset
     }
 
-    serialize() {
+    async serialize() {
         return {
             id: this.id,
             type: this.type,
@@ -53,7 +57,8 @@ export default class User {
             additional_address: this.additional_address,
             city: this.city,
             zip_code: this.zip_code,
-            house_id: this.house_id
+            house_id: this.house_id,
+            blocked: await this.isBlocked()
         }
     }
 }

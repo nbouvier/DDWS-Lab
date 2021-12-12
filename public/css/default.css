@@ -200,3 +200,5 @@ input.form-control.form-control-range { max-width: 300px; }
 input.form-control.form-control-range:focus { box-shadow: none; }
 
 form .btn { min-width: 6em; }
+
+.btn[disabled=true] { cursor: not-allowed; }
