@@ -27,7 +27,7 @@ function formValidation() {
 
 function formSuccess(formName, data) {
     if(data.error) {
-        showSystemMessage(data.error, MessageType.alert)
+        showSystemMessage(data.error, MessageType.danger)
     } else if(data.message) {
         if(window[`${formName}Success`]) {
             window[`${formName}Success`](data)

@@ -63,7 +63,7 @@ router.post('/stop', (req, res, next) => {
         if(error !== null) { res.status(200).json({ error: error }); return }
 
         res.status(200).json({
-           result: true,
+           result: { running: false },
            message: 'Stopped coal power plant.'
         })
     }, false)
@@ -77,7 +77,7 @@ router.post('/start', (req, res, next) => {
         if(error !== null) { res.status(200).json({ error: error }); return }
 
         res.status(200).json({
-           result: true,
+           result: { running: true },
            message: 'Started coal power plant.'
         })
     }, false)

@@ -7,7 +7,14 @@ function loadElectricityManagmentPage(callback) {
         dataType: 'JSON',
         data: { id: $('#houseID').html() },
 
-        success: data => callback(data.result),
+        success: data => {
+            if(data.error) {
+                showSystemMessage(data.error, MessageType.danger)
+                return
+            }
+
+            callback(data.result)
+        },
 
         error: error => console.log(error)
     })

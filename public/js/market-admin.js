@@ -7,7 +7,15 @@ async function loadOrderFlowListData() {
             type: 'POST',
             dataType: 'JSON',
 
-            success: data => resolve(mapOrderFlowListData(data.result.orders)),
+            success: data => {
+                if(data.error) {
+                    showSystemMessage(data.error, MessageType.danger)
+                    reject(data.error)
+                    return
+                }
+
+                resolve(mapOrderFlowListData(data.result.orders))
+            },
 
             error: error => reject(error)
         })

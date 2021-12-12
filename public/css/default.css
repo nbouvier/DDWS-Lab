@@ -202,3 +202,11 @@ input.form-control.form-control-range:focus { box-shadow: none; }
 form .btn { min-width: 6em; }
 
 .btn[disabled=true] { cursor: not-allowed; }
+
+tr.bg-danger td:first-child,
+tr.bg-warning td:first-child {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}

@@ -7,7 +7,14 @@ function loadProfilPage() {
         dataType: 'JSON',
         data: { id: $('#userID').html() },
 
-        success: data => loadProfilPageSuccess(data.result),
+        success: data => {
+            if(data.error) {
+                showSystemMessage(data.error, MessageType.danger)
+                return
+            }
+
+            loadProfilPageSuccess(data.result)
+        },
 
         error: error => console.log(error)
     })
@@ -56,7 +63,14 @@ function onClickChangePassword() {
             email: $('#securityEmail').val()
         },
 
-        success: data => showSystemMessage(data.message, MessageType.success),
+        success: data => {
+            if(data.error) {
+                showSystemMessage(data.error, MessageType.danger)
+                return
+            }
+
+            showSystemMessage(data.message, MessageType.success)
+        },
 
         error: error => console.log(error)
     })

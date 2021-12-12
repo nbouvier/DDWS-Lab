@@ -8,6 +8,11 @@ function loadMarketPage() {
         data: { id: $('#houseID').html() },
 
         success: data => {
+            if(data.error) {
+                showSystemMessage(data.error, MessageType.danger)
+                return
+            }
+            
             let bufferResources = data.result.house.buffer.resource
             let bufferCapacity = data.result.house.buffer.capacity
 

@@ -17,6 +17,14 @@ export default class House {
         return await db.loadOne(Buffer, this.buffer_id)
     }
 
+    async blackoutLevel() {
+        let blackout = await db.query('SELECT blackout FROM house_need WHERE house_id = ? ORDER BY timestamp DESC LIMIT 1;', [ this.id ])
+
+        if(!blackout.length) { return false }
+
+        return blackout[0].blackout
+    }
+
     async actualProduction() {
         let production = await db.query('SELECT production FROM house_production WHERE house_id = ? ORDER BY timestamp DESC LIMIT 1;', [ this.id ])
 
@@ -76,7 +84,8 @@ export default class House {
             consumption: await this.actualConsumption(),
             to_buffer_percentage: this.to_buffer_percentage,
             from_buffer_percentage: this.from_buffer_percentage,
-            buffer: (await this.buffer()).serialize()
+            buffer: (await this.buffer()).serialize(),
+            blackout: await this.blackoutLevel()
         }
     }
 }

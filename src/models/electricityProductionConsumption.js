@@ -8,7 +8,7 @@ import houseNeed from './houseNeed.js'
 const REFRESH_FREQUENCY = 10
 
 async function gatherInformations() {
-    let coalsProduction = (await db.query('SELECT SUM(remaining_production) AS production FROM coal_production cp JOIN (SELECT coal_power_plant_id, MAX(timestamp) AS timestamp FROM coal_production GROUP BY coal_power_plant_id) t ON cp.coal_power_plant_id = t.coal_power_plant_id AND cp.timestamp = t.timestamp;'))[0].production
+    let coalsProduction = (await db.query('SELECT SUM(remaining_production) AS production FROM coal_production cp JOIN (SELECT coal_power_plant_id, MAX(timestamp) AS timestamp FROM coal_production GROUP BY coal_power_plant_id) t ON cp.coal_power_plant_id = t.coal_power_plant_id AND cp.timestamp = t.timestamp;'))[0].production || 0
     let housesNeeds = await db.query('SELECT need FROM house_need hn JOIN (SELECT house_id, MAX(timestamp) AS timestamp FROM house_need GROUP BY house_id) t ON hn.house_id = t.house_id AND hn.timestamp = t.timestamp;')
     let production = coalsProduction + housesNeeds.map(need => need.need < 0 ? -need.need : 0).reduce((a, b) => a + b, 0)
     let consumption = housesNeeds.map(need => need.need > 0 ? need.need : 0).reduce((a, b) => a + b, 0)

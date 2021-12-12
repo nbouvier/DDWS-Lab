@@ -13,7 +13,14 @@ function loadCoalPowerPlant(callback) {
         dataType: 'JSON',
         data: { id: $('#coalPowerPlantID').html() },
 
-        success: data => callback(data.result),
+        success: data => {
+            if(data.error) {
+                showSystemMessage(data.error, MessageType.danger)
+                return
+            }
+
+            callback(data.result)
+        },
 
         error: error => console.log(error)
     })
@@ -55,10 +62,12 @@ function startAndStopFormData() {
 function startAndStopFormSuccess(data) {
     showSystemMessage(data.message, MessageType.success)
 
-    let url = data.result ? '/api/coal-power-plant/stop' : '/api/coal-power-plant/start'
+    let url = data.result.running ? '/api/coal-power-plant/stop' : '/api/coal-power-plant/start'
 
     $('#startAndStopForm').attr('action', url)
-    $('#startAndStop').html(data.result ? 'STOP' : 'RUN').addClass(`btn-${data.result ? 'danger' : 'success'}`)
+    $('#startAndStop').html(data.result.running ? 'STOP' : 'RUN')
+        .addClass(`btn-${data.result.running ? 'danger' : 'success'}`)
+        .removeClass(`btn-${!data.result.running ? 'danger' : 'success'}`)
 }
 
 // ========== Production form ========== //
