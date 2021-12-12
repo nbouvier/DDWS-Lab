@@ -19,7 +19,7 @@
                 <span class="sidebar-text ml-3">Market</span>
             </a>
         </li>
-        <% if(user_type == 'admin') { %>
+        <% if(user.type == 'admin') { %>
         <li class="hr border-light-grey my-4"></li>
         <li class="<% if(view == 'admin') { %> active <% } %> overflow-hidden text-nowrap">
             <a href="/admin" class="text-light-grey text-decoration-none" title="Administration">

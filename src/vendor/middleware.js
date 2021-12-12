@@ -4,7 +4,7 @@ import { ADMIN, PROSUMER } from '../class/user.js'
 // this should be improved using cryptography
 
 export function guest(req, res, callbackSuccess, callbackFail = true) {
-    if(req.session.user_id) {
+    if(req.session.user) {
         if(typeof callbackFail == 'function') { callbackFail() }
         else if(!callbackFail) {
             res.status(401).json({ error: 'You cannot access this page as a logged user.' })
@@ -19,7 +19,7 @@ export function guest(req, res, callbackSuccess, callbackFail = true) {
 }
 
 export function user(req, res, callbackSuccess, callbackFail = true) {
-    if(!req.session.user_id && req.body.source != 'server') {
+    if(!req.session.user && req.body.source != 'server') {
         if(typeof callbackFail == 'function') { callbackFail() }
         else if(!callbackFail) {
             res.status(401).json({ error: 'You cannot access this page as a guest.' })
@@ -33,7 +33,7 @@ export function user(req, res, callbackSuccess, callbackFail = true) {
 }
 
 export function admin(req, res, callbackSuccess, callbackFail = true) {
-    if(req.session.user_type != ADMIN && req.body.source != 'server') {
+    if((!req.session.user || req.session.user.type != ADMIN) && req.body.source != 'server') {
         if(typeof callbackFail == 'function') { callbackFail() }
         else if(!callbackFail) {
             res.status(401).json({ error: 'You do not have permission to access this page.' })
@@ -47,7 +47,7 @@ export function admin(req, res, callbackSuccess, callbackFail = true) {
 }
 
 export function prosumer(req, res, callbackSuccess, callbackFail = true) {
-    if(req.session.user_type != PROSUMER && req.body.source != 'server') {
+    if((!req.session.user || req.session.user.type != PROSUMER) && req.body.source != 'server') {
         if(typeof callbackFail == 'function') { callbackFail() }
         else if(!callbackFail) {
             res.status(401).json({ error: 'You do not have permission to access this page.' })

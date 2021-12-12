@@ -37,7 +37,7 @@ router.get('/', (req, res, next) => {
         let messages = req.session.messages
         req.session.messages = []
 
-        let [user, error] = await userService.get(req.session.user_id)
+        let [user, error] = await userService.get(req.session.user.id)
 
         let asset = {}
         if(error !== null) { messages.push({ message: error, type: 'danger' }) }
@@ -45,7 +45,6 @@ router.get('/', (req, res, next) => {
 
         res.render('home', {
             user: req.session.user,
-            user_type: req.session.user_type,
             messages: messages,
             ...asset
         })
@@ -57,16 +56,14 @@ router.get('/electricity-managment', (req, res, next) => {
         let messages = req.session.messages
         req.session.messages = []
 
-        let [user, error] = await userService.get(req.session.user_id)
+        let [user, error] = await userService.get(req.session.user.id)
 
         let asset = {}
         if(error !== null) { messages.push({ message: error, type: 'danger' }) }
         else { asset = user.getAssetID() }
 
-        res.render(`electricityManagment-${req.session.user_type}`, {
+        res.render(`electricityManagment-${req.session.user.type}`, {
             user: req.session.user,
-            user_id: req.session.user_id,
-            user_type: req.session.user_type,
             messages: messages,
             ...asset
         })
@@ -86,9 +83,7 @@ router.get('/electricity-managment/:user_id', (req, res, next) => {
 
         res.render('electricityManagment-prosumer', {
             user: req.session.user,
-            user_id: req.session.user_id,
-            user_type: req.session.user_type,
-            preview_user_id: user.id,
+            preview_user: user.id,
             messages: messages,
             ...asset
         })
@@ -100,16 +95,14 @@ router.get('/market', (req, res, next) => {
         let messages = req.session.messages
         req.session.messages = []
 
-        let [user, error] = await userService.get(req.session.user_id)
+        let [user, error] = await userService.get(req.session.user.id)
 
         let asset = {}
         if(error !== null) { messages.push({ message: error, type: 'danger' }) }
         else { asset = user.getAssetID() }
 
-        res.render(`market-${req.session.user_type}`, {
+        res.render(`market-${req.session.user.type}`, {
             user: req.session.user,
-            user_id: req.session.user_id,
-            user_type: req.session.user_type,
             messages: messages,
             ...asset
         })
@@ -119,9 +112,7 @@ router.get('/market', (req, res, next) => {
 router.get('/profile', (req, res, next) => {
     middleware.user(req, res, () => {
         res.render('profile', {
-            user: req.session.user,
-            user_id: req.session.user_id,
-            user_type: req.session.user_type
+            user: req.session.user
         })
     })
 })
@@ -138,10 +129,7 @@ router.get('/profile/:user_id', (req, res, next) => {
 
         res.render('profile', {
             user: req.session.user,
-            user_id: req.session.user_id,
-            user_type: req.session.user_type,
-            preview_user_id: user.id,
-            preview_user_type: user.type
+            preview_user: user
         })
     })
 })
@@ -149,8 +137,7 @@ router.get('/profile/:user_id', (req, res, next) => {
 router.get('/admin', (req, res, next) => {
     middleware.user(req, res, () => {
         res.render('admin', {
-            user: req.session.user,
-            user_type: req.session.user_type
+            user: req.session.user
         })
     })
 })

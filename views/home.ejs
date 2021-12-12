@@ -5,7 +5,7 @@
 
 <body>
 
-    <% if(user_type == 'admin') { %>
+    <% if(user.type == 'admin') { %>
     <div id="coalPowerPlantID" class="d-none"><%= coal_power_plant_id %></div>
     <% } else { %>
     <div id="houseID" class="d-none"><%= house_id %></div>
@@ -22,7 +22,7 @@
             <%- include('../partials/chart/productionChart'); %>
 
             <div class="row">
-                <% if(user_type == 'admin') { %>
+                <% if(user.type == 'admin') { %>
                 <div class="col-md-8">
                     <%- include('../partials/chart/electricityPriceChart'); %>
                 </div>
@@ -37,7 +37,7 @@
                 <% } %>
 
 
-                <% if(user_type == 'admin') { %>
+                <% if(user.type == 'admin') { %>
                 <div class="col-md-4">
                 <% } else { %>
                 <div class="col-lg-4">

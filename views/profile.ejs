@@ -5,7 +5,7 @@
 
 <body>
 
-    <div id="userID" class="d-none"><%= typeof preview_user_id != 'undefined' ? preview_user_id : user_id %></div>
+    <div id="userID" class="d-none"><%= typeof preview_user != 'undefined' ? preview_user.id : user.id %></div>
 
     <%- include('../partials/header', { view_title: 'Profile' }); %>
 
@@ -48,7 +48,7 @@
                         <input type="text" class="form-control" id="profileZipCode">
                     </div>
                 </div>
-                <% if(typeof preview_user_id == 'undefined') { %>
+                <% if(typeof preview_user == 'undefined') { %>
                 <div class="d-flex justify-content-end mt-3">
                     <button type="reset" class="btn btn-danger mr-2">Reset</button>
                     <button type="submit" class="btn btn-primary">Save</button>
@@ -69,7 +69,7 @@
                     <label for="securityEmail">Email</label>
                     <input type="email" class="form-control" id="securityEmail">
                 </div>
-                <% if(typeof preview_user_id == 'undefined') { %>
+                <% if(typeof preview_user == 'undefined') { %>
                 <div class="form-group">
                     <button type="button" id="changePassword" class="btn btn-primary">Change password</button>
                 </div>
@@ -82,7 +82,7 @@
 
         </section>
 
-        <% if(typeof preview_user_type != 'undefined' && preview_user_type == 'prosumer') { %>
+        <% if(typeof preview_user != 'undefined' && preview_user.type == 'prosumer') { %>
         <section>
 
             <button id="seeElectricityManagment" type="button" class="btn btn-primary btn-lg btn-block">Electricity managment</button>
