@@ -11,7 +11,7 @@ async function calculateHouseNeed() {
     houses.forEach(async house => {
         let production = await db.query('SELECT remaining_production AS production FROM house_production WHERE house_id = ? ORDER BY timestamp DESC LIMIT 1;', [ house.id ])
         production = production.length ? production[0].production : 0
-        let consumption = await db.query('SELECT consumption FROM house_consumption WHERE house_id = ? ORDER BY timestamp DESC LIMIT 1;', [ house.id ])
+        let consumption = await db.query('SELECT remaining_consumption AS consumption FROM house_consumption WHERE house_id = ? ORDER BY timestamp DESC LIMIT 1;', [ house.id ])
         consumption = consumption.length ? consumption[0].consumption : 0
         let need = consumption - production
         let blackout = 0
@@ -23,7 +23,20 @@ async function calculateHouseNeed() {
             let residualNeed = totalProduction - need < 0 ? need - totalProduction : 0
             totalProduction = totalProduction - need >= 0 ? totalProduction - need : 0
 
-            if(residualNeed > 0) { blackout = parseInt(residualNeed / consumption * 100) }
+            if(residualNeed > 0) {
+                let coalPowerPlantsBuffer = await db.query('SELECT b.id, b.resource FROM coal_power_plant cpp JOIN buffer b ON cpp.buffer_id = b.id;')
+                // Take in coal power plant buffer
+                for(let i=0; i<coalPowerPlantsBuffer.length; i++) {
+                    let removeFromBuffer = buffer.resource < residualNeed ? buffer.resource : residualNeed
+                    residualNeed -= removeFromBuffer
+
+                    db.query('UPDATE buffer SET resource = ? WHERE id = ?;', [ removeFromBuffer, buffer.id ])
+
+                    if(!residualNeed) { break }
+                }
+
+                if(residualNeed) { blackout = parseInt(residualNeed / consumption * 100) }
+            }
         }
 
         db.query('INSERT INTO house_need (house_id, need, blackout) VALUES (?, ?, ?)', [ house.id, need, blackout ])

@@ -54,7 +54,7 @@ router.get('/register', (req, res, next) => {
 router.post('/init-reset-password', async (req, res, next) => {
     // Data validation
     let validatedData = {
-        user_id: req.session.user.id ? req.session.user.id : null,
+        user_id: req.session.user ? req.session.user.id : null,
         email: req.body.email ? req.body.email : null
     }
 

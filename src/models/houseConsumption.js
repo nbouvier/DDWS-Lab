@@ -27,7 +27,7 @@ async function setHouseConsumption() {
     let date = new Date()
     let currentSecond = date.getHours() * 3600 + date.getMinutes() * 60 + date.getSeconds()
 
-    let houses = await db.query('SELECT house_id AS id, average_consumption, average_second FROM global_house_consumption;')
+    let houses = await db.query('SELECT h.id, h.to_buffer_percentage, ghp.average_consumption, ghp.average_second, b.id AS b_id, b.resource FROM jouse h JOIN global_house_consumption ghp ON h.id = ghp.house_id JOIN buffer b ON h.buffer_id = b.id;')
     houses.forEach(async house => {
         let avg_second = house.average_second
         let avg_consumption = house.average_consumption
@@ -46,7 +46,15 @@ async function setHouseConsumption() {
         }
         let consumption = random.randomBM(min_consumption * 1000, max_consumption * 1000, skew) / 1000 * REFRESH_FREQUENCY
 
-        db.query('INSERT INTO house_consumption (house_id, consumption) VALUES (?, ?);', [ house.id, consumption ])
+        let removeFromBuffer = house.resource
+        let remainingConsumption = consumption
+        if(house.resource >= consumption * house.to_buffer_percentage) {
+            removeFromBuffer = consumption * house.to_buffer_percentage
+            remainingConsumption = consumption - removeFromBuffer
+        }
+
+        db.query('UPDATE buffer SET resource = ? WHERE id = ?;', [ removeFromBuffer, house.b_id ])
+        db.query('INSERT INTO house_consumption (house_id, consumption, remaining_consumption) VALUES (?, ?);', [ house.id, consumption, remainingConsumption ])
     });
 }
 

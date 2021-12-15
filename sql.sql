@@ -181,6 +181,7 @@ CREATE TABLE IF NOT EXISTS `house_consumption` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `house_id` int(11) NOT NULL,
   `consumption` float NOT NULL,
+  `remaining_consumption` float NOT NULL,
   `timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   KEY `FK_HOUSE_CONSUMPTION_HOUSE` (`house_id`),
