@@ -19,13 +19,13 @@ async function gatherInformations() {
 export default function generateData() {
     while(new Date().getSeconds() % REFRESH_FREQUENCY) {}
 
-    setInterval(() => {
+    setInterval(async () => {
         coalProduction.setCoalPowerPlantProduction()
         houseProduction.setHouseAverageProduction()
-        houseProduction.setHouseProduction()
         houseConsumption.setHouseAverageConsumption()
-        houseConsumption.setHouseConsumption()
-        houseNeed.calculateHouseNeed()
+        await houseProduction.setHouseProduction()
+        await houseConsumption.setHouseConsumption()
+        await houseNeed.calculateHouseNeed()
         gatherInformations()
     }, REFRESH_FREQUENCY * 1000)
 }

@@ -38,8 +38,8 @@ async function setHouseProduction() {
         let bufferResource = house.b_resource + productionToBuffer
         let remainingProduction = production - productionToBuffer
 
-        db.query('UPDATE buffer SET resource = ? WHERE id = ?;', [ bufferResource, house.b_id ])
-        db.query('INSERT INTO house_production (house_id, production, remaining_production) VALUES (?, ?, ?);', [ house.id, production, remainingProduction ])
+        await db.query('UPDATE buffer SET resource = ? WHERE id = ?;', [ bufferResource, house.b_id ])
+        await db.query('INSERT INTO house_production (house_id, production, remaining_production) VALUES (?, ?, ?);', [ house.id, production, remainingProduction ])
     })
 }
 

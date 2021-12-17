@@ -27,10 +27,10 @@ async function calculateHouseNeed() {
                 let coalPowerPlantsBuffer = await db.query('SELECT b.id, b.resource FROM coal_power_plant cpp JOIN buffer b ON cpp.buffer_id = b.id;')
                 // Take in coal power plant buffer
                 for(let i=0; i<coalPowerPlantsBuffer.length; i++) {
-                    let removeFromBuffer = buffer.resource < residualNeed ? buffer.resource : residualNeed
+                    let removeFromBuffer = coalPowerPlantsBuffer[i].resource < residualNeed ? coalPowerPlantsBuffer[i].resource : residualNeed
                     residualNeed -= removeFromBuffer
 
-                    db.query('UPDATE buffer SET resource = ? WHERE id = ?;', [ removeFromBuffer, buffer.id ])
+                    await db.query('UPDATE buffer SET resource = ? WHERE id = ?;', [ removeFromBuffer, coalPowerPlantsBuffer[i].id ])
 
                     if(!residualNeed) { break }
                 }
@@ -39,7 +39,7 @@ async function calculateHouseNeed() {
             }
         }
 
-        db.query('INSERT INTO house_need (house_id, need, blackout) VALUES (?, ?, ?)', [ house.id, need, blackout ])
+        await db.query('INSERT INTO house_need (house_id, need, blackout) VALUES (?, ?, ?)', [ house.id, need, blackout ])
     })
 }
 
