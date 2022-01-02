@@ -26,6 +26,12 @@ Then start the server:
 $ node server
 ```
 
+You can also use nohup if you want to be able to close your SSH terminal:
+
+```
+$ nohup node server &
+```
+
 Now you can go on at http://localhost:3000/ (or any other URL depending on your configuration).
 
 ## Deployment
@@ -84,7 +90,10 @@ To verify that everything went well:
 SHOW DATABASES;
 use ddws;
 SHOW TABLES;
+exit
 ```
+
+/!\ Creating a dedicated user for accessing this specific database would of course be a good security practice.
 
 Now you are ready to go !
 Just launch the project following the [Setup](#setup) part !
