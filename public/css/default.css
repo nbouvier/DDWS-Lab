@@ -210,3 +210,5 @@ tr.bg-warning td:first-child {
     justify-content: center;
     align-items: center;
 }
+
+#loginForm, #registerForm, #resetPasswordForm, #initResetPasswordForm { min-width: 20rem; }

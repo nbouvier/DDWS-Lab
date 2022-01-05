@@ -24,6 +24,10 @@ router.get('/register', (req, res, next) => {
     })
 })
 
+router.get('/init-reset-password', (req, res, next) => {
+    res.render('initResetPassword')
+})
+
 router.get('/reset-password', (req, res, next) => {
     res.render('resetPassword', {
         hash: req.query.hash

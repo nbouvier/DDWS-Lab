@@ -61,7 +61,11 @@ export async function initResetPassword(data) {
     if(data.user_id) {
         user = await db.loadOne(User, data.user_id)
     } else {
-        user = (await db.loadWhere(User, 'email = ?', [email]))[0]
+        user = (await db.loadWhere(User, 'email = ?', [data.email]))[0]
+    }
+
+    if(!user) {
+        return [false, 'User does not exists.']
     }
 
     let randomString = Math.random().toString(36).replace(/[^a-z]+/g, '')
