@@ -4,6 +4,8 @@ import crypto from '../vendor/crypto.js'
 import db from '../database/database.js'
 
 import User, { PROSUMER } from '../class/user.js'
+import House from '../class/house.js'
+import Buffer from '../class/buffer.js'
 
 // Duration of hash validity in minutes
 const hashDuration = 30
@@ -29,8 +31,13 @@ export async function register(name, forename, email, password) {
         return [false, 'Email is already used.']
     }
 
+    let buffer = new Buffer(5000, 0)
+    buffer = await db.create(Buffer, buffer)
+    let house = new House(0, 0, buffer.id)
+    house = await db.create(House, house)
+
     password = crypto.encrypt(password)
-    let user = new User(PROSUMER, name, forename, email, password)
+    let user = new User(PROSUMER, name, forename, email, password, null, null, null, null, house.id)
     user = await db.create(User, user)
 
     let hash = crypto.encrypt(email, 'sha1')

@@ -21,7 +21,12 @@ function modeledElectricityPricePullData(serie) {
         dataType: 'JSON',
         data: { from: date = Date.now() - 10000 },
 
-        success: data => serie.addPoint(data.result.modeled_price[0]),
+        success: data => {
+            if (serie.data.length >= 8640) {
+                serie.data[0].remove()
+            }
+            serie.addPoint(data.result.modeled_price[0])
+        },
 
         error: error => console.log(error)
     })

@@ -9,7 +9,7 @@ export async function wind(houseID, from = null) {
         from = date + hour
     }
 
-    let wind = await db.query(`SELECT speed, UNIX_TIMESTAMP(timestamp) * 1000 AS timestamp FROM wind ${from ? 'WHERE timestamp > ?' : ''};`, from ? [ from ] : [])
+    let wind = await db.query(`SELECT speed, timestamp FROM (SELECT speed, UNIX_TIMESTAMP(timestamp) * 1000 AS timestamp FROM wind ${from ? 'WHERE timestamp > ?' : ''} ORDER BY 2 DESC LIMIT 8640) t ORDER BY 2;`, from ? [ from ] : [])
 
     return [wind, null]
 }

@@ -57,7 +57,7 @@ export default class House {
             additionalConditionsArgs.push(to)
         }
 
-        return await db.query(`SELECT production, UNIX_TIMESTAMP(timestamp) * 1000 AS timestamp FROM house_production WHERE house_id = ? ${additionalConditions};`, [ this.id, ...additionalConditionsArgs ])
+        return await db.query(`SELECT production, timestamp FROM (SELECT production, UNIX_TIMESTAMP(timestamp) * 1000 AS timestamp FROM house_production WHERE house_id = ? ${additionalConditions} ORDER BY 2 DESC LIMIT 8640) t ORDER BY 2;`, [ this.id, ...additionalConditionsArgs ])
     }
 
     async consumption(from = null, to = null) {
@@ -74,7 +74,7 @@ export default class House {
             additionalConditionsArgs.push(to)
         }
 
-        return await db.query(`SELECT consumption, UNIX_TIMESTAMP(timestamp) * 1000 AS timestamp FROM house_consumption WHERE house_id = ? ${additionalConditions};`, [ this.id, ...additionalConditionsArgs ])
+        return await db.query(`SELECT consumption, timestamp FROM (SELECT consumption, UNIX_TIMESTAMP(timestamp) * 1000 AS timestamp FROM house_consumption WHERE house_id = ? ${additionalConditions} ORDER BY 2 DESC LIMIT 8640) t ORDER BY 2;`, [ this.id, ...additionalConditionsArgs ])
     }
 
     async serialize() {
