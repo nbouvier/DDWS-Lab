@@ -25,7 +25,12 @@ function productionPullData(serie) {
             from: date = Date.now() - 10000
         },
 
-        success: data => serie.addPoint(data.result.production[0]),
+        success: data => {
+            if (serie.data.length >= 8640) {
+                serie.data[0].remove()
+            }
+            serie.addPoint(data.result.production[0])
+        },
 
         error: error => console.log(error)
     })

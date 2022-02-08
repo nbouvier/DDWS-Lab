@@ -26,7 +26,7 @@ export async function price(from = null) {
         from = date + hour
     }
 
-    let price = await db.query(`SELECT price, UNIX_TIMESTAMP(timestamp) * 1000 AS timestamp FROM electricity_price ${from ? 'WHERE timestamp > ?' : ''};`, from ? [ from ] : [])
+    let price = await db.query(`SELECT price, timestamp FROM (SELECT price, UNIX_TIMESTAMP(timestamp) * 1000 AS timestamp FROM electricity_price ${from ? 'WHERE timestamp > ?' : ''} ORDER BY 2 DESC LIMIT 8640) t ORDER BY 2;`, from ? [ from ] : [])
 
     return [price, null]
 }
@@ -40,7 +40,7 @@ export async function modeledPrice(from = null) {
         from = date + hour
     }
 
-    let modeledPrice = await db.query(`SELECT price, UNIX_TIMESTAMP(timestamp) * 1000 AS timestamp FROM modeled_electricity_price ${from ? 'WHERE timestamp > ?' : ''};`, from ? [ from ] : [])
+    let modeledPrice = await db.query(`SELECT price, UNIX_TIMESTAMP(timestamp) * 1000 AS timestamp FROM modeled_electricity_price ${from ? 'WHERE timestamp > ?' : ''} ORDER BY 2 DESC LIMIT 500;`, from ? [ from ] : [])
 
     return [modeledPrice, null]
 }
