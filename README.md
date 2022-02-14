@@ -9,8 +9,8 @@
 ## General info
 This project was made according to the Design of Dynamic WebSites courses dispensed at Luleå University of Technology.
 
-    ├─ api/             API routing
-    ├─ doc/             Documentation
+    ├─ api/             API routing (see api/README.md)
+    ├─ doc/             Documentation (see doc/README.md)
     ├─ partials/        EJS reusable parts
     ├─ src/             Application source code
     │  ├─ class/        Classes objects
@@ -19,7 +19,7 @@ This project was made according to the Design of Dynamic WebSites courses dispen
     │  ├─ services/     Services code
     │  └─ vendor/       Utils
     ├─ public/          Publicly accessible ressources
-    ├─ views/           tests (see test/README.md)
+    ├─ views/           EJS views
     ├─ server.js        Entry point
     └─ app.js           Router
 
