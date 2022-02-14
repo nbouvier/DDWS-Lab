@@ -1,4 +1,5 @@
 # Authentication
+API access points are splitted by [services](https://github.com/nbouvier/DDWS-Lab/tree/main/src/services).
 ## Login
 **Type:** POST\
 **Access point:** /api/auth/login\
