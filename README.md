@@ -3,8 +3,6 @@
 * [Technologies](#technologies)
 * [Documentation](#documentation)
 * [API references](#api-references)
-* [Setup](#setup)
-* [Deployment](#deployment)
 
 ## General info
 This project was made according to the Design of Dynamic WebSites courses dispensed at Luleå University of Technology.
